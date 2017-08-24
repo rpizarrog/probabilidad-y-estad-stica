@@ -123,8 +123,8 @@ $(document).ready(function () {
 </div>
 
 
-<div id="graficar-datos-de-consumos-de-kwh-de-datos-huistoricos-por-no-de-servicio-de-cfe" class="section level2">
-<h2>Graficar datos de consumos de KWH de datos huist[oricos por No de servicio de CFE</h2>
+<div id="graficar-datos-de-consumos-de-kwh-de-datos-historicos-por-no-de-servicio-de-cfe" class="section level2">
+<h2>Graficar datos de consumos de KWH de datos históricos por No de servicio de CFE</h2>
 <div id="cargar-libreria-para-graficar" class="section level3">
 <h3>Cargar librería para graficar</h3>
 <pre class="r"><code>library(ggplot2)</code></pre>
@@ -135,7 +135,8 @@ $(document).ready(function () {
 </div>
 <div id="verificar-la-existencia-del-archivo-en-la-ruta-actual" class="section level3">
 <h3>Verificar la existencia del archivo en la ruta actual</h3>
-<pre class="r"><code>dir()   </code></pre>
+<pre class="r"><code>setwd(&quot;~/SEMESTRE AGO-DIC 2017/Z PROBABILIDAD Y ESTADISTICAS/DATOS/CFE&quot;) # ruta de trabajo
+dir()   </code></pre>
 <pre><code>##  [1] &quot;~$COPILAR DATOS DE CONSUMOS DE ENERGÍA ELÉCTRICA DE LOS ÚLTIMOS 5 AÑOS DE SUS CASAS.docx&quot;
 ##  [2] &quot;CFE.Rproj&quot;                                                                               
 ##  [3] &quot;datos&quot;                                                                                   
@@ -147,7 +148,7 @@ $(document).ready(function () {
 ##  [9] &quot;HISTORIAL DE CONSUMO E IMPORTE DE CFE.xlsx&quot;                                              
 ## [10] &quot;histortialo de consumo CFE.jpeg&quot;                                                         
 ## [11] &quot;RECOPILAR DATOS DE CONSUMOS DE ENERGÍA ELÉCTRICA DE LOS ÚLTIMOS 5 AÑOS DE SUS CASAS.docx&quot;</code></pre>
-<pre class="r"><code>dir(pattern = &quot;*.csv&quot;) # con cierto patrón de busqueda del directorio</code></pre>
+<pre class="r"><code>dir(pattern = &quot;*.csv&quot;) # con cierto patrÃ³n de busqueda del directorio</code></pre>
 <pre><code>## [1] &quot;HISTORIAL DE CONSUMO E IMPORTE DE CFE 87040730.csv&quot;
 ## [2] &quot;HISTORIAL DE CONSUMO E IMPORTE DE CFE 87040732.csv&quot;</code></pre>
 </div>
@@ -221,7 +222,7 @@ datos1</code></pre>
 <pre><code>## [1] 27</code></pre>
 <pre class="r"><code>length(datos1$IMPORTE)</code></pre>
 <pre><code>## [1] 27</code></pre>
-<pre class="r"><code>n &lt;- length(datos1$FACT)  # Almacenar n NUMERO de observaciones para propósito de conteo
+<pre class="r"><code>n &lt;- length(datos1$FACT)  # Almacenar n NUMERO de observaciones para propÃ³sito de conteo
 n</code></pre>
 <pre><code>## [1] 27</code></pre>
 </div>
@@ -233,7 +234,7 @@ n</code></pre>
 <pre><code>## [1] 0</code></pre>
 <pre class="r"><code>mean(datos1$KWH)</code></pre>
 <pre><code>## [1] 58.59259</code></pre>
-<pre class="r"><code># Registro en donde está el valor máximo de consumo
+<pre class="r"><code># Registro en donde estÃ¡ el valor máximo de consumo
 datos1[which.max(datos1$KWH), ]  # Registro del valor máximo]</code></pre>
 <pre><code>##     FACT KWH IMPORTE
 ## 6 feb-14 209     196</code></pre>
@@ -243,7 +244,7 @@ datos1[which.min(datos1$KWH), ]  # Registro del valor máximo]</code></pre>
 ## 1 may-13   0      47</code></pre>
 </div>
 <div id="grafica-de-barras-con-ggplot2" class="section level3">
-<h3>Gráfica de barras con ggplot2</h3>
+<h3>GrÃ¡fica de barras con ggplot2</h3>
 <pre class="r"><code>ggplot(datos1, aes(datos1$FACT, datos1$KWH)) +
   geom_bar(stat=&quot;identity&quot;) +
   theme(axis.text.x  = element_text(angle=90))</code></pre>
