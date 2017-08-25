@@ -1,0 +1,91 @@
+---
+title: "intervalos, cortes tablas de frecuencias"
+author: "Rubén Pizarro"
+date: "20 de agosto de 2017"
+output: html_document
+---
+## Objetivo
+
+El objetivo de esta práctica es mostrar frecuencias, datos agrupados, clases, intérvalos, cortes, 
+
+## Frecuencias, datos agrupados, clases, intérvalos, cortes
+### Genera lista de 20 números
+### Genera su tabla de frecuencia absoluta y relativa
+
+```{r library}
+library(agricolae)
+
+```
+
+
+```{r datos}
+datos <- c(2,2,1,3,3,3,4,4,5,6,1,2,2,3,3,3,4,4,3,5)
+datos
+
+```
+
+### Genera su tabla de frecuencia absoluta relativa y Transformar
+
+```{r frecuencia}
+frecuencia.datos <- table(datos)
+frecuencia.datos
+```
+
+### Transfoprmar a un data.frame 
+```{r transformar.frecuencia}
+tabla <- transform(frecuencia.datos)
+tabla
+```
+
+### Agregar frecuencia relativa y porcentual
+```{r frec.rela.porc}
+tabla <- data.frame(tabla, 'Freq.Rel' = tabla$Freq / length(datos))
+tabla
+tabla <- data.frame(tabla, 'Porc' = tabla$Freq.Rel * 100)
+tabla
+```
+
+
+### Muestra las clase conforme a Fórmula Sturges]
+```{r clases}
+clases <- nclass.Sturges(datos)
+clases
+```
+
+### Rango de datos
+```{r rango}
+range(datos)
+```
+
+
+
+### Determina intervalos conforme a corte cut
+```{r intervalos}
+cut(datos, breaks = 3)  # 3 grupos
+
+```
+
+### Determina intervalos conforme a corte cut
+```{r tabla grupos intervalos}
+tabla.intervalos <- transform(table(cut(datos, breaks = 3)))
+tabla.intervalos <- data.frame(tabla.intervalos, 'Freq.Rel' = tabla.intervalos$Freq / length(datos))
+tabla.intervalos <- data.frame(tabla.intervalos, 'Freq.Porc' = tabla.intervalos$Freq.Rel * 100)
+
+print(tabla.intervalos)
+```
+
+### Un histograma simple
+```{r grafica frecuencia}
+graficafrecuencia.histo<-graph.freq(datos,plot=TRUE, col = "blue")
+```
+
+
+### Un pastel simple
+```{r grafica pie}
+tabla.intervalos
+labels <- tabla.intervalos$Var1
+labels
+pie(tabla.intervalos$Freq, labels)
+
+```
+
