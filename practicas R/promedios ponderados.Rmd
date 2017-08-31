@@ -1,0 +1,112 @@
+---
+title: "promedios ponderados"
+author: "Rubén Pizarro"
+date: "30 de agosto de 2017"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+## Objetivo: 
+###Determinar promedio pomnderados
+## Descripción
+#### Leer un conjunto de calificaciones de alumnops h yun conjunto de criterios y ####determinar el promedio podnerado de cada alumno según el peso de cada criterio.
+
+## Proceso
+#### Identificar directorio de trabajo
+#### Leer calificaiocnes
+#### Leer criterios
+#### Determinar tabla de promedios ponderados
+
+### Directorio
+
+
+```{r dir}
+setwd("~/SEMESTRE AGO-DIC 2017/Z PROBABILIDAD Y ESTADISTICAS/DATOS/CALIFICACIONES MEDIAS")
+```
+
+### Leer datos y mostrar calificacio es y criterios
+```{r read}
+library(readr)    ## Librería para leer datos
+
+calificaciones <- read.csv("calificaciones para medias ponderadas.csv")
+criterios <- read_csv("criterios.csv")
+
+calificaciones
+criterios
+
+criterios$peso
+
+
+```
+
+### Nombres de variables (columnas) de cada conjunto de datos
+```{r vars}
+
+
+colnames(calificaciones)
+colnames(criterios)
+
+```
+
+
+### Nombres de registros de las califiaciones y los criterios
+```{r vars row}
+
+
+rownames(calificaciones)   ## Las calificaciones de cada alumno
+rownames(criterios)       ## Los criterios de las calificaciones
+
+```
+
+## Primero: Determinar el promedio Pomnderado de cada alumno de sus 4 calificaciones
+### Sacar por medio de un ciclo el promedio ponderado de cada renglón de calificaciones
+```{r ciclo}
+
+#
+# Script  para sacar promedios ponderados de una lista de calificaciones
+# Se tiene la lista
+# Se tienen los criterios
+# Se utiliza un ciclo y la función weighted.mean
+
+
+promediopond <- length(calificaciones$numero) # Long de un vector. serán 39
+for(i in 1:length(calificaciones$numero)) { 
+  promediopond[i] <- weighted.mean(calificaciones[i, 2:5], criterios$peso)
+}
+
+promediopond
+class(promediopond)
+```
+
+
+
+
+## Segundo: Determinar el promedio Aritmético de cada alumno de sus 4 calificaciones
+### Sacar el promedio aritmetico de las calificaciones de cada alumno
+```{r ciclo aritmetico}
+
+#
+# Script  para sacar promedios aritmético de cada alumno con sus 4 calificaiones
+# Se tiene la lista con calificaciones
+# Se utiliza un ciclo y la función mean ya conocida
+
+
+promedioarit <- length(calificaciones$numero) # Long de un vector. serán 39
+for(i in 1:length(calificaciones$numero)) { 
+  promedioarit[i] <- rowMeans(calificaciones[i, 2:5], na.rm = TRUE)
+}
+
+promedioarit
+class(promedioarit)
+```
+
+
+### Agregar cada promedio a calificaciones
+
+```{r data.frame proms}
+data.frame(calificaciones,  promediopond)
+
+data.frame(calificaciones, promedioarit)
+```
