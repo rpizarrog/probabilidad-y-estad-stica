@@ -1,12 +1,6 @@
-## Son prácticas para la segund aunidad
+## Son prácticas para la segunda unidad
 
-Ver archivos HTML en GitHub
-Con GitHub además de mantener tu código en un lugar seguro  y crear un ambiente colaborativo puedes usarlo para mostrar páginas HTML y hacer pruebas.
-
-Para esto debes anteponer lo siguiente antes de la URL del archivo HTML en cuestión:
+Ver archivos HTML en GitHub y realizar paso a paso la práctica en R
 
 http://htmlpreview.github.com/?
 
-ejemplo:
-
-http://htmlpreview.github.com/?https://github.com/marimaf/CodeTests/blob/master/showHtml.html
