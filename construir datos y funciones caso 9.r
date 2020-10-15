@@ -1,6 +1,7 @@
 # Crear el conjunto de datos y funciones
 
 fatividad.aletoria <- function(actividad, datos, size) {
+  set.seed(2020)
   n <- nrow(datos)
   cuales <- sample(1:n, size)
   datos[cuales, actividad] = 'SI'
