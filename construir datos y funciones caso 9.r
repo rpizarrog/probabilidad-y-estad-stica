@@ -1,7 +1,9 @@
-# Crear el conjunto de datos y funciones
+ library(dplyr)
+ set.seed(2020)
 
+# Función para crear un conjunto d edatos que serán las personas 
 fatividad.aletoria <- function(actividad, datos, size) {
-  set.seed(2020)
+
   n <- nrow(datos)
   cuales <- sample(1:n, size)
   datos[cuales, actividad] = 'SI'
@@ -12,7 +14,7 @@ fatividad.aletoria <- function(actividad, datos, size) {
 # Recibe el conjunto de datos y un nombre de variable
 # Devuelve el subconjunto de datos
 f.obten.subconjunto <- function(personas, variable) {
-  library(dplyr)
+
   if (variable == 'masculino') {
     conjunto <- filter(personas, generos == 'M') %>%
       select (nombres)  
