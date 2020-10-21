@@ -8,6 +8,72 @@ fatividad.aletoria <- function(actividad, datos, size) {
   datos
 }
 
+# Funcion par CASO 10
+# Recibe el conjunto de datos y un nombre de variable
+# Devuelve el subconjunto de datos
+f.obten.subconjunto <- function(personas, variable) {
+  library(dplyr)
+  if (variable == 'masculino') {
+    conjunto <- filter(personas, generos == 'M') %>%
+      select (nombres)  
+  }
+  if (variable == 'femenino') {
+    conjunto <- filter(personas, generos == 'F') %>%
+      select (nombres)  
+  }
+  if (variable == 'ajedrez') {
+    conjunto <- filter(personas, ajedrez == 'SI') %>%
+      select (nombres)  
+  }
+  if (variable == 'beisbol') {
+    conjunto <- filter(personas, beisbol == 'SI') %>%
+      select (nombres)  
+  }
+  if (variable == 'tiro.arco') {
+    conjunto <- filter(personas, tiro.arco == 'SI') %>%
+      select (nombres)  
+  }  
+  if (variable == 'pesas') {
+    conjunto <- filter(personas, pesas == 'SI') %>%
+      select (nombres)  
+  }
+  if (variable == 'futbol') {
+    conjunto <- filter(personas, futbol == 'SI') %>%
+      select (nombres)  
+  }   
+  if (variable == 'softbol') {
+    conjunto <- filter(personas, softbol == 'SI') %>%
+      select (nombres)  
+  }
+  if (variable == 'atletismo') {
+    conjunto <- filter(personas, atletismo == 'SI') %>%
+      select (nombres)  
+  }
+  if (variable == 'folklorico') {
+    conjunto <- filter(personas, folklorico == 'SI') %>%
+      select (nombres)  
+  }
+  if (variable == 'tahitiano') {
+    conjunto <- filter(personas, tahitiano == 'SI') %>%
+      select (nombres)  
+  }  
+  if (variable == 'teatro') {
+    conjunto <- filter(personas, teatro == 'SI') %>%
+      select (nombres)  
+  }  
+  if (variable == 'rondalla') {
+    conjunto <- filter(personas, rondalla == 'SI') %>%
+      select (nombres)  
+  }  
+  if (variable == 'pantomima') {
+    conjunto <- filter(personas, pantomima == 'SI') %>%
+      select (nombres)  
+  }  
+  
+  
+  conjunto 
+}
+
 
 nombres <- c("JUAN", "JOSÉ LUIS", "JOSÉ", "MARÍA GUADALUPE", "FRANCISCO",
              "GUADALUPE", "MARÍA", "JUANA", "ANTONIO", "JESÚS", 
@@ -96,69 +162,5 @@ personas <- fatividad.aletoria('rondalla', personas, sample(10:25,1))
 personas <- fatividad.aletoria('pantomima', personas, sample(10:15,1))
 
 
-# Funcion par CASO 10
-# Recibe el conjunto de datos y un nombre de variable
-# Devuelve el subconjunto de datos
-f.obten.subconjunto <- function(personas, variable) {
-  library(dplyr)
-  if (variable == 'masculino') {
-    conjunto <- filter(personas, generos == 'M') %>%
-      select (nombres)  
-  }
-  if (variable == 'femenino') {
-    conjunto <- filter(personas, generos == 'F') %>%
-      select (nombres)  
-  }
-  if (variable == 'ajedrez') {
-    conjunto <- filter(personas, ajedrez == 'SI') %>%
-      select (nombres)  
-  }
-  if (variable == 'beisbol') {
-    conjunto <- filter(personas, beisbol == 'SI') %>%
-      select (nombres)  
-  }
-  if (variable == 'tiro.arco') {
-    conjunto <- filter(personas, tiro.arco == 'SI') %>%
-      select (nombres)  
-  }  
-  if (variable == 'pesas') {
-    conjunto <- filter(personas, pesas == 'SI') %>%
-      select (nombres)  
-  }
-  if (variable == 'futbol') {
-    conjunto <- filter(personas, futbol == 'SI') %>%
-      select (nombres)  
-  }   
-  if (variable == 'softbol') {
-    conjunto <- filter(personas, softbol == 'SI') %>%
-      select (nombres)  
-  }
-  if (variable == 'atletismo') {
-    conjunto <- filter(personas, atletismo == 'SI') %>%
-      select (nombres)  
-  }
-  if (variable == 'folklorico') {
-    conjunto <- filter(personas, folklorico == 'SI') %>%
-      select (nombres)  
-  }
-  if (variable == 'tahitiano') {
-    conjunto <- filter(personas, tahitiano == 'SI') %>%
-      select (nombres)  
-  }  
-  if (variable == 'teatro') {
-    conjunto <- filter(personas, teatro == 'SI') %>%
-      select (nombres)  
-  }  
-  if (variable == 'rondalla') {
-    conjunto <- filter(personas, rondalla == 'SI') %>%
-      select (nombres)  
-  }  
-  if (variable == 'pantomima') {
-    conjunto <- filter(personas, pantomima == 'SI') %>%
-      select (nombres)  
-  }  
-  
-  
-  conjunto 
-}
+
 
