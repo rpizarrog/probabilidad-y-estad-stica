@@ -1,9 +1,8 @@
  library(dplyr)
- set.seed(2020)
+set.seed(2020)
 
 # Función para crear un conjunto d edatos que serán las personas 
 fatividad.aletoria <- function(actividad, datos, size) {
-
   n <- nrow(datos)
   cuales <- sample(1:n, size)
   datos[cuales, actividad] = 'SI'
@@ -14,62 +13,48 @@ fatividad.aletoria <- function(actividad, datos, size) {
 # Recibe el conjunto de datos y un nombre de variable
 # Devuelve el subconjunto de datos
 f.obten.subconjunto <- function(personas, variable) {
-
+  
   if (variable == 'masculino') {
-    conjunto <- filter(personas, generos == 'M') %>%
-      select (nombres)  
+    conjunto <- filter(personas, generos == 'M') 
   }
   if (variable == 'femenino') {
-    conjunto <- filter(personas, generos == 'F') %>%
-      select (nombres)  
+    conjunto <- filter(personas, generos == 'F') 
   }
   if (variable == 'ajedrez') {
-    conjunto <- filter(personas, ajedrez == 'SI') %>%
-      select (nombres)  
+    conjunto <- filter(personas, ajedrez == 'SI') 
   }
   if (variable == 'beisbol') {
-    conjunto <- filter(personas, beisbol == 'SI') %>%
-      select (nombres)  
+    conjunto <- filter(personas, beisbol == 'SI') 
   }
   if (variable == 'tiro.arco') {
-    conjunto <- filter(personas, tiro.arco == 'SI') %>%
-      select (nombres)  
+    conjunto <- filter(personas, tiro.arco == 'SI')
   }  
   if (variable == 'pesas') {
-    conjunto <- filter(personas, pesas == 'SI') %>%
-      select (nombres)  
+    conjunto <- filter(personas, pesas == 'SI') 
   }
   if (variable == 'futbol') {
-    conjunto <- filter(personas, futbol == 'SI') %>%
-      select (nombres)  
+    conjunto <- filter(personas, futbol == 'SI')
   }   
   if (variable == 'softbol') {
-    conjunto <- filter(personas, softbol == 'SI') %>%
-      select (nombres)  
+    conjunto <- filter(personas, softbol == 'SI')
   }
   if (variable == 'atletismo') {
-    conjunto <- filter(personas, atletismo == 'SI') %>%
-      select (nombres)  
+    conjunto <- filter(personas, atletismo == 'SI') 
   }
   if (variable == 'folklorico') {
-    conjunto <- filter(personas, folklorico == 'SI') %>%
-      select (nombres)  
+    conjunto <- filter(personas, folklorico == 'SI') 
   }
   if (variable == 'tahitiano') {
-    conjunto <- filter(personas, tahitiano == 'SI') %>%
-      select (nombres)  
+    conjunto <- filter(personas, tahitiano == 'SI') 
   }  
   if (variable == 'teatro') {
-    conjunto <- filter(personas, teatro == 'SI') %>%
-      select (nombres)  
+    conjunto <- filter(personas, teatro == 'SI') 
   }  
   if (variable == 'rondalla') {
-    conjunto <- filter(personas, rondalla == 'SI') %>%
-      select (nombres)  
+    conjunto <- filter(personas, rondalla == 'SI') 
   }  
   if (variable == 'pantomima') {
-    conjunto <- filter(personas, pantomima == 'SI') %>%
-      select (nombres)  
+    conjunto <- filter(personas, pantomima == 'SI')
   }  
   
   
@@ -119,7 +104,7 @@ generos <- c('M', 'M', 'M', 'F', 'M',
              'M', 'M', 'M', 'M', 'M',
              'F', 'F', 'F', 'F', 'F',
              'F', 'F', 'M', 'F', 'M'
-             )
+)
 
 
 # Crear conjunto  de datos personas
@@ -162,6 +147,8 @@ personas <- fatividad.aletoria('tahitiano', personas, sample(10:15,1))
 personas <- fatividad.aletoria('teatro', personas, sample(10:15,1))
 personas <- fatividad.aletoria('rondalla', personas, sample(10:25,1))
 personas <- fatividad.aletoria('pantomima', personas, sample(10:15,1))
+
+
 
 
 
