@@ -22,3 +22,17 @@ f.prob.poisson <- function (media, x) {
   prob <- media^x * e^(-media) / factorial(x)
   prob
 }
+
+# Función de disrtibución hipergeométrica
+# Recibe estos pa´rametros:
+# N Total de elementos de la población
+# n Elementos de la muestra o ensayos
+# r número de elementos considerados como éxtio
+# x Valores que puede tener la variabel aleatoria discreta
+f.prob.hiper <- function (x, N, n, r) {
+  numerador <- (factorial(r) / (factorial(x) * factorial(r-x))) * (factorial(N-r) / (factorial(n-x) * factorial((N-r)-(n-x)))) 
+  denominador <- (factorial(N) / (factorial(n) * factorial(N-n)))
+  
+  prob <- numerador / denominador
+  prob
+}
