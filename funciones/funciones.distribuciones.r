@@ -36,3 +36,9 @@ f.prob.hiper <- function (x, N, n, r) {
   prob <- numerador / denominador
   prob
 }
+
+# Función que devuelve el valor esperado de una distribución hipergeométrica
+f.va.hiper <- function (n, r, N) {
+  VE <- n * (r/N)
+  VE
+}
