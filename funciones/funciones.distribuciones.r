@@ -42,3 +42,9 @@ f.va.hiper <- function (n, r, N) {
   VE <- n * (r/N)
   VE
 }
+
+# Función que devuelve la variazna de una distribución hipergeométrica
+f.varianza.hiper <- function(VE, n, r, N)  {
+  varianza <- VE * (1 - r/N) * ((N-n) / (N-1))
+  varianza
+}
