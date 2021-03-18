@@ -44,8 +44,13 @@ foperaciones <- function (x,y,tipo) {
   res # Devolver 
 }
 
-# Esta función determina el CV de un vector o de un conjunto de datos
+# Esta función determina el CV de un vector o un conjunto de datos de una columna
 fcoefvar <- function (datos) {
       CV <- sd(datos) / mean(datos) * 100
       CV
 }
+
+edades <- c(23,24,25,26,27,22)
+nombres <- c("Juan", "Pedro", "Luis", "José", "Mary", "Laura")
+datos.personas <- data.frame(nombres, edades)
+
