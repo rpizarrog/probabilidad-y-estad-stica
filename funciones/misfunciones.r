@@ -70,3 +70,17 @@ f.moneda.dado <- function(S.espacio.muestral) {
   punto.muestral 
 }
 
+f.contar.dados <- function(S.espacio.muestral,inicial, final) {
+  for (i in 1:length(S.espacio.muestral)) {
+    sumas[i] <- as.numeric(substr(S.espacio.muestral[i],1,1)) + 
+      as.numeric(substr(S.espacio.muestral[i],2,2)) 
+  }
+  sumas <- sumas[order(sumas)]
+  print(sumas)
+  length(which(sumas >= inicial & sumas <=final))
+  
+}
+
+
+
+
