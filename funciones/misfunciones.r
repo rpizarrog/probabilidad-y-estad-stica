@@ -1,31 +1,13 @@
-# Crear Funciones en R
-
-# Las funciones son bloques de código que tienen un identificador
-# es decir se llaman de alguna manera
-# Pueden recibir o no parámetros entre paréntesis con las cuales se hace operaciones
-# dentro de la función se hacen operaciones diversas...
-# Las funciones se utilizan para optimizar programas
-# para reutilizar una y otra vez
-# Dentro de los {} es el bloque de código de una función
-# Las funciones son sinónimos de métodos
-#nombre <- function() {
-#  
-#}
-
-funcionhola <- function() {
-  print("Hola mundo de R desde la Función")
+fhola <- function () {
+  print("Hola mundo desde la función")
 }
 
-funcionholanom <- function(nombre) {
-  paste("Hola", nombre, "te saludamos desde la Función")
-}
+fsumar <- function(a, b) {
+  suma <- a + b
+  suma
+} 
 
-sumar <- function(x, y) {
-  suma <- x + y 
-  suma # Se devuelve el valor de la suma
-}
-
-foperaciones <- function (x,y,tipo) {
+foperaciones <- function(x,y,tipo=1) {
   if (tipo == 1) {
     res <- x + y
   }
@@ -41,16 +23,50 @@ foperaciones <- function (x,y,tipo) {
   if (tipo == 5) {
     res <- x ^ y
   }
-  res # Devolver 
+  res
+  
 }
 
-# Esta función determina el CV de un vector o un conjunto de datos de una columna
-fcoefvar <- function (datos) {
-      CV <- sd(datos) / mean(datos) * 100
-      CV
+
+
+fordenar <- function(datos, columna) {
+  # Esta función recibe un dataframe y el número de la columna
+  #y ordena todo el df
+  df.orden <- datos[order(datos[columna]),]
+  df.orden
+}
+ffrecuencias <- function(vector) {
+  frec <- table(vector)
+  columna <- names(frec)
+  frecuencia <- as.numeric(frec)
+  frecuencia
 }
 
-edades <- c(23,24,25,26,27,22)
-nombres <- c("Juan", "Pedro", "Luis", "José", "Mary", "Laura")
-datos.personas <- data.frame(nombres, edades)
+
+f.lanzar.moneda <- function(S.espacio.muestral = c("H", "T")) {
+  punto.muestral <- sample(S.espacio.muestral, 1) 
+  punto.muestral
+}
+
+f.lanzar.dado <- function(S.espacio.muestral=c(1,2,3,4,5,6)) {
+  punto.muestral <- as.character(sample(S.espacio.muestral, 1))
+  punto.muestral
+}
+
+# La función f.moneda.dado regresa un punto muestral 
+# en caso de que el primer resultado sea 'H',
+# se lanza nuevamente la moneda, 
+# Por el contrario, en caso de que el primer resultado 
+# sea una 'T' se lanza el dado 
+# En ambos casos se determina su resultado
+
+f.moneda.dado <- function(S.espacio.muestral) {
+  punto.muestral.1 <- f.lanzar.moneda()
+  if (punto.muestral.1 == "H") {
+    punto.muestral <- sample(S.espacio.muestral[1:2], 1)
+  } else {
+    punto.muestral <- sample(S.espacio.muestral[3:length(S.espacio.muestral)], 1)
+  }
+  punto.muestral 
+}
 
