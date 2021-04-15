@@ -92,16 +92,33 @@ f.sumar.dados <- function(S.espacio.muestral,inicial, final) {
   
 }
 
-f.sumar.fichas.domino <- function(S.espacio.muestral,inicial, final) {
+f.fichas.domino <- function() {
+  fichas_cero <- c("00", "01", "02", "03", "04", "05", "06")
+  fichas_uno <- c("11","12","13","14","15","16")
+  fichas_dos <- c("22","23","24","25","26")
+  fichas_tres <- c("33", "34", "35", "36")
+  fichas_cuatro <- c("44","45","46")
+  fichas_cinco <- c("55","56")
+  fichas_seis <- c("66")
+  S.domino <- c(fichas_cero, fichas_uno, fichas_dos, fichas_tres, 
+                                 fichas_cuatro, fichas_cinco, fichas_seis)
+  S.domino
+}
+
+f.distribucion.fichas.domino <- function(S.espacio.muestral,inicial, final) {
   sumas<- NULL
   for (i in 1:length(S.espacio.muestral)) {
     sumas[i] <- as.numeric(substr(S.espacio.muestral[i],1,1)) + as.numeric(substr(S.espacio.muestral[i],2,2)) 
   }
   sumas <- sumas[order(sumas)]
-  print(sumas)
-  which(sumas >= inicial & sumas <=final)
-  
+  # print(sumas)
+  tabla <- transform(table(sumas))
+  tabla <- cbind(tabla, prob = tabla$Freq / length(S.espacio.muestral))
+  tabla <- cbind(tabla, acum = cumsum(tabla$prob))
+  tabla
 }
+
+
 
 
 
