@@ -92,6 +92,17 @@ f.sumar.dados <- function(S.espacio.muestral,inicial, final) {
   
 }
 
+f.sumar.fichas.domino <- function(S.espacio.muestral,inicial, final) {
+  sumas<- NULL
+  for (i in 1:length(S.espacio.muestral)) {
+    sumas[i] <- as.numeric(substr(S.espacio.muestral[i],1,1)) + as.numeric(substr(S.espacio.muestral[i],2,2)) 
+  }
+  sumas <- sumas[order(sumas)]
+  print(sumas)
+  which(sumas >= inicial & sumas <=final)
+  
+}
+
 
 
 
