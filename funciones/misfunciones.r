@@ -119,6 +119,31 @@ f.distribucion.fichas.domino <- function(S.espacio.muestral,inicial, final) {
   tabla
 }
 
+plotunif <- function(x, min = 0, max = 1, lwd = 1, col = 1, ...) {
+
+    # Rejilla de valores del eje X
+    if (missing(x)) {
+        x <- seq(min - 0.5, max + 0.5, 0.01)
+    }
+
+    if(max < min) {
+        stop("'min' must be lower than 'max'")
+    }
+   
+    plot(x, dunif(x, min = min, max = max),
+         xlim = c(min - 0.25, max + 0.25), type = "l",
+         lty = 0, ylab = "f(x)", ...) 
+    segments(min, 1/(max - min), max, 1/(max - min), col = col, lwd = lwd)
+    segments(min - 2, 0, min, 0, lwd = lwd, col = col)
+    segments(max, 0, max + 2, 0, lwd = lwd, col = col)
+    points(min, 1/(max - min), pch = 19, col = col)
+    points(max, 1/(max - min), pch = 19, col = col)
+    segments(min, 0, min, 1/(max - min), lty = 2, col = col, lwd = lwd)
+    segments(max, 0, max, 1/(max - min), lty = 2, col = col, lwd = lwd)
+    points(0, min, pch = 21, col = col, bg = "white")
+    points(max, min, pch = 21, col = col, bg = "white")
+}
+
 
 
 
