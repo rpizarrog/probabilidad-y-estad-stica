@@ -18,7 +18,7 @@ f.prob.binom <- function (x,n,exito) {
 
 # Función de distribución de Poisson conforme a la Fórmula
 f.prob.poisson <- function (media, x) {
-  e <- 2.71828
+  e <- exp(1)
   prob <- media^x * e^(-media) / factorial(x)
   prob
 }
