@@ -1,5 +1,3 @@
-
-
 # Estructuras de datos en R
 
 # Vectores
@@ -30,9 +28,11 @@ nombres[1:5]
 
 # No mostrar algunos valores
 edades
-edades[-4]
+edades[4] 
+edades[-4] #excepto el de la posición 4
 
 nombres
+nombres[4]
 nombres[-4]
 
 # Usando print()
@@ -52,20 +52,24 @@ edades
 edades[posiciones.pares]
 
 
-# Data Frames o conjuntos de datos renglones columnas
+# Data Frames o conjuntos de datos renglones y columnas
 # Data Frame es un conjunto de vectores
+# data.frame() sirve para construir un data.frame
 datos <- data.frame(nombres, generos, edades)
 
 # Muestra los datos en consola
 datos
 
 # Muestra los datos tabular
+# View() muestra los datos de manera tabular
 View(datos)
 
 # Acceder a valores de un data frame
 
 # datos[renglon(es),columna(as)]
 
+
+datos[7,1]  # RUBEN
 datos[1,c(1,2,3)]
 
 datos[1:5, 1:2]
@@ -81,6 +85,17 @@ datos$generos
 # Accediento a valores específicos
 datos$nombres[1:5]
 
-datos$nombres[pares] # 2, 4, 6, 8, 10
+datos$nombres[posiciones.pares] # 2, 4, 6, 8, 10
 
 
+# Almacenar el resultado en otra variable
+nombres.pos.pares <- datos$nombres[posiciones.pares] # 2, 4, 6, 8, 10
+nombres.pos.pares
+
+
+# Los pares de los datos
+datos.pares <- datos[posiciones.pares,c(1:3)]
+
+datos.pares <- datos[posiciones.pares, ] # todas las columnas
+
+datos.pares
