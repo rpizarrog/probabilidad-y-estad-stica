@@ -1,0 +1,57 @@
+---
+title: "prueba"
+author: "Rubén Pizarro Gurrola"
+date: "14/2/2022"
+output: html_document
+---
+
+# Objetivo
+
+Objetivo prueba
+
+# Descripción
+
+Descripción del ejercicio o caso
+
+# Marco teórico
+
+Son conceptos que ya van a estar en caso
+
+# Desarrollo
+
+## Cargar librerías
+
+```{r}
+library(readr)
+
+```
+
+## Cargar datos
+
+```{r}
+datos <- read.csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/datos/EncuestaClimaCulturaOrganizacional_2010-2017.csv")
+
+```
+
+## Explorar datos
+
+```{r}
+str(datos)
+
+```
+
+# Interpretación
+
+Serán una narrativa personal acerca del caso 80-100 palabras
+
+¿De que se trata el caso?
+
+¿De que se tratan los datos?
+
+¿Que téncicas estadística o probabilística se usa?
+
+¿Qué resultados se obtiene?
+
+¿Comentarios finales?
+
+¿

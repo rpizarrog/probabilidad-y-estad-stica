@@ -1,0 +1,46 @@
+---
+title: "probando"
+author: "Rubén Pizarro Gurrola"
+date: "14/2/2022"
+output: html_document
+---
+
+# Objetivo
+
+Es un documento probando
+
+# Descripcion
+
+Es una descripción del documento probando
+
+# Fundamento teórico
+
+Esto van a ser conceptos que ya estarán proporcionados
+
+# Desarrollo
+
+## Cargar librerías
+
+Cargar librerías necesarias
+```{r}
+library(readr)
+```
+
+
+## Cargar datos
+```{r}
+datos.laboral <- read.csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/datos/EncuestaClimaCulturaOrganizacional_2010-2017.csv")
+
+```
+
+## Explorar datos
+
+```{r}
+str(datos.laboral)
+```
+
+## Variable(s) de interés
+
+La variable que interesa estudiar es INDICE.DE.SATISFACCIÓN.LABORAL
+
+
