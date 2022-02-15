@@ -45,3 +45,10 @@ media.m
 # Se llaman parámetros a los valores que se determinan a partir de una población
 
 
+
+# Estructura y Resumen de los datos
+str(poblacion)
+str(muestra)
+
+summary(poblacion)
+summary(muestra)
