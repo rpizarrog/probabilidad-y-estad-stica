@@ -1,0 +1,127 @@
+---
+title: "Caso 1. Población y muestra"
+author: "Rubén Pizarro Gurrola"
+date: "15/2/2022"
+output: html_document
+---
+
+# Objetivo
+
+Simular una población y muestra y determinar la media poblacional y la media muestral.
+
+# Descripción
+
+-   Generar una población de 1000 números con valores entre 250 y 600
+
+-   Determinar una muestra del 10% de la población de dichos números
+
+-   Identificar la estructura de los datos
+
+-   Determinar el parámetro la media de la población
+
+-   Determinar el estadístico de la media de la muestra
+
+-   Mostrar el resumen de los daos de población y muestra
+
+-   Comparar valores de medias del parámetro poblacional contra el estadístico de la muestra
+
+-   Interpretar el caso
+
+# Marco teórico
+
+Pendiente
+
+# Desarrollo
+
+## Cargar librerías
+
+No hay
+
+## Crear datos
+
+### Sembrar semilla
+
+```{r}
+set.seed(022022)  # Genera los mismos números al run de nuevo
+
+```
+
+### Crear población
+
+```{r}
+poblacion <- sample(x = 250:600, 
+                    size = 1000, 
+                    replace = TRUE)   # Sacar una muestra
+poblacion
+
+```
+
+### Determinar N
+
+```{r}
+N <- length(poblacion)
+N
+
+```
+
+### Crear muestra
+
+```{r}
+n <- 100 # 1000 * 0.10 es el 10%
+muestra <- sample(x = poblacion, size = n, replace = TRUE)
+muestra
+
+```
+
+## Medias aritméticas de población y muestra
+
+### Determinar media población
+
+```{r}
+media.p <- mean(poblacion)
+media.p
+
+```
+
+### Determinar media muestral
+
+```{r}
+media.m <- mean(muestra)
+media.m
+
+
+```
+
+## Explorando los datos
+
+### Resumen de los datos
+
+```{r}
+summary(poblacion)
+summary(muestra)
+
+```
+
+### Estructura de los datos
+
+```{r}
+str(poblacion)
+str(muestra)
+
+```
+
+# Interpretación
+
+de 120 a 150 palabras interpretar el caso
+
+¿Cuántos datos tiene la población y la muestra respectivamente?, ¿Qué porcentaje de la muestra es de la población?
+
+¿Cuál es el el valor de la media poblacional y la media muestral?
+
+¿Que relación tiene la media poblacional y la media muestral?
+
+¿Cómo se obtiene la media ?
+
+¿Cómo se describen los datos? *summary()*
+
+¿Como se obtiene la estructura de los datos? *str()*
