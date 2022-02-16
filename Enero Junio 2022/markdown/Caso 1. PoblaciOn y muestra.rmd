@@ -8,6 +8,7 @@ output:
     toc: true
     toc_float: true
     toc_depth: 6
+    number_sections: yes    
 ---
 
 # Objetivo
