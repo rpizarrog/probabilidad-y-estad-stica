@@ -8,7 +8,7 @@ output:
     toc: true
     toc_float: true
     toc_depth: 6
-    number_sections: yes    
+    number_sections: yes
 ---
 
 # Objetivo
@@ -39,8 +39,7 @@ Simular datos de una población y de una muestra describiendo la media poblacion
 
 ## Población y muestra
 
-La información que se utiliza para aplicar técnicas estadísticas se colecta en forma de muestras o conjuntos
-de observaciones. Las muestras se reúnen a partir de poblaciones, que son conjuntos de todos los individuos o elementos individuales de un tipo específico.
+La información que se utiliza para aplicar técnicas estadísticas se colecta en forma de muestras o conjuntos de observaciones. Las muestras se reúnen a partir de poblaciones, que son conjuntos de todos los individuos o elementos individuales de un tipo específico.
 
 En el lenguaje de la estadística, uno de los conceptos más elementales es el muestreo. En casi todos los problemas de estadística, un número especificado de mediciones o datos, es decir, una muestra, se toma de un cuerpo de mediciones más grande llamado población.
 
@@ -153,8 +152,9 @@ Se muestra un diagrama de dispersión con librería *ggplot2* y la función *ggp
 
 ```{r}
 ggplot()+
-  geom_point(aes(x = 1:N, y = poblacion), col='blue') + 
-  geom_hline(yintercept = media.p, col='red')
+  geom_point(aes(x = 1:N, y = poblacion), col= 'blue') + 
+  geom_hline(yintercept = media.p, col='red') +
+  ggtitle(label = "Población", subtitle = paste("Media poblacional = ", media.p))
 
 ```
 
