@@ -30,7 +30,7 @@ Simular datos de una población y de una muestra describiendo la media poblacion
 
 -   Comparar valores de medias del parámetro poblacional contra el estadístico de la muestra.
 
--   Se visualiza la dispersión de los datos con la función *ggplot()* de la librería "*ggplot2*".
+-   Se visualiza la dispersión de los datos con la función ggplot() de la librería "*ggplot2*".
 
 -   Interpretar el caso
 
@@ -43,7 +43,7 @@ de observaciones. Las muestras se reúnen a partir de poblaciones, que son conju
 
 En el lenguaje de la estadística, uno de los conceptos más elementales es el muestreo. En casi todos los problemas de estadística, un número especificado de mediciones o datos, es decir, una muestra, se toma de un cuerpo de mediciones más grande llamado población.
 
-![](images/poblacin%20y%20muestra.jpg "Población y muestra"){width="300"}
+![](images/poblacin%20y%20muestra-01.jpg "Población y muestra"){width="300"}
 
 ## Parámetro y estadístico
 
@@ -100,7 +100,7 @@ Se determina una muestra del 10% de la población de dichos números, 1000 \* 0.
 
 ```{r}
 n <- N * 0.10 
-muestra <- sample(x = poblacion, size = n, replace = TRUE)
+muestra <- sample(x = poblacion, size = n, replace = FALSE)
 muestra
 
 ```
@@ -159,7 +159,7 @@ ggplot()+
 
 # Interpretación
 
-Describir de 120 a 150 palabras interpretar el caso contestando las siguiente preguntas:
+Describir de 120 a 150 palabras interpretar el caso contestando las siguiente preguntas como sugerencia:
 
 ¿Cuántos datos tiene la población y la muestra respectivamente?, ¿Qué porcentaje de la muestra es de la población?
 
