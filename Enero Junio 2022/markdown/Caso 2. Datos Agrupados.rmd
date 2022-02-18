@@ -19,7 +19,7 @@ Agrupar datos y describir datos visualmente de variables de edades y generos usa
 
 Se cargan librerías adecuadas de caso
 
-Se construyen y simulan datos con dos variables de interé edades y géneros de personas.
+Se construyen y simulan datos con dos variables de interés edades y géneros de personas.
 
 Se determina las clase para construir tablas de frecuencias de los datos a partir de las variables de interés edades y géneros.
 
@@ -71,11 +71,11 @@ $$
 k=1+3.322\cdot log10(N)
 $$
 
-\* k es el número de clases.
+-   k es el número de clases.
 
-\* N es el número total de observaciones de la muestra.
+-   N es el número total de observaciones de la muestra.
 
-\* Log es el logaritmo común de base 10.
+-   Log es el logaritmo común de base 10.
 
 El rango de clase de acuerdo a Sturges está dada por: $$
 h=\frac{max(datos) - min(datos)}{k}
@@ -83,30 +83,114 @@ $$
 
 ### Regla de Scott
 
-Pendiente
+$$
+k=3.5\cdot S \cdot n^{-1/3}
+$$ \* S es la desviación estándar \* n el total de elementos
 
-### Regla de FD
+### Regla de Freedman & Diaconis (FD)
 
-Pendiente
+$$
+k = 2 \cdot IQ \cdot n ^ {-\frac{1}{3}}
+$$
+
+-   IQ es el el rango intercuartílico
+-   n es el total de los datos
 
 # Desarrollo
 
 ## Cargar librerías
 
+```{r message=FALSE, warning=FALSE}
+library(fdth)     # Tablas de frecuencia
+library(ggplot2)  # Visualizar datos
+```
+
 ## Crear datos
 
-## Crear tabla de frecuencias
+Sembrar semilla
+
+```{r}
+set.seed(2022)
+
+```
+
+```{r}
+n = 300
+edades <- sample(x = 18:28, size = n, replace = TRUE)
+generos <- sample(x = c('FEMENINO', 'MASCULINO'), size = n, replace = TRUE)
+datos <- data.frame(edades, generos)
+
+```
+
+## Mostrar los primeros diez
+
+La función *head()* y describe o muestra la cantidad de observaciones de los que se especifica, los primeros registros.
+
+```{r}
+head(datos, 10)
+```
+
+## Mostrar los últimos diez
+
+La función *tail()* muestra los últimos registros que se especifican.
+
+```{r}
+tail(datos, 10)
+```
+
+## Crear tabla de frecuencias y visualizar datos
 
 ### Variable edades
 
 Se utiliza la variable de interés edades del conjunto de datos
 
+```{r}
+tabla.frec.edades1 <- fdt(x = datos$edades, breaks = "Sturges")
+tabla.frec.edades1
+
+```
+
+```{r}
+tabla.frec.edades2 <- fdt(x = datos$edades, start = 18-1, end = 28+1, h = 1)
+tabla.frec.edades2
+```
+
 ### Histograma
+
+Un histograma es un representación gráfica organizada que describe frecuencias de clases de datos numéricos en forma de barra.
+
+```{r}
+ggplot(data = datos) +
+  geom_histogram(aes(x = edades), bins=30)
+```
+
+### Diagrama de tallo y hoja
+
+La función stem() representa un digrama de tallo y hoja. El diagrama de tallo y hoja identifica frecuencias de clases en formato textual.
+
+```{r}
+stem(datos$edades)
+
+```
 
 ### Variable generos
 
-Se utiliz ala variable de interés generos del conjunto de datos
+Se utiliza la variable de interés generos del conjunto de datos
 
-### Gráfica de barra
+```{r}
+tabla.frec.generos <- fdt_cat(datos$generos)
+tabla.frec.generos
+
+```
+
+### Diagrama o gráfica de barra
+
+```{r}
+ggplot(data = datos) +
+  geom_bar(aes(x = generos))
+
+```
 
 # Interpretación
+
+Pendiente
