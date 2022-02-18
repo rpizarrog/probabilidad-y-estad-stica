@@ -85,7 +85,8 @@ $$
 
 -   Log es el logaritmo común de base 10.
 
-El rango de clase de acuerdo a Sturges está dada por: $$
+El rango de clase de acuerdo a Sturges está dada por: 
+$$
 h=\frac{max(datos) - min(datos)}{k}
 $$
 
