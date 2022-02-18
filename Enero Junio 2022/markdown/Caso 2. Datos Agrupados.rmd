@@ -23,7 +23,7 @@ Se construyen y simulan datos con dos variables de interés edades y géneros de
 
 Se determina las clase para construir tablas de frecuencias de los datos a partir de las variables de interés edades y géneros.
 
-Se visualizan frecuencias con histograma y gráfico de tallo y hoja para datos numéricos (edades) y gráfico de barra para datos categórico o tipo caracter (géneros).
+Se visualizan frecuencias con histograma y gráfico de tallo y hoja para datos numéricos (edades) y gráfico de barra para datos categórico o tipo character (géneros).
 
 Se interpreta el caso
 
@@ -55,7 +55,7 @@ La relación de la frecuencia con respeto al número de elementos **n**. Es el c
 
 Es la representación porcentual de la frecuencia relativa con respecto al 100%, es decir multiplicar la frecuencia relativa por 100. La suma de la frecuencia porcentual (%) debe ser el 100%.
 
-## Frecuecia acumulada 
+## Frecuecia acumulada
 
 Define la sumatoria parcial y total de la frecuencia, puede ser la frecuencia absoluta, relativa o la porcentual.
 
@@ -159,7 +159,7 @@ tabla.frec.edades1
 ```
 
 ```{r}
-tabla.frec.edades2 <- fdt(x = datos$edades, start = 18-1, end = 28+1, h = 1)
+tabla.frec.edades2 <- fdt(x = datos$edades, start = min(datos$edades)-1, end = max(datos$edades)+1, h = 1)
 tabla.frec.edades2
 ```
 
@@ -169,7 +169,15 @@ Un histograma es un representación gráfica organizada que describe frecuencias
 
 ```{r}
 ggplot(data = datos) +
-  geom_histogram(aes(x = edades), bins=30)
+  geom_histogram(aes(x = edades), fill = "blue", binwidth = 0.5)
+```
+
+### Histograma usando hist()
+
+La función *hist()* no requiere librería y se puede utilizar directamente para representar un histograma y determina frecuencia. En este ejemplo con valores similares a la *tabla.frec.edades2.*
+
+```{r}
+hist(datos$edades, breaks = (min(edades)-1):(max(edades)+1), main = "Histograma edades de 18 a 28", xlab = "Edades", ylab = "Frecuencia")
 ```
 
 ### Diagrama de tallo y hoja
@@ -183,11 +191,14 @@ stem(datos$edades)
 
 ### Grafíca de frecuencia acumulada
 
+Acumulado con tabla2
+
 ```{r}
 # Pendiente
 ggplot() +
-  geom_line(aes(x = as.numeric(tabla.frec.edades1$table$`Class limits`), y = tabla.frec.edades1$table$cf))
-  
+  geom_line(aes(x = tabla.frec.edades2$table$`Class limits`, y = tabla.frec.edades2$table$cf))+
+  geom_point(aes(x = tabla.frec.edades2$table$`Class limits`, y = tabla.frec.edades2$table$cf)) 
+ 
 
 ```
 
