@@ -49,7 +49,15 @@ La frecuencia o la frecuencia absoluta es el número de veces que aparece un det
 
 ## Frecuencia relativa
 
-La relación de la frecuencia con respeto al número de elementos **n**. Es el cociente entre la frecuencia absoluta de un determinado valor y el número total de datos. La suma de la frecuencia relativa es
+La relación de la frecuencia con respeto al número de elementos **n**. Es el cociente entre la frecuencia absoluta de un determinado valor y el número total de datos. La suma de la frecuencia relativa es 1.
+
+## Frecuencia porcentual
+
+Es la representación porcentual de la frecuencia relativa con respecto al 100%, es decir multiplicar la frecuencia relativa por 100. La suma de la frecuencia porcentual (%) debe ser el 100%.
+
+## Frecuecia acumulada 
+
+Define la sumatoria parcial y total de la frecuencia, puede ser la frecuencia absoluta, relativa o la porcentual.
 
 ## Clases
 
@@ -170,6 +178,16 @@ La función stem() representa un digrama de tallo y hoja. El diagrama de tallo y
 
 ```{r}
 stem(datos$edades)
+
+```
+
+### Grafíca de frecuencia acumulada
+
+```{r}
+# Pendiente
+ggplot() +
+  geom_line(aes(x = as.numeric(tabla.frec.edades1$table$`Class limits`), y = tabla.frec.edades1$table$cf))
+  
 
 ```
 
