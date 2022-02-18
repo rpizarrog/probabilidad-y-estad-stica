@@ -1,0 +1,112 @@
+---
+title: "Caso 2. Datos Agrupados"
+author: "Rubén Pizarro Gurrola"
+date: "18/2/2022"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    number_sections: yes
+---
+
+# Objetivo
+
+Agrupar datos y describir datos visualmente de variables de edades y generos usando función *fdt* y *fdt_cat* de la librería *fdth*.
+
+# Descripción
+
+Se cargan librerías adecuadas de caso
+
+Se construyen y simulan datos con dos variables de interé edades y géneros de personas.
+
+Se determina las clase para construir tablas de frecuencias de los datos a partir de las variables de interés edades y géneros.
+
+Se visualizan frecuencias con histograma y gráfico de tallo y hoja para datos numéricos (edades) y gráfico de barra para datos categórico o tipo caracter (géneros).
+
+Se interpreta el caso
+
+# Fundamento teórico
+
+## Datos agrupados
+
+![](images/datos%20agrupados.jpg){width="400"}
+
+Los datos agrupados y no agrupados se les llaman en estadística a la manera de representar y analizar la información que has reunido o que dispones.
+
+La idea de datos agrupados tiene que ver con definir un conjunto de clases que identifican de manera organizada un conjunto de datos.
+
+Los datos no agrupados es el conjunto de observaciones que se presentan en su forma original tal y como fueron recolectados, para obtener información directamente de ellos.
+
+Los datos no agrupados es un conjunto de información si ningún orden que no nos establece relación clara con lo que se pretende desarrollar a lo largo de un problema, esto se soluciona mediante una tabulación que conduce a una tabla de frecuencias.
+
+Los valores agrupados son datos que se dan en intervalos de clase, en un rango, como cuando se resumen para una distribución de frecuencias.
+
+## Frecuencia
+
+La frecuencia o la frecuencia absoluta es el número de veces que aparece un determinado valor en un estudio estadístico El número de repeticiones de un valor dentro de una muestra o población. Se cuenta el número de veces que aparece. La suma de las frecuencias absolutas es igual al número total de datos o sea **n**.
+
+## Frecuencia relativa
+
+La relación de la frecuencia con respeto al número de elementos **n**. Es el cociente entre la frecuencia absoluta de un determinado valor y el número total de datos. La suma de la frecuencia relativa es
+
+## Clases
+
+Las clases definen los valores únicos del conjunto de datos o un intervalo que define y agrupa cierto conjunto de datos. Las clases clasifican y agrupan el total de los datos.
+
+## Puntos medios y límites
+
+Los límites de clase son los valores mínimos y máximos de una clase, los intervalos de clase es la diferencia entre límite superior y límite inferior y los pintos medios es el valor medio entre cada rango de cada clase.
+
+## Fórmulas para determinar clases
+
+### Regla de Sturges
+
+La regla de *Sturges* es un criterio utilizado para determinar el número de clases o intervalos que son necesarios para representar gráficamente un conjunto de datos estadísticos.
+
+La fórmula para calcular el número de clases de acuerdo a *Sturges* es:
+
+$$
+k=1+3.322\cdot log10(N)
+$$
+
+\* k es el número de clases.
+
+\* N es el número total de observaciones de la muestra.
+
+\* Log es el logaritmo común de base 10.
+
+El rango de clase de acuerdo a Sturges está dada por: $$
+h=\frac{max(datos) - min(datos)}{k}
+$$
+
+### Regla de Scott
+
+Pendiente
+
+### Regla de FD
+
+Pendiente
+
+# Desarrollo
+
+## Cargar librerías
+
+## Crear datos
+
+## Crear tabla de frecuencias
+
+### Variable edades
+
+Se utiliza la variable de interés edades del conjunto de datos
+
+### Histograma
+
+### Variable generos
+
+Se utiliz ala variable de interés generos del conjunto de datos
+
+### Gráfica de barra
+
+# Interpretación
