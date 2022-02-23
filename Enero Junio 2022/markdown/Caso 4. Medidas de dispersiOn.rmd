@@ -136,7 +136,6 @@ n <- 200
 
 edades1 <- sample(x = 18:60,size = n,replace = TRUE )
 
-edades2 <- round(rnorm(n = n, mean = 30, sd = 5))
 
 ```
 
