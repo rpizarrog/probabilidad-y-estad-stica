@@ -1,0 +1,71 @@
+---
+title: "prueba caso 4"
+author: "Rubén Pizarro Gurrola"
+date: "23/2/2022"
+output: html_document
+---
+
+# Objetivo
+
+Prueba caso 4. Medidas de Dispersión 
+
+# Desarrollo 
+
+## Cargar librerías
+```{r message=FALSE, warning=FALSE}
+library(ggplot2)
+library(fdth)
+```
+
+
+## Crear datos
+```{r}
+datos <- c(27, 30, 22, 23, 20, 21, 25, 
+           20, 18, 27, 19, 26, 30, 24)
+
+datos
+
+```
+
+## Determinar la varianza a detalle
+
+Determinar la varianza con una tabla con columnas 
+que determinan la suma
+
+```{r}
+tabla.varianza <- data.frame(xi = datos, 
+    media = mean(datos),
+    xi.menos.media = datos - mean(datos),
+    xi.menos.media.cuad = (datos - mean(datos))^2)
+
+tabla.varianza
+```
+
+Determinamos la suma
+```{r}
+suma <- sum(tabla.varianza$xi.menos.media.cuad)
+suma
+```
+
+
+Determinando varianza
+```{r}
+n <- length(datos)
+varianza <- suma / (n-1)
+varianza
+```
+
+## Determinando varianza con var()
+```{r}
+varianza <- var(datos)
+varianza
+```
+
+
+## Determinando la desviaición estándar
+```{r}
+desv.std <- sqrt(varianza)
+desv.std
+```
+
+
