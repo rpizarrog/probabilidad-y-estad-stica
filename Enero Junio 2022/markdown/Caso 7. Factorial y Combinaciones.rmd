@@ -1,0 +1,241 @@
+---
+title: "Caso 7. Factorial y Combinaciones"
+author: "Rubén Pizarro Gurrola"
+date: "01/03/2022"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+Construir combinaciones de conjuntos de datos de personas y de nombres de equipos deportivos.
+
+# Descripción
+
+A partir de conjuntos datos (valores individuales) realizar **combinaciones** para conocer el número de las mismas y el acomodo de los valores para su interpretación en términos de probabilidad.
+
+-   Cargar librerías
+
+-   Cargar los datos
+
+-   Identificar fórmula de factorial
+
+-   Identificar fórmula de combinaciones
+
+-   Determinar probabilidades a partir del espacio muestral de las combinaciones
+
+-   Encontrar probabilidad con base en frecuencia o contabilizar eventos específicos del espacio muestral
+
+-   Interpretar el caso
+
+## Cargar librerías
+
+Se van a utilizar funciones de la librería "*gtools*" por lo que se necesario instalarla previamente: *install.packages("gtools").*
+
+Esta librería permitirá hacer combinaciones y permutaciones.
+
+```{r warning=FALSE}
+# install.packages("gtools")
+library(gtools)
+```
+
+# Marco conceptual
+
+Para hacer combinaciones es necesario identificar la importancia del valor factorial de un número
+
+## Factorial
+
+El factorial de un número es el producto de $n$ por todos los naturales menores que el y se representa con el $!n$, entonces $n!=n\times(n-1)...\times 1$.
+
+La notación ! significa factorial; por ejemplo, 5 factorial es 5! = (5)(4)(3)(2)(1) = 120. [@anderson2008] .
+
+La función factorial es una fórmula matemática representada por el signo de exclamación $!$. En la fórmula Factorial se deben multiplicar todos los números enteros y positivos que hay entre el número que aparece en la fórmula y el número $1$. [@walpole2012].
+
+Ejemplo: hallar el factorial de 6 o se sea $6!=6\times5\times4\times3\times2\times1=720$
+
+## Combinaciones
+
+La regla de conteo de *combinaciones* permite contar el número de resultados experimentales cuando el experimento consiste en $r$ objetos de un conjunto (usualmente mayor) de $n$ objetos.
+
+El número de combinaciones distintas de $n$ objetos distintos que se pueden formar, tomando $r$ de ellos a un tiempo. [@mendenhall2010].
+
+### Fórmula de combinaciones
+
+$$
+S=Cn\binom{n}{r} = \frac{n!}{(r!\cdot(n-r)!)}\\S \text{ es el espacio muestral y la cantidad de combinaciones} \\Cn \text{ es el número de combinaciones posibles}\\ \binom{n}{r} \text {es símbolo de combinar n elementos en grupos de r}\\ n \text{ es el total de elementos}\\ r \text{ es de cuantos en cuantos elementos se hacen grupos}
+$$
+
+## Ejemplo 1. Nombres de personas
+
+Se trata de hacer combinaciones con los nombres de cuatro personas: "Oscar", "Paco", "Paty", "Laura" ... ... (otros nombres) en grupos de 2. Entonces $n=4$, porque hay cuatro nombres o elementos y $r=2$ porque se trata de agrupar de dos en dos.
+
+¿Cuántas combinaciones deberá haber?
+
+-   Oscar y Paco
+
+-   Oscar y Paty
+
+-   Oscar y Laura
+
+-   Paco y Paty
+
+-   ... ...
+
+-   Paty y Laura
+
+```{r}
+nombres <- c("Oscar", "Paco", "Paty", "Laura", "Rubén", "Luis", "Lucy", "Alberto", "Juan")
+n <- length(nombres)
+r <- 2 # ¿cómo agrupar?
+
+Cn <- factorial(n) / (factorial(r) * factorial(n-r))
+
+paste("Existen ", Cn , " posibles combinaciones del total de ", n , " nombres ", " en grupos de ", r ," en ", r)
+```
+
+## Ejemplo 2. Nombres de equipos de fútbol en México.
+
+Se trata de hacer combinaciones con los nombres de seis equipos de fútbol: "Atlas", "Guadalajara", "Monterrey", "América", "Cruz Azul", "Santos" en grupos de 3. Entonces $n=9$, porque hay seis equipos o elementos y $r=5$ porque se trata de agrupar de tres en tres.
+
+¿Cuántas combinaciones deberá haber?
+
+```{r}
+equipos <- c("Atlas", "Guadalajara", "Monterrey", "América", "Cruz Azul", "Santos", "Mazatlán", "Tijuana", "León")
+n <- length(equipos)
+r <- 5 # ¿cómo agrupar?
+
+Cn <- factorial(n) / (factorial(r) * factorial(n-r))
+
+paste("Existen ", Cn , " posibles combinaciones del total de ", n , " equipos ", " en grupos de ", r ," en ", r)
+```
+
+# Desarrollo
+
+Hacer combinaciones con nombres de personas
+
+![](images/diez%20personas-01.jpg){width="400"}
+
+Si bien la fórmula de combinaciones indica el número de combinaciones posibles de un conjunto de elementos pero lo que se desea conocer es ¿cómo se forman las combinaciones o cómo se verían los grupos formados?.
+
+Se utiliza la función *combination().*
+
+## Combinaciones de nombres
+
+Se utiliza la función *combinations()* y se requiere por lo menos tres atributos:
+
+-   La cantidad de elementos n
+
+-   Los grupos de cuanto en cuanto se forman r
+
+-   y los elementos, o sea en este caso el vector v
+
+### Nombres de personas
+
+Se muestran las posibles combinaciones de los nombres de personas. Las función *combinations()* ordena los valores alfabéticamente y luego construye las combinaciones.
+
+```{r}
+nombres
+
+Cn.nombres <- combinations(n = length(nombres), r = 2, v = nombres)
+Cn.nombres
+
+```
+
+### Nombres de equipos de fútbol
+
+Se muestran las posibles combinaciones de los nombres de equipos de fútbol.
+
+![](images/equipos%20futbol.jpg){width="400"}
+
+```{r}
+equipos
+Cn.equipos <- combinations(n = length(equipos), r = 5, v = equipos)
+Cn.equipos
+
+```
+
+¿Para qué sirve encontrar el número de combinaciones y la forma en que se agrupan?
+
+Eso sería el espacio muestral que ya construído éste, permite hacer interpretaciones en términos probabilísticos.
+
+# Interpretación
+
+El resultado de las combinaciones permite construir un espacio muestral que ofrece la oportunidad de conocer en términos de probabilidad, la cantidad de ocasiones y lo que representa un evento conforme a todo el espacio muestral, es decir frecuencia y frecuencia porcentual.
+
+## Preguntas sobre espacio muestral nombres
+
+¿En cuántas ocasiones aparece el nombre de Laura en combinaciones de dos en dos?. Aparece ocho ocasiones. ¿En cuántas ocasiones aparece el nombre de Oscar en las combinaciones de dos en dos?, Aparece ocho ocasiones.
+
+En las combinaciones de nombres de dos en dos, ¿en cuántas ocasiones existe Laura y Oscar juntos o contiguos y en ese orden?. Se utiliza la función *subset()* para hacer filtros y responder a las preguntas.
+
+La nominación *[ , ]* significa acceder al valor de un *data frame* por la primer columna y *[ ,2]* la segunda columna.
+
+```{r}
+filtro <- subset(Cn.nombres, Cn.nombres[,1] == "Laura" & Cn.nombres[,2] == "Oscar")
+filtro
+frecuencia <- nrow(filtro)
+
+paste("Existen ", frecuencia, " ocasiones en que se encuentran Laura y Oscar juntos en ese orden, de un total de ", nrow(Cn.nombres), " representan ", round(frecuencia / nrow(Cn.nombres) * 100, 2), "%")
+
+```
+
+En las combinaciones de nombres de dos en dos, ¿en cuántas ocasiones existe Oscar en la primer columna de todo el espacio muestral?
+
+```{r}
+filtro <- subset(Cn.nombres, Cn.nombres[,1] == "Oscar")
+filtro
+frecuencia <- nrow(filtro)
+
+paste("Existen ", frecuencia, " ocasiones en que se encuentran Oscar en la primer columna  , de un total de ", nrow(Cn.nombres), " representan ", round(frecuencia / nrow(Cn.nombres) * 100, 2), "%")
+```
+
+En cuántas ocasiones aparece en primera columna Oscar y Paco o Paty en segunda columna
+
+```{r}
+filtro <- subset(Cn.nombres, Cn.nombres[,1] == "Oscar" & (Cn.nombres[,2] == "Paco" | Cn.nombres[,2] == "Paty"))
+filtro
+frecuencia <- nrow(filtro)
+
+paste("Existen ", frecuencia, " ocasiones en que se encuentran aparece en primera columna Oscar y Paco o Paty en segunda columna, de un total de ", nrow(Cn.nombres), " representan ", round(frecuencia / nrow(Cn.nombres) * 100, 2), "%")
+```
+
+## Preguntas sobre espacio muestral equipos
+
+En cuántas ocasiones aparece de manera contigua y en este orden los equipos de América y Guadalajara en primera y segunda columna respectivamente.
+
+```{r}
+print("Pendiente")
+
+```
+
+En cuántas ocasiones aparece de manera contigua y en este orden los equipos de Atlas y Guadalajara en primera y segunda columna respectivamente.
+
+```{r}
+print("Pendiente")
+
+```
+
+¿En cuántas ocasiones aparece de manera contigua y en este orden los equipos de Guadalajara y Mazatlán en cualquier columna uno y dos, dos y tres, tres y cuatro o cuatro y cinco?
+
+```{r}
+filtro <- subset(Cn.equipos, (Cn.equipos[,1] == "Guadalajara" & Cn.equipos[,2] == "Mazatlán") 
+                 | (Cn.equipos[,2] == "Guadalajara" & Cn.equipos[,3] == "Mazatlán") 
+                 | 
+                   (Cn.equipos[,3] == "Guadalajara" & Cn.equipos[,4] == "Mazatlán") 
+                 | (Cn.equipos[,4] == "Guadalajara" & Cn.equipos[,5] == "Mazatlán"))
+filtro
+
+
+frecuencia <- nrow(filtro)
+
+paste("Existen ", frecuencia, " aparece de manera contigua y en este orden los equipos de Guadalajara y Mazatlán en cualquier columna , de un total de ", nrow(Cn.equipos), " representan ", round(frecuencia / nrow(Cn.equipos) * 100, 2), "%")
+
+```
+
+# Bibliografía
