@@ -280,12 +280,26 @@ summary(masculinos)
 
 # Interpretación
 
-Se simulan dos experimentos: el primero es tirar un dado y se identifica su espacio muestral y el segundo es los estudiantes que son espacio meustral de alumnos inscritos.
+Se simulan dos experimentos: el primero es tirar un dado y se identifica su espacio muestral y el segundo es los estudiantes que son espacio muestral de alumnos inscritos.
 
 Se construyeron espacios muestrales de dados siendo 6 los puntos muestrales del dado y 5000 de alumnos
 
 A partir de los espacios muestrales se construyeron eventos
 
-El espacio muestral del dado su estructura es un vector y el espacio muestral de alumnos la estructura es un data.frame
+El espacio muestral del dado su estructura es un vector y el espacio muestral de alumnos la estructura es un data.frame.
+
+**Modificar con una valor de 10000 alumnos** $n$ **del espacio muestral y semilla de 2022 conteste lo siguiente:**
+
+-   ¿Cuántos alumnos son del género Femenino y en qué porcentaje %?
+
+-   ¿Cuántos alumnos son del género Masculino y en qué porcentaje %?
+
+-   ¿Cuántos alumnos tiene promedio mayor que 92 y en qué porcentaje %?
+
+-   ¿Cuántos alumnos son de la carrera de SISTEMAS y en qué porcentaje?
+
+-   ¿Hay más alumnos de SISTEMAS o de CIVIL?
+
+-   ¿Cuántos alumnos están por encima del 180 cms?
 
 # Bibliografía
