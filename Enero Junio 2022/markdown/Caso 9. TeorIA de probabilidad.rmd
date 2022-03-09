@@ -387,7 +387,7 @@ Describa y justifique su respuesta sobre que es más probable de estas tres cues
 
 -   ¿Que la suma de los puntos de las siete fichas de dominó repartidas esté entre 30 y 50 puntos?
 
-    Conteste estas preguntas:
+Conteste estas preguntas extras:
 
 -   Que es mas probable que salga un 10 rojo en la ruleta o que la suma de dos cartas sea 10?
 
