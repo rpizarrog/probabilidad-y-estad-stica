@@ -719,7 +719,16 @@ Pendiente
 
 #### Cálculo de probabilidades
 
-Pendiente a su criterio ...
+¿Cuál es la probabilidad de que el dado caiga un DOS, es decir $(x=2)$?
+
+¿Cuál es la probabilidad de que el dado caiga en CUATRO, es decir
+$(x=4)$?
+
+¿Cuál es la probabilidad de que el dado caiga MENOR QUE CUATRO, es decir
+$(x < 4)$?
+
+¿Cuál es la probabilidad de que el dado caiga MAYOR QUE CUATRO, es decir
+$(x > 4)$?
 
 #### Valor esperado
 
@@ -745,7 +754,7 @@ Pendiente
 
 Pendiente
 
-###  Tomar vasos de agua ITD
+### Tomar vasos de agua ITD
 
 Se tiene un estudio de que en época de calor los estudiantes del
 Tecnológico consumen cierta cantidad de vasos de agua durante el dia.
