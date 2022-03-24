@@ -293,7 +293,7 @@ kable(tabla, caption = "Tabla de probabilidad con la columna para valor esperado
 #### Cálculo de probabilidades
 
 ¿Cuál es la probabilidad de que se vendan DOS automóviles, es decir
-$f(x=2)$ ó $P(x=2)$?, **20%**
+$f(x=2)$ ó $P(x=2)$?, **30%**
 
 ```{r}
 filter(tabla, x == 2 ) %>%
