@@ -9,6 +9,9 @@ output:
     toc_float: true
     toc_depth: 6
 bibliography: references.bib
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 # Objetivo
@@ -123,7 +126,6 @@ library(stringi)  # String
 library(gtools)
 library(dplyr)
 library(knitr)
-library(gtools)
 
 options(scipen = 999) # Notación normal
 
@@ -137,6 +139,8 @@ options(scipen = 999) # Notación normal
     variable aleatoria, la función de probabilidad y su función
     acumulada, la gráfica de barra de los valores de las variables
     aleatoria y la gráfica lineal de la función acumulada.
+-   Con la tabla de probabilidades en algunos ejercicios se determinan y
+    calculan probabilidades.
 -   Se determina el **valor esperado** de cada ejercicio
 -   Se determina la **varianza** y la **desviación estándar** de la
     distribución de las **variables discretas**.
@@ -286,6 +290,46 @@ kable(tabla, caption = "Tabla de probabilidad con la columna para valor esperado
 
 ```
 
+#### Cálculo de probabilidades
+
+¿Cuál es la probabilidad de que se vendan DOS automóviles, es decir
+$f(x=2)$ ó $P(x=2)$?, **20%**
+
+```{r}
+filter(tabla, x == 2 ) %>%
+  select(x, f.prob.x)
+
+```
+
+¿Cuál es la probabilidad de que se vendan MENOS DE DOS automóviles, es
+decir $f(x< 2)$ ó $P(x<2)$ ? **30%**
+
+$$
+\sum P(x=0) + P(x=1)
+$$
+
+```{r}
+filter(tabla, x < 2 ) %>%
+  select(x, f.prob.x, F.acum.x)
+
+```
+
+¿Cuál es la probabilidad de que se vendan MAS DE DOS automóviles, es
+decir $f(x> 2)$ ó $P(x>2)$ ? **40%**
+
+$$
+\sum P(x=3) + P(x=4) \text{ ó }
+$$
+
+$$
+1 - \sum P(x=0) + P(x=1) + P(x=2)
+$$
+
+```{r}
+filter(tabla, x > 2 ) %>%
+  select(x, f.prob.x, F.acum.x)
+```
+
 #### Valor esperado
 
 Se determina el valor esperado de acuerdo a la fórmula:
@@ -322,7 +366,7 @@ varianza <- sum((tabla$x - VE)^2 * tabla$f.prob.x)
 varianza
 ```
 
-#### Desviación estándard de una distribución discreta
+#### Desviación estándar de una distribución discreta
 
 -   La raiz cuadrada de la varianza $$\alpha = \sqrt{ \alpha^2 }$$
 
@@ -381,7 +425,7 @@ S.espacio.muestral
 
 ```
 
-De cuerdo al espacio muestral $n$ con diez elementos, ¿en cúantas
+De acuerdo al espacio muestral $n$ con diez elementos, ¿en cúantas
 ocasiones hay cero mujeres?, ¿en cuántas ocasiones hay una mujer? y en
 cuántas ocasiones hay dos mujeres?
 
@@ -406,6 +450,32 @@ tabla <- data.frame(x=discretas,
               x.f.prob.x = (discretas * probabilidades))
 kable(tabla, caption = "Tabla de probabilidad con la columna para valor esperado")
 
+```
+
+#### Cálculo de probabilidades
+
+¿Cuál es la probabilidad de que haya **UNA MUJER?,** es decir $P(X=1)$ ó
+$f(x=1)$ ? **60%**
+
+```{r}
+filter(tabla, x == 1 ) %>%
+  select(x, f.prob.x)
+```
+
+¿Cuál es la probabilidad de que haya **MENOS DE DOS MUJERES?,** es decir
+$P(x=0) + P(x=1)$ ó $f(x<2)$ ? **90%**
+
+```{r}
+filter(tabla, x < 2 ) %>%
+  select(x, f.prob.x, F.acum.x)
+```
+
+¿Cuál es la probabilidad de que haya **MAS DE 1 MUJER O SEA DOS?,** es
+decir $P(x=2)$ ó $f(x>1)$ ? **10%**
+
+```{r}
+filter(tabla, x > 1 ) %>%
+  select(x, f.prob.x, F.acum.x)
 ```
 
 #### Valor esperado
@@ -439,7 +509,7 @@ varianza
 
 ```
 
-#### Desviación estándard
+#### Desviación estándar
 
 $$\alpha = \sqrt{ \alpha^2 }$$
 
@@ -528,6 +598,36 @@ kable(tabla, caption = "Tabla de probabilidad con la columna para valor esperado
 
 ```
 
+#### Cálculo de probabilidades
+
+¿Cuál es la probabilidad de encontrar aletoriamente parejas con TRES
+HIJOS, es decir, $f(x=3)$ ó $P(x=3)$ **10%**
+
+```{r}
+filter(tabla, x == 3 ) %>%
+  select(x, f.prob.x, F.acum.x)
+```
+
+¿Cuál es la probabilidad de encontrar aleatoriamente parejas con MENOS
+DE TRES HIJOS, es decir, $f(x<3)$ ó $\sum f(x={0,1,2})$ ó
+$\sum P(x=0) + P(x=1) + P(x=2)$ ó $F \text{ acumulada }(x)$
+
+**78%**
+
+```{r}
+filter(tabla, x < 3 ) %>%
+  select(x, f.prob.x, F.acum.x)
+```
+
+¿Cuál es la probabilidad de encontrar aleatoriamente parejas con MAS DE
+TRES HIJOS, es decir, $f(x>3)$ ó $\sum f(x={4,5,6})$ ó
+$\sum P(x=4) + P(x=5) + P(x=6)$ ó $1 - F(x = 3)$; **12%**
+
+```{r}
+filter(tabla, x > 3 ) %>%
+  select(x, f.prob.x, F.acum.x)
+```
+
 #### Valor esperado
 
 Se determina el valor esperado de acuerdo a la fórmula:
@@ -559,7 +659,7 @@ varianza
 
 ```
 
-#### Desviación estándard
+#### Desviación estándar
 
 $$\alpha = \sqrt{ \alpha^2 }$$
 
@@ -596,6 +696,128 @@ ggplot(data = tabla, aes(x = x, y=F.acum.x)) +
   geom_point(colour="blue") + 
   geom_line(colour="red")
 ```
+
+### Lanzamiento de un dado
+
+Se lanza un dado perfecto 240 veces, se anota el resultado obtenido en
+la cara superior obteniendo los siguientes resultados:
+
++----------------+--------+--------+--------+--------+--------+--------+
+| Cara superior  | 1      | 2      | 3      | 4      | 5      | 6      |
++:==============:+:======:+:======:+:======:+:======:+:======:+:======:+
+| Número de      | 40     | 39     | 42     | 38     | 42     | 39     |
+| veces          |        |        |        |        |        |        |
++----------------+--------+--------+--------+--------+--------+--------+
+
+#### Inicializando variables
+
+Pendiente
+
+#### Tabla de probabilidad
+
+Pendiente
+
+#### Cálculo de probabilidades
+
+Pendiente a su criterio ...
+
+#### Valor esperado
+
+Pendiente
+
+#### Varianza
+
+Pendiente
+
+#### Desviación estándar
+
+Pendiente
+
+#### Tabla de sumatorias
+
+Pendiente
+
+#### Gráfica de barra
+
+Pendiente
+
+#### Gráfica acumulada
+
+Pendiente
+
+###  Tomar vasos de agua ITD
+
+Se tiene un estudio de que en época de calor los estudiantes del
+Tecnológico consumen cierta cantidad de vasos de agua durante el dia.
+
+Se estima que se toman al alrededor de 1 a 8 vasos diarios durante el
+día para aliviar la sed y hidratar el cuerpo.
+
+La siguiente tabla establece la cantidad de vasos que toman los alumnos
+durante el día siendo x la variable aleatoria discreta los vasos que se
+toman.
+
+De un estudio de 150 alumnos esas fueron las respuestas.
+
+| x = vasos de agua | casos |
+|-------------------|-------|
+| 0                 | 8     |
+| 1                 | 12    |
+| 2                 | 16    |
+| 3                 | 19    |
+| 4                 | 24    |
+| 5                 | 28    |
+| 6                 | 25    |
+| 7                 | 14    |
+| 8                 | 4     |
+
+#### Inicializando variables
+
+```{r}
+X <- c(0, 1, 2, 3, 4, 5, 6, 7, 8)
+casos <- c(8, 12,  16, 19, 24, 28, 25, 14, 4 )
+n <- sum(casos)
+probabilidades <- casos / n
+```
+
+#### Tabla de probabilidad
+
+Pendiente
+
+#### Cálculo de probabilidades
+
+¿Cuál es la probabilidad de que se elija aleatoriamente alumnos y
+mencionen que se toman CUATRO VASOS DE AGUA?
+
+¿Cuál es la probabilidad de que se elija aleatoriamente alumnos y
+mencionen que se toman MENOS DE CUATRO VASOS DE AGUA?
+
+¿Cuál es la probabilidad de que se elija aleatoriamente alumnos y
+mencionen que se toman MAS DE CUATRO VASOS DE AGUA?
+
+#### Valor esperado
+
+Pendiente
+
+#### Varianza
+
+Pendiente
+
+#### Desviación estándar
+
+Pendiente
+
+#### Tabla de sumatorias
+
+Pendiente
+
+#### Gráfica de barra
+
+Pendiente
+
+#### Gráfica acumulada
+
+Pendiente
 
 # Interpretación de los ejercicios del caso
 
@@ -648,13 +870,17 @@ Del ejercicio de parejas contestar las preguntas:
 
 2.  ¿Cuál es la probabilidad de que tenga más de tres hijos? $P(x>3)$
 
-3.  Si se elige un hijo al azar, ¿cuál es la probabilidad de que no tenga hermanos? $P(x=0)$
+3.  Si se elige un hijo al azar, ¿cuál es la probabilidad de que no
+    tenga hermanos? $P(x=0)$
 
-4.  Determina el número de hijos esperado al seleccionar una familia al azar. ¿Cuál es el valor esperado y qué significa?
+4.  Determina el número de hijos esperado al seleccionar una familia al
+    azar. ¿Cuál es el valor esperado y qué significa?
 
-5.  Calcula la varianza y la desviación de la distribución e interpretar su significado.
+5.  Calcula la varianza y la desviación de la distribución e interpretar
+    su significado.
+
+**Interpretar el ejercicio del dado**
+
+**Interpretar el ejercicio de los vasos de agua**
 
 # Referencias bibliográficas
-
-
-
