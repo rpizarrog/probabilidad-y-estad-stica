@@ -49,11 +49,169 @@ $f(x)$ que corresponde a un intervalo determinado proporciona la
 probabilidad de que la variable aleatoria tome uno de los valores de ese
 intervalo[@anderson_estadistica_2008].
 
-## Distribución de probabilidad uniforme
-
 Siempre que una probabilidad sea proporcional a la longitud del
 intervalo, la variable aleatoria estará distribuida uniformemente
 [@anderson_estadistica_2008].
+
+Como en cualquier punto determinado el área bajo la gráfica de $f(x)$ es
+cero, una de las consecuencias de la definición de la probabilidad de
+una variable aleatoria continua es que la probabilidad de cualquier
+valor determinado de la variable aleatoria es cero.
+
+Se toma el ejemplo de variable continua de estaturas de personas:
+
+![](images/estaturas%20personas.jpg){width="400"}
+
+La variable aleatoria estatura se considera continua por dos razones:
+tiene valores de números reales, es decir, una persona puede medir
+$\text {196.23 cm.}$ o una persona puede medir
+$\text{196.30 cm. o 151.32 cm}$.
+
+La otra razón del porqué considerarla como variable continua es porque
+es muy difícil encontrar a una persona que exactamente mida
+$\text{162.35 cm.}$ Sería muy difícil por eso se menciona que la
+$\text{P(x=1.62.35) es igual a 0}$.
+
+Sin embargo la idea de las variables aleatorias es encontrar
+probabilidades de un determinado rango por ejemplo la probabilidad de
+encontrar personas con una estatura de entre $\text{150 y 170}$; si de
+una muestra de $100$ personas hay $20$ personas que estén dentro de este
+rango entonces la probabilidad es del $20\%$.
+
+En la siguiente imagen, se presenta una distribución de una variable
+aleatoria continua, por ejemplo, el peso en kgs. de algún producto que
+se tiene que enviar por servicio de paquetería.
+
+![](images/area%20bajo%20la%20curva%20de%20variables%20continuas.png)
+
+El rango de toda la población sería entre 10 y 60 kgs aproximadamente.
+Se observa de manera muy general en la imagen que el valor de la media
+$μ$ del producto es entre $\text{36 o 37}$, tal vez
+$\text{36.5, o 36.7}$. El área total en color azul vale el $100\%$.
+
+La idea de la variable aleatoria continua es determinar cuál es la
+probabilidad de un intervalo, por ejemplo de entre $\text{30 y 35 kgs.}$
+o de cuál es la probabilidad de una variable continua que está entre
+$\text{34 y 38}$. Esto se observa en la siguiente figura.
+
+![](images/areas%20bajo%20la%20curva%20dos%20areas.jpg){width="400"}
+
+Sin embargo no todas las variables continuas tienen una representación
+como la curva en forma de campana, es posible encontrarlas como un
+rectángulo tal como se observa en la figura siguiente:  
+
+![](images/vaiables%20continuas%20con%20rectangulos.jpg){width="400"}
+
+Se puede deducir que lo que se busca en términos de probabilidad es
+cuánto vale el área en el intervalo $c1$ y $c2$ y también tal vez el
+área bajo la curva (rectángulo) $d1$ y $d2$, si toda el área vale el
+100%.
+
+## Ejemplo de variable continua en R
+
+### Tabla de distribución
+
+Ejemplo extraído de: [@quintela2019], se debe instalar la librería
+"*pander*". *install.packages("pander") y xtable
+install.packages("xtable").*
+
+```{r message=FALSE, warning=FALSE}
+# install.packages("pander")
+# install.packages("xtable")
+library(pander)
+library(xtable)
+
+numeros=c(2,3,4,4.5,4.5,5.6,5.7,5.8,6,6.1,6.5,7,7,
+    7,7.5,7.5,7.5,8.3,9,10.2,10.4,11,11.1,11.5,12,13)
+div<-table(cut(numeros,breaks=7))
+
+tabla1 <- data.frame(div)
+names(tabla1) <- c("Intervalos", "Frecuencias ($n_i$)" )
+x<- xtable(tabla1)
+pander(x)
+
+```
+
+Esta clasificación o tabla de distribución representa el número de datos
+que hay en cada intervalo. El indicar los intervalos de la forma $(a,b]$
+indica que el dato $a$ no se cuenta en este intervalo, y sí se cuenta el
+dato $b$.
+
+Como alternativa, se puede emplear otro paquete llamado *fdth* utilizado
+en casos anteriores para representar tablas de distribución, generando
+intervalos o clases similares.
+
+```{r message=FALSE, warning=FALSE}
+library(fdth)
+tabla2 <- fdt(numeros, k = 7)
+tabla2
+
+
+```
+
+### Histograma
+
+El gráfico para representar una variable continua con sus clases y sus
+frecuencia es el histograma.
+
+Enla instrucción *geom_histogram(aes(x = numeros), bins = 7)*, se
+representa el histograma en donde el argumento *bins* representa los
+cortes y *numeros* son los valores de la variable aleatoria continua
+inicialziada con anticipación.
+
+```{r}
+library(ggplot2)
+ggplot() +
+  geom_histogram(aes(x = numeros), bins = 7)
+
+```
+
+### La densidad
+
+Los conceptos de variable aleatoria continua y de función de densidad se
+definen a partir de la noción de probabilidad. Como una mera
+aproximación, se dice que la función de densidad sería el polígono de
+frecuencias que se construiría si se tuviese un conjunto infinito de
+datos.
+
+En este caso, el polígono tendría la forma de una función matemática
+continua y derivable.
+
+$$
+\hat{f}_{h}(x_0)=\dfrac{1}{nh}\sum_{i=1}^{n}K\left( \dfrac{x_0-x_{i}}{h}
+\right)
+$$
+
+$K$ es una función (llamada *núcleo* o **kernel**) continua y derivable,
+y $h$ es un parámetro llamado *ventana* (**bandwidth**), que ejerce un
+papel equivalente al del ancho de los intervalos en el histograma (o,
+equivalentemente, el número de intervalos). Se presenta el gráfico de
+densidad
+
+```{r}
+ggplot() +
+  geom_density(aes(x = numeros), col= 'blue') 
+  
+  
+
+```
+
+o bien convirtiendo las variable *numeros* a un *dataframe* y dibujando
+el histograma con la densidad al mismo tiempo y definiendo el ancho de
+clase a partir de *tabla2*\$breaks[3] que sería como restar
+$3.5729 - 1.98 = 1.5929$ el valor de la primera clase en la *tabla2,* o
+la resta de los intervalos de cualquier otra clase en la propia tabla.
+
+```{r}
+bw <- tabla2$breaks[3]
+datos <- data.frame(x = numeros) 
+ggplot(data = datos, aes(x = x)) +
+    geom_histogram(aes(y = ..density..), binwidth = bw, fill = "grey") +
+    geom_density(col='blue') 
+
+```
+
+## Distribución de probabilidad uniforme
 
 La **distribución uniforme continua** es una familia de distribuciones
 de probabilidad para variables aleatorias continuas, tales que para cada
@@ -919,8 +1077,7 @@ Se busca el valor de a tal que $P(X ≤ a) = 0.9$.
 $$
 {X ≤ a} = FX(a) = \frac{a − 20}{30 − 20}
 = \frac{a − 20}{10} = 0.9 \therefore a = 29
-$$
-Por tanto, debe salir de casa a las 7h 31m.
+$$ Por tanto, debe salir de casa a las 7h 31m.
 
 Pendiente en R
 
@@ -928,7 +1085,7 @@ Pendiente en R
 
 Pendiente
 
-#### Visualizar la probabilidad 
+#### Visualizar la probabilidad
 
 Pendiente
 
@@ -941,7 +1098,7 @@ de 25 minutos, y la desviación típica de 2.88 minutos.
 
 Pendiente
 
-#### Varianza 
+#### Varianza
 
 Pendiente
 
