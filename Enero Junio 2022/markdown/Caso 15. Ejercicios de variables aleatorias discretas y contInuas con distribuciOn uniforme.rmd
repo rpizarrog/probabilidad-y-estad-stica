@@ -296,7 +296,7 @@ Un autobús para por cierta parada cada 15 minutos. ¿Cuál es la probabilidad d
 
 #### ¿Cual es la densidad?
 
-Es la **altura**, es decir para cualquier valor desde 0 a 15 la densidad es la misma. \$0.0666 ... \$ ó $\frac{1}{15}$ con estos valores mínimos y máximos de $0, 15$ respectivamente.
+Es la **altura**, es decir para cualquier valor desde 0 a 15 la densidad es la misma. $0.0666 …$ ó $\frac{1}{15}$ con estos valores mínimos y máximos de $0, 15$ respectivamente.
 
 Entonces la densidad para una distribución uniforme puede obtenerse mediante función *dunif()* o mediante la fórmula $\frac{1}{b-a)}$ siempre y cuando se identifiquen y se tengan los valores del intervalo mínimo $a$ y máximo $b$.
 
@@ -323,7 +323,7 @@ base <- 10
 area <- base * altura
 area
 
-paste("La probabilidad de esperar mas de 5 minutos es de ", round(area * 100, 2))
+paste("La probabilidad de esperar mas de 5 minutos es de ", round(area * 100, 2), "%")
 
 
 ```
@@ -346,7 +346,7 @@ prob2
 prob3 <- punif(q = x, min = 0, max = 15, lower.tail = FALSE)
 prob3
 
-paste("La probabilidad de esperar mas de 5 minutos es de ", round(prob3 * 100, 2))
+paste("La probabilidad de esperar mas de 5 minutos es de ", round(prob3 * 100, 2), "%")
 
 
 ```
@@ -368,7 +368,7 @@ base <- 2
 area <- base * altura
 area
 
-paste("La probabilidad de esperar mas de 5 minutos es de ", round(area * 100, 2))
+paste("La probabilidad de esperar menos de 2 minutos es de ", round(area * 100, 2), "%")
 
 ```
 
@@ -390,7 +390,7 @@ prob2
 prob3 <- punif(q = x, min = 0, max = 15, lower.tail = FALSE)
 prob3
 
-paste("La probabilidad de esperar mas de 5 minutos es de ", round(prob1 * 100, 2))
+paste("La probabilidad de esperar menos de 2 minutosminutos es de ", round(prob1 * 100, 2), "%")
 
 
 ```
