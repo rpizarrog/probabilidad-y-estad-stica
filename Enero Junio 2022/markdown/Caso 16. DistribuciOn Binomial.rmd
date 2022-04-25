@@ -15,35 +15,52 @@ editor_options:
     wrap: 72
 ---
 
-
 # Objetivo
 
 Encontrar probabilidades de acuerdo a la distribución binomial.
 
 # Descripción
 
-Se identifican ejercicios casos de la literatura de **distribuciones de probabilidad binomial** y se realizan cálculos de probabilidades, se determinan el valor esperado y se calcula la varianza y la desviación.
+Se identifican ejercicios casos de la literatura de **distribuciones de
+probabilidad binomial** y se realizan cálculos de probabilidades, se
+determinan el valor esperado y se calcula la varianza y la desviación.
 
-Los ejercicios que se presenta utilizan funciones relacionadas con la distribución binomial *dbinom() pbinom(), rbinom()* en algunos ejercicios del caso se utiliza la función *f.prob.binom()* previamente
-codificada y que encapsula la fórmula para determinar probabilidad binomiales.
+Los ejercicios que se presenta utilizan funciones relacionadas con la
+distribución binomial *dbinom() pbinom(), rbinom()* en algunos
+ejercicios del caso se utiliza la función *f.prob.binom()* previamente
+codificada y que encapsula la fórmula para determinar probabilidad
+binomiales.
 
 # Fundamento teórico
 
-El experimento de lanzar al aire una moneda es un ejemplo sencillo de una importante variable aleatoria **discreta** llamada variable aleatoria binomial. Muchos experimentos prácticos resultan en datos similares a que salgan cara o cruz al tirar la moneda [@mendenhall_introduccion_2006]
+El experimento de lanzar al aire una moneda es un ejemplo sencillo de
+una importante variable aleatoria **discreta** llamada variable
+aleatoria binomial. Muchos experimentos prácticos resultan en datos
+similares a que salgan cara o cruz al tirar la moneda
+[@mendenhall_introduccion_2006]
 
 Un experimento binomial es el que tiene estas cinco características:
 
 -   El experimento consiste en $n$ intentos idénticos.
 
--   Cada intento resulta en uno de dos resultados, el resultado uno se     llama éxito, 'S', y el otro se llama fracaso, 'F'.
+-   Cada intento resulta en uno de dos resultados, el resultado uno se
+    llama éxito, 'S', y el otro se llama fracaso, 'F'.
 
--   La probabilidad de éxito en un solo intento es igual a $p$ y es     igual de un intento a otro. La probabilidad de fracaso es igual a $q= (1 - p)$.
+-   La probabilidad de éxito en un solo intento es igual a $p$ y es
+    igual de un intento a otro. La probabilidad de fracaso es igual a
+    $q= (1 - p)$.
 
 -   Los intentos son independientes.
 
--   El interés es el valor de $x$, o sea, el número de éxitos observado durante los $n$ intentos, para $x = 0, 1, 2, …, n.$ [@mendenhall_introduccion_2006].
+-   El interés es el valor de $x$, o sea, el número de éxitos observado
+    durante los $n$ intentos, para $x = 0, 1, 2, …, n.$
+    [@mendenhall_introduccion_2006].
 
-Un experimiento de Bernoulli puede tener como resultado un éxito con probabilidad $p$ y un fracaso con probabilidad $q = 1 − p$. Entonces, la distribución de probabilidad de la variable aleatoria binomial $x$, el número de éxito $k$ en $n$ ensayos independientes [@walpole_probabilidad_2012]:
+Un experimiento de Bernoulli puede tener como resultado un éxito con
+probabilidad $p$ y un fracaso con probabilidad $q = 1 − p$. Entonces, la
+distribución de probabilidad de la variable aleatoria binomial $x$, el
+número de éxito $k$ en $n$ ensayos independientes
+[@walpole_probabilidad_2012]:
 
 Fórmula:
 
@@ -53,14 +70,28 @@ $n$ ensayos.$$\binom{n}{k} = \frac{n!}{k!\cdot(n-k)!}$$
 
 El valor esperado está dado por: $$\mu = n \cdot p$$
 
-La varianza y la desviación estándard se determinan mediante:
+La varianza y la desviación estándar se determinan mediante:
 $$\sigma^{2} = n \cdot p \cdot(1-p)$$ y $$\sigma = \sqrt{\sigma^{2}}$$
 
-En programación R, para calcular la función de probabilidad binomial para un conjunto de valores discretos, $x$, un número de ensayos $n$ y una probabilidad de éxito $p$ se puede hacer uso de la función
+En programación R, para calcular la función de probabilidad binomial
+para un conjunto de valores discretos, $x$, un número de ensayos $n$ y
+una probabilidad de éxito $p$ se puede hacer uso de la función
 *dbinom()*.
 
-De semejante forma, para calcular la probabilidad acumulada de una distribución binomial se puede utilizar la función *pbinom() o* para calcular la probabilidad de que una variable aleatoria $x$ que sigue una distribución binomial tome valores menores o iguales a $x$ puedes hacer
+De semejante forma, para calcular la probabilidad acumulada de una
+distribución binomial se puede utilizar la función *pbinom() o* para
+calcular la probabilidad de que una variable aleatoria $x$ que sigue una
+distribución binomial tome valores menores o iguales a $x$ puedes hacer
 uso de la función *pbinom()* [@rcoderbinom].
+
+En los siguientes ejercicios también se utilizan funciones de paqutes
+base de R para la comprensión de la distribución binomial.
+
+![](images/funciones%20binomial%20en%20R.jpg){width="400"}
+
+[@rcoder]
+
+[@statology2019]
 
 # Desarrollo
 
@@ -90,10 +121,11 @@ source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/m
 
 ```
 
-Se determina una semilla porque algunos ejercicios calculan valores aleatorios.
+Se determina una semilla porque algunos ejercicios calculan valores
+aleatorios.
 
 ```{r}
-set.seed(2021)
+set.seed(2022)
 
 ```
 
@@ -103,9 +135,12 @@ set.seed(2021)
 
 Tienda de ropa MartinClothingStore [@anderson_estadistica_2008]
 
-De acuerdo con la experiencia, el gerente de la tienda estima que la probabilidad de que un cliente realice una compra es 0.30 o 30%
+De acuerdo con la experiencia, el gerente de la tienda estima que la
+probabilidad de que un cliente realice una compra es 0.30 o 30%
 
--   Identificar las probabilidad para cuando se compre 0,1,2,3, determinar la tabla de probabilidad incluyendo probabilidad acumulada
+-   Identificar las probabilidad para cuando se compre 0,1,2,3,
+    determinar la tabla de probabilidad incluyendo probabilidad
+    acumulada
 
 -   Encontrar la probabilidad de que compren dos clientes
 
@@ -134,7 +169,8 @@ n <- 3
 exito <- 0.30
 ```
 
--   Determinar tabla de probabilidad usando la función creada y conforme a la fórmula
+-   Determinar tabla de probabilidad usando la función creada y conforme
+    a la fórmula
 
 ```{r}
 tabla1 <- data.frame(x=x, f.prob.x = f.prob.binom(x,n,exito), f.acum.x = cumsum(f.prob.binom(x,n,exito)))
@@ -143,7 +179,8 @@ tabla1
 
 ```
 
--   Determinar tabla de probabilidad usando función propia de los paquetes base de R *dbinom()*
+-   Determinar tabla de probabilidad usando función propia de los
+    paquetes base de R *dbinom()*
 
 ```{r}
 
@@ -240,7 +277,8 @@ pbinom(q = 2, size = 3, prob = exito)
 #### Probabilidad de que sean mayor que dos
 
 La expresión *lower.tail = FALSE como atributo de la función pbinom()*
-significa encontrar en la tabla de distribución la sumatoria de las probabilidades a partir de el valor de $x$, o lo que es lo mismo,
+significa encontrar en la tabla de distribución la sumatoria de las
+probabilidades a partir de el valor de $x$, o lo que es lo mismo,
 $1 - prob.acum(x)$, $1 - 0.97 = 0.27$.
 
 ```{r}
@@ -262,7 +300,8 @@ VE <- n * exito
 paste ("El valor esperado es: ", VE)
 ```
 
-El valor esperado $VE$ significa el valor medio o el valor promedio de todos valores de la distribución de probabilidad.
+El valor esperado $VE$ significa el valor medio o el valor promedio de
+todos valores de la distribución de probabilidad.
 
 #### Varianza y desviación estándar
 
@@ -292,7 +331,8 @@ Pendiente ...
 Un jugador encesta con probabilidad 0.55.
 [@noauthor_distribucion_nodate]:
 
--   Determinar las probabilidad de los tiros del 1 al 6 con la tabla de probabilidad
+-   Determinar las probabilidad de los tiros del 1 al 6 con la tabla de
+    probabilidad
 
 -   Determinar la probabilidad de encestar cuatro tiros $P(x=4)$
 
@@ -310,7 +350,8 @@ Un jugador encesta con probabilidad 0.55.
 
 #### Tabla de probabilidad (0-6)
 
-Se construye la tabla de probabilidades tal y como se construye usando el código de *tabla3*
+Se construye la tabla de probabilidades tal y como se construye usando
+el código de *tabla3*
 
 Se inicializan valores:
 
@@ -365,7 +406,8 @@ pbinom(q = 3, size = n, prob = exito)
 
 ```
 
-o utilizando el renglón de la tabla de distribución en la columna de probabilidad acumulada *f.acum.x*.
+o utilizando el renglón de la tabla de distribución en la columna de
+probabilidad acumulada *f.acum.x*.
 
 ```{r}
 valor.x <- 3
@@ -403,11 +445,14 @@ paste("La desviación std es: ", round(desviacion.std, 2))
 
 ```
 
-De el valor esperado `r VE` hay una desviación aproximada de `r desviacion.std` hacia arriba o hacia abajo.
+De el valor esperado `r VE` hay una desviación aproximada de
+`r desviacion.std` hacia arriba o hacia abajo.
 
 ### Recuperación de un paciente
 
-La probabilidad de que un paciente se recupere de una rara enfermedad sanguínea es $0.4$. Si se sabe que $15$ personas contraen tal enfermedad,
+La probabilidad de que un paciente se recupere de una rara enfermedad
+sanguínea es $0.4$. Si se sabe que $15$ personas contraen tal
+enfermedad,
 
 -   Determine tabla de probabilidad de 1 al 15
 
@@ -439,7 +484,9 @@ exito <- 0.40
 
 ```
 
-Se construye la tabla de probabilidades con las funciones  construidas que se encuentran en enlace citado al principi del documento y con la función *cumsum()* para el acumulado de la probabilidad.
+Se construye la tabla de probabilidades con las funciones construidas
+que se encuentran en enlace citado al principi del documento y con la
+función *cumsum()* para el acumulado de la probabilidad.
 
 ```{r}
 tabla <- data.frame(x=x, f.prob.x = f.prob.binom(x,n,exito), f.acum.x = cumsum(f.prob.binom(x,n,exito)))
@@ -448,7 +495,9 @@ tabla
 
 #### Gráfica de probabilidades
 
-La gráfica se presenta con la función *plot()* que requiere las coordenadas de x & y siendo estás las variables aleatorias discretas y las probabilidades respectivamente.
+La gráfica se presenta con la función *plot()* que requiere las
+coordenadas de x & y siendo estás las variables aleatorias discretas y
+las probabilidades respectivamente.
 
 ```{r}
 plot(x = tabla$x, y=tabla$f.prob.x, type = "h", xlab = paste(min(tabla$x), '-', max(tabla$x)), ylab= "f(x)")
@@ -458,7 +507,8 @@ plot(x = tabla$x, y=tabla$f.prob.x, type = "h", xlab = paste(min(tabla$x), '-', 
 
 Se requiere la suma de las probabilidades endonde $P(\leq 10)$ o bien
 $P(x=0) + P(x=1) + P(x=2) ... + P(x=10)$ o mediante la función acumulada
-de la probabilidad.$F(x=10)$. Como se necesita la probabilidad acumulada entonces se usa *pbinom()*.
+de la probabilidad.$F(x=10)$. Como se necesita la probabilidad acumulada
+entonces se usa *pbinom()*.
 
 ```{r}
 x = 10
@@ -491,7 +541,8 @@ sum(dbinom(x = 3:8, size = n, prob = exito))
 
 ```
 
-o sumando los renglones de las probabilidades de tres a ocho de la tabla de probabilidad.
+o sumando los renglones de las probabilidades de tres a ocho de la tabla
+de probabilidad.
 
 ```{r}
 sum(filter(tabla, x %in% 3:8) %>%
@@ -521,7 +572,8 @@ filter(tabla, x==5)
 
 #### Valor esperado
 
-Se determina el valor medio o el valor esperado de la tabla de distribución.
+Se determina el valor medio o el valor esperado de la tabla de
+distribución.
 
 ```{r}
 VE <- n * exito
@@ -548,14 +600,20 @@ desviacion.std <- sqrt(varianza)
 paste("La desviación std es: ", round(desviacion.std, 2))
 ```
 
-Siendo la desviación una medida de variabilidad significa que tanto estarían las probabilidades por encima o por debajo del valor esperado.
+Siendo la desviación una medida de variabilidad significa que tanto
+estarían las probabilidades por encima o por debajo del valor esperado.
 
 #### Probabilidades para un experimento de 100 personas
 
-Con la función de aleatoriedad *rbinom()* se calculan las probabilidades de una muestra de $100$, con ello las proporciones o frecuencias relativas siendo los elementos de la función $n$ la cantidad de experimentos que serían $100$, *size* el tamaño del estudio original es
+Con la función de aleatoriedad *rbinom()* se calculan las probabilidades
+de una muestra de $100$, con ello las proporciones o frecuencias
+relativas siendo los elementos de la función $n$ la cantidad de
+experimentos que serían $100$, *size* el tamaño del estudio original es
 decir $15$ y *prob* la probabilidad de éxito.
 
-La variable llamada *variables* contiene los valores aleatorios de la *muestra* y la *frecuencia* es la cantidad de ocasiones de cada variable aleatoria.
+La variable llamada *variables* contiene los valores aleatorios de la
+*muestra* y la *frecuencia* es la cantidad de ocasiones de cada variable
+aleatoria.
 
 ```{r}
 muestra <- 100
@@ -582,9 +640,11 @@ tablaexp
 
 #### Visualizando las probabilidades del experimento
 
-A partir de la nueva tabla del experimento se compara con la tabla original en dos gráficas
+A partir de la nueva tabla del experimento se compara con la tabla
+original en dos gráficas
 
-Con la función *par(mfrow=c(1,2))* se puede ver dos gráficas tipo *plot()* al mismo tiempo en el mismo renglón.
+Con la función *par(mfrow=c(1,2))* se puede ver dos gráficas tipo
+*plot()* al mismo tiempo en el mismo renglón.
 
 ```{r}
 par(mfrow=c(1,2))
@@ -596,11 +656,14 @@ plot(x = tablaexp$x, y=tablaexp$f.prob.x, type = "h", xlab = "X", ylab= "f(x)", 
 
 ```
 
-¿Cómo se comportan las probabilidades del estudio con 15 y del experimento o simulación con 100 pacientes?, muy similares las probabilidades.
+¿Cómo se comportan las probabilidades del estudio con 15 y del
+experimento o simulación con 100 pacientes?, muy similares las
+probabilidades.
 
 ### Aprobar un examen
 
-Un estudio refleja que al aplicar un examen de estadística la probabilidad de aprobar (éxito) es del $60%$. Se pide lo siguiente:
+Un estudio refleja que al aplicar un examen de estadística la
+probabilidad de aprobar (éxito) es del $60%$. Se pide lo siguiente:
 
 -   Encuentre la tabla de distribución binomial para 30 estudiantes que
     presentan el examen
@@ -648,7 +711,8 @@ plot(x=tabla$x, y=tabla$f.prob.x,
 
 #### Probabilidad de que aprueben 15 o menos alumnos
 
-Se calcula la probabilidad de $P(x=0) + P(x=1) + P(x=2) ... + P(15)$ o la probabilidad acumulada cuando $F(x=15)$
+Se calcula la probabilidad de $P(x=0) + P(x=1) + P(x=2) ... + P(15)$ o
+la probabilidad acumulada cuando $F(x=15)$
 
 ```{r}
 prob <- pbinom(q = 15, size = n, prob = exito)
@@ -714,8 +778,12 @@ que puede variar con respecto al valor medio $VE$ previamente calculado.
 
 ### Autobuses contaminantes
 
-Suponga que un grupo de agentes de tránsito sale a una vía principal para revisar el estado de los autobuses de transporte intermunicipal. De datos históricos se sabe que un 10% de los camiones generan una mayor cantidad de humo de la permitida. En cada jornada los agentes revisan
-siempre 18 unidades (autobuses), asuma que el estado de un autobus es independiente del estado de los otros buses. [@hernández2021].
+Suponga que un grupo de agentes de tránsito sale a una vía principal
+para revisar el estado de los autobuses de transporte intermunicipal. De
+datos históricos se sabe que un 10% de los camiones generan una mayor
+cantidad de humo de la permitida. En cada jornada los agentes revisan
+siempre 18 unidades (autobuses), asuma que el estado de un autobus es
+independiente del estado de los otros buses. [@hernández2021].
 
 -   Construir la tabla de distribución
 
@@ -782,7 +850,8 @@ paste ("La probabilidad de encontrar dos camiones contaminantes es de : ", prob)
 
 #### Probabilidad de menos de cuatro autobuses
 
-Se requiere encontrar la probabilidad de cuando la variables tenga valores entre cero y cuatro.
+Se requiere encontrar la probabilidad de cuando la variables tenga
+valores entre cero y cuatro.
 $P(x=0) + P(x=1) + P(x=2) + P(x=3) + P(x=4)$ o lo que es lo mismo
 $P(x\leq 4)$ o en términos de probabilidad acumulada $F(x=4)$.
 
@@ -796,8 +865,10 @@ paste ("La probabilidad de encontrar menos de cuatro camiones es de: ", prob)
 
 #### Probabilidad de MAS de tres autobuses
 
-Se requiere encontrar la probabilidad de cuando la variables tenga valores entre cuatro y dieciocho.
-$P(x=4) + P(x=5) + P(x=6) + P(x=7) ... + ...P(x=18)$ o lo que es lo mismo $P(x \geq 3)$ o en términos de probabilidad acumulada
+Se requiere encontrar la probabilidad de cuando la variables tenga
+valores entre cuatro y dieciocho.
+$P(x=4) + P(x=5) + P(x=6) + P(x=7) ... + ...P(x=18)$ o lo que es lo
+mismo $P(x \geq 3)$ o en términos de probabilidad acumulada
 $F(x=18) - F(x=4)$.
 
 ```{r}
@@ -876,7 +947,8 @@ data.frame(prob = prop.table(table(muestra)))
 
 ```
 
-Se observa que los mayores valores probabilísticos está entre 1 y 3, entonces la muestra se relaciona con los valores probabilísticos del
+Se observa que los mayores valores probabilísticos está entre 1 y 3,
+entonces la muestra se relaciona con los valores probabilísticos del
 origen de los datos.
 
 # Interpretación
@@ -884,4 +956,3 @@ origen de los datos.
 Pendiente
 
 # Referencias bibliográficas
-
