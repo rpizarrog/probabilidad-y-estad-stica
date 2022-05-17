@@ -1,0 +1,575 @@
+---
+title: "Caso 21 Distribución T Student. Intervalo de confianza"
+author: "Rubén Pizarro Gurrola"
+date: "17/05/2022"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 5
+    code_folding: hide
+    toc_float: yes
+    number_sections: yes
+bibliography: references.bib
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# Objetivo
+
+Utilizar funciones de una distribución *T Student* para calcular función
+de densidad, probabilidades e identificar valores de t e intervalo de
+confianza.
+
+# Descripción
+
+Antes de todo, se cargan las librerías.
+
+En el sustento teórico, se da a conocer un panorama de la importancia de
+la distribución *T Student* comparando la campana de gauss de una
+distribución normal estándar y distribuciones t; se identifica la
+fórmula de densidad *t* y se mencionan las funciones de paquete base de
+R: *dt(), pt(), qt y rt()* y la función **xpt()** y **visualize.t** de
+la librería **mosaic** y **visualize()**para graficar *T Student* y para
+el tratamiento de este tipo de distribuciones. [@tdistribution].
+
+De igual forma el caso ofrece visualización de *T Student* mediante
+gráficos programados usando funciones de la librería *ggplot2()*.
+
+En el desarrollo, se resuelven e interpretan algunos ejercicios con
+datos bajo la distribución *T Student,*, se identifican ntervalos de
+confianza con de una distribución *T Student*.
+
+# Fundamento teórico
+
+## Cargar librerías
+
+Se cargan librerías usadas a lo largo del caso.
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(mosaic)
+library(ggplot2)  # Para gráficos
+library(cowplot) #Imágenes en el mismo renglón
+library("visualize")
+
+options(scipen=999) # Notación normal
+
+```
+
+## Cargar funciones
+
+```{r message=FALSE, warning=FALSE}
+source ("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Enero%20Junio%202022/funciones/funciones.para.distribuciones.r")
+```
+
+## Fórmula para encontrar el valor de T Student
+
+Existe la fórmula para calcular el valor de **t** en la distribuciones
+*T Student.*. Se usa la siguiente fórmula para transformar
+distribuciones normales a **t**.
+
+$$
+t = \frac{(\bar{x}-\mu)}{s / \sqrt{n}} = \frac{\text{diferencia a probar}}{\text{ee =error estándar}}
+$$
+
+$$
+\bar{x} = \text{media muestral} \\
+\mu = \text{media poblacional} \\
+s = \text{desviación estándar de la muestra} \\
+n = \text{número de elementos de la muestra}
+$$
+
+Para muestras aleatorias de tamaño $n$ desde una población
+normal[@mendenhall2010].
+
+El numerador representa la diferencia a probar y el denominador la
+desviación estándar de la diferencia llamado también **Error Estándar**.
+
+En esta fórmula $t$ representa al valor estadístico que se estará
+buscando $\bar{x}$ es el promedio de la variable analizada de la
+muestra, y $\mu$ es el promedio poblacional de la variable a estudiar.
+
+En el denominador se tiene a $s$ como representativo de la desviación
+estándar de la muestra y $n$ el tamaño de ésta.
+
+La distribución **t** es más útil para tamaños muestrales pequeños,
+cuando la desviación estándar de la población no se conoce o ambos en
+comparación con la distribución normal estándar.
+
+## Características de T Student
+
+La *T Student* tiene estas características:
+
+-   Tiene forma de montículo o campana de gauss y es simétrica alrededor
+    de $t = 0$, igual que $z$ la normal estándar.
+
+-   Es más variable que $z$, con "colas más pesadas"; esto es, la curva
+    $t$ no aproxima al eje horizontal con la misma rapidez que $z$. Esto
+    es porque el estadístico $t$ abarca dos cantidades aleatorias,
+    $\bar{x}$ y $s$, en tanto que el estadístico $z$ tiene sólo la media
+    muestral, $\bar{x}$. Ver curvas de *T Student* y Normal Estándar
+    $z$.
+
+-   La forma de la distribución $t$ depende del tamaño muestral $n$. A
+    medida que $n$ aumenta, la variabilidad de $t$ disminuye porque la
+    estimación $s$ de $\sigma$ está basada en más y más información.
+
+-   Cuando $n$ sea infinitamente grande, las distribuciones $t$ y $z$
+    son idénticas. [@mendenhall2010a].
+
+## Funciones en R para *T Student*
+
+Al igual que otras distribuciones como la *binomial*, *Poisson*
+*uniforme, normal*, entre otras, se disponen de las funciones *dt(),
+pt(), qt() y rt()* para el tratamiento de distribuciones *T Student*.
+
+## Grados de libertad
+
+El número de grados de libertad es igual al tamaño de la muestra $n$
+(número de observaciones independientes) menos 1 [@estadística2016].
+
+$$
+gl = df = (n – 1) \\ \therefore \\ 
+df = \text{grados de libertad} \\
+n = \text{total de elementos de la muestra de t}
+$$
+
+El divisor $(n-1)$ en la fórmula para la varianza muestral
+$s^2 = \sum(\frac{x_i-\bar{x}}{n-1})$ se denomina número de grados de
+libertad **(df)** asociado con $s^2$ determina la forma de la
+distribución $t$. El origen del término grados de libertad es teórico y
+se refiere al número de desviaciones independientes elevadas al cuadrado
+en $s^2$ existentes para estimar $\sigma^2$.
+
+Estos grados de libertad pueden cambiar para diferentes aplicaciones y
+como especifican la distribución *t* correcta a usar, es necesario
+recordar que hay que calcular los grados de libertad correctos para cada
+aplicación. [@mendenhall2010a].
+
+Si la muestra tiene un valor de $t$ en el rango del nivel de confianza
+entonces se acepta la hipótesis de lo contrario de rechaza.
+
+### Ejemplo
+
+Calcular el valor de **t**.
+
+Se aplica una prueba de autoestima a **25 personas** quienes obtienen
+una calificación promedio de **62.1** con una desviación estándar de
+**5.83**. Se sabe que el valor correcto de la prueba debe ser mayor a
+**60**. Calcular el valor de *t*.
+
+$$
+n=25; \bar{x}=62.1; s=5.83; \mu=60
+$$
+
+```{r}
+n <- 25; media.m <- 62.1; desv.m <- 5.83; media.p <- 60
+t <- f.devolver.t(media.muestra = media.m, media.pob = media.p, desv.muestra = desv.m, n = n)
+t
+```
+
+Se tiene 1.8010 como valor de **t** pero ¿qué significa ese valor?.
+
+En la gráfica siguiente significa el punto que hace la diferencia entre
+el color morado y amarillo y se interpreta para comparar con un punto
+crítico y evaluar intervalos e hipótesis.
+
+```{r}
+xpt <- xpt(q = t , df = n-1, xlab = "t's")
+xpt
+
+```
+
+El valor de xpt= 0.957861 es el área bajo la curva a un valor de t de
+1.8010 o sea 95.78%
+
+## Usando pt() para área bajo la curva
+
+Representa el área bajo la curva desde su parte izquierda hasta el punto
+1.8010.
+
+```{r}
+pt(q = 1.8010 , df = 24)
+
+```
+
+## Obtener el valor de t.critico con 95% de confianza
+
+Se obtiene mediante función **qt()** de R el valor del punto crítico al
+95% de confianza. Puede ser para cualquier nivel de confianza 0.90,
+0.95, 0.99 o cualquier otro.
+
+Al igual que en distribución normal de z se obtiene $\alpha = 1 - 0.95$
+y el valor critico sería $\alpha/2$.
+
+```{r}
+t.critico <- abs(qt(p = (1 - 0.95) / 2, df = n-1))
+t.critico
+```
+
+Si el valor de **t** es mayor que el valor de **t.critico** entonces se
+interpreta que está dentro de un intervalo de confianza o región de
+aceptación en relación a la curva y se acepta una tentativa hipótesis de
+lo contrario cae en región de no aceptación y se rechaza. Se verán las
+pruebas de hipótesis en casos más adelante.
+
+## Gráfica con visualize
+
+Se utiliza función visualize de librería previamente instalada
+
+```{r}
+visualize.t(stat = c(-t.critico, t.critico), df = 24, section = "tails") +
+  abline(v = t, col = "red", lwd = 3, lty = 2) +
+  text(0, 0.2, expression(0.95), col = "black")
+
+```
+
+![](images/aceptacion%20rechazo%20hipotesis%20t%20student.png){width="400"}
+
+## Gráfica de campana normal *Stándar* y *T Student*
+
+Se presenta una muestra pequeña de 28 valores, se generan valores de una
+secuencia alrededor de cero, esto se hace porque la distribución *T
+Student,* los valores de la variable aleatoria $x$ se centran con media
+igual a cero y por supuesto desviación igual a $1$.
+
+Se construyen gráficas:
+
+-   g1 es una distribución normal estándar,
+
+-   g2 distribución *t student* con 27 grados de libertad,
+
+-   g3 *t student* con 5 grados de libertad y
+
+Se visualizan las tres gráficas con una forma de campana o gauss,
+simétricas, solo que la distribución $t$ se achata en relación a la
+distribución normal estándar $z$ y se observa diferencia de dispersión
+con los grados de libertad en las gráficas $t$.
+
+```{r}
+# Grafica Normal Z con media igual a 0 y desv igual a 1
+n <- 25
+
+x <- seq(from = -3, to = 3, length.out = n)
+
+media <- 0 #, round(mean(x),2)
+desv <- 1 #round(sd(x), 2)
+
+dens.z  <- dnorm(x = x, mean = media, sd = desv)
+
+tabla <- data.frame(x = x, y = dens.z)
+#tabla.normal
+
+g1 <- ggplot(data = tabla, aes(x = x, y = dens.z)) +
+  geom_point(colour = "red") +
+  geom_line(colour = 'blue') +
+  ggtitle("Normal Estándar(Z)", subtitle = paste("media = ", media, "sd=", desv)) +
+  labs(x = "Z's", y= "Densidad")
+
+
+# Distribución T Aproximada a Distribución t con 24 grados de libertad
+denst.24  <- dt(x = x, df = n - 1)
+
+# Se vuelve a generar la tabla
+tabla <- data.frame(x = x, y = denst.24)
+
+g2 <- ggplot(data = tabla, aes(x = x, y = denst.24)) +
+  geom_point(colour = "red") +
+  geom_line(colour = 'green') +
+  ggtitle("T Student", subtitle = paste(n-1, " grados de libertad")) +
+  labs(x = "t's", y= "Densidad")
+
+# Distribución T Aproximada a Distribución t con 5 grados de libertad
+
+denst.5  <- dt(x = x, df = 5)
+
+# Se vuelve a generar la tabla nuevamente
+tabla <- data.frame(x = x, y = denst.5)
+
+g3 <- ggplot(data = tabla, aes(x = x, y = denst.5)) +
+  geom_point(colour = "red") +
+  geom_line(colour = 'yellow') +
+  ggtitle("T Student", subtitle = paste(5, " grados de libertad")) +
+  labs(x = "t's", y= "Densidad")
+
+plot_grid(g1, g2, g3, nrow = 1, ncol = 3)
+
+```
+
+Construyendo una tabla con las tres distribuciones incluyendo los
+valores de $z's; t's$ y de las densidades juntas
+
+```{r}
+# Gráficas juntas con una misma tabla
+tabla <- data.frame(x, dens.z, denst.24, denst.5)
+
+g4 <- ggplot(data = tabla) 
+g4 <- g4 + geom_line(aes(x= x, y = dens.z), colour = "blue") 
+g4 <- g4 + geom_line(aes(x= x, y = denst.24), colour = "green") 
+g4 <- g4 + geom_line(aes(x= x, y = denst.5), colour = "yellow") 
+
+g4 <- g4 + ggtitle("Normal Stándar(Z) y T Student", subtitle = paste("media = 0, sd = 1; ", (n-1)," y 5", " grados de libertad") )
+g4 <- g4 + labs(x = "Z's y t's", y= "Densidad")
+
+g4
+
+
+```
+
+## Intervalo de confianza t student
+
+### Fórmula
+
+$$
+IC = \bar{x} \pm t \cdot \frac{S}{\sqrt{n}}
+$$
+
+Determinar el intervalo de confianza con el valor **real** de t. El
+valor al 95% de los datos al rededor de la media, el resto 5% se reparte
+a ambos lados de la curva.
+
+$$
+\alpha = (1 - 95\%) / 2 \\
+\alpha = (0.05) / 2 = 0.025
+$$
+
+```{r}
+paste("n=", n)
+confianza <- 0.95
+t.a <- qt(p = (1 - confianza) / 2, df = n-1) # dos colas
+t.a
+
+t.b <- qt(p = (1 - confianza) / 2, df = n-1, lower.tail = FALSE)
+t.b
+
+# Tomar cualquiera de las dos t t.a o t.b en su valor absoluto
+t <- abs(t.b)
+
+
+```
+
+```{r}
+visualize.t(stat = c(-t, t), df = n-1, section = "tails") +
+  text(0, 0.2, expression("95%"), col = "red") 
+```
+
+```{r}
+paste("Media muestra = ", media.m)
+paste("Desv. muestra", desv.m)
+
+print("Intervalo de confianza al 95%")
+paste("t.critico",t.critico)
+li <- media.m - t * (desv.m /sqrt(n) )
+ls <- media.m + t * (desv.m /sqrt(n) )
+
+print("intervalo")
+intervalo <- c(li, ls)
+intervalo
+
+```
+
+El intervalo de confianza `r intervalo` sirve para evaluar si la media
+de la población está en dicho intervalo de tal forma que se acepta o se
+rechaza una tentativa hipótesis en relación a la región o área de
+aceptación o si está en el intervalo de confianza.
+
+# Desarrollo
+
+Se presentan varios ejercicios relacionados con al distribución \*T
+Student.
+
+## Mall y clientes
+
+Un Gerente de mall desea estimar la cantidad media que gastan los
+clientes que visitan el centro comercial. Una muestra de 20 clientes
+revela las siguientes cantidades:
+$48.16, 42.22, 46.82, 51.45, 23.78, 41.86, 54.86, 37.92, 52.64, 48.59, 50.82, 46.94, 61.83, 61.69, 49.17, 61.46, 51.35, 52.68, 58.84, 43.88$
+
+¿Cuál es la mejor estimación de la media poblacional ?. Determine un
+intervalo de confianza de 95%.
+
+### Los datos
+
+```{r}
+cantidades <- c(48.16, 42.22, 46.82, 51.45, 23.78, 41.86, 54.86, 37.92, 52.64, 48.59, 50.82, 46.94, 61.83, 61.69, 49.17, 61.46, 51.35, 52.68, 58.84, 43.88)
+media.m <- round(mean(cantidades),4)
+desv.m <- round(sd(cantidades),)
+n <- length(cantidades)
+
+confianza <- 0.95
+
+```
+
+### Construir una tabla de datos
+
+```{r}
+tabla <- data.frame(variables = c("n", "Grados libertad", "Media muestra", "Desv.Std muestra", "Media Pob.", "Confianza"), datos = c(n, (n-1), media.m, desv.m, NA, confianza)) 
+tabla
+```
+
+### Valor de t real
+
+```{r}
+t <- qt(p = (1 - confianza) / 2, df = n-1) # dos colas
+t <- abs(t)
+t
+```
+
+### Intervalo de confianza
+
+```{r}
+li <- media.m - t * (desv.m /sqrt(n) )
+ls <- media.m + t * (desv.m /sqrt(n) )
+
+print("intervalo")
+intervalo <- c(li, ls)
+intervalo
+```
+
+### Evaluar el intervalo
+
+La mejor estimación de una media poblacional es que tenga un valor entre
+`r intervalo[1]` y `r intervalo[2]` con un 95% de confianza.
+
+### Visualizar gráfica Gauss
+
+```{r}
+visualize.t(stat = c(-t, t), df = n-1, section = "tails") +
+  text(0, 0.2, expression("95%"), col = "red")
+```
+
+## Fabricante de llantas
+
+Un fabricante de llantas desea investigar la durabilidad de sus
+productos. Una muestra de $10$ llantas para recorrer 50000 millas reveló
+una media muestral de $0.32$ pulgadas de cuerda restante con una
+desviación estándar de $0.09$ pulgadas. [@lind2015].
+
+Construya un intervalo de confianza de $95%$ para la media poblacional.
+
+Sería razonable que el fabricante concluyera que después de 50000 millas
+la cantidad media poblacional de cuerda restante es de $0.30$ pulgadas?
+
+$$
+n=10; \bar{x} = 0.32; S = 0.09; confianza = 95\%; \mu = 0.30
+$$
+
+### Los datos
+
+```{r}
+media.m <- 0.32
+desv.m <- 0.09
+n <- 10
+media.p = 0.30
+confianza = 0.95
+
+```
+
+### Construir una tabla de datos
+
+```{r}
+tabla <- data.frame(variables = c("n", "Grados libertad", "Media muestra", "Desv.Std muestra", "Media Pob.", "Confianza"), datos = c(n, (n-1), media.m, desv.m, media.p, confianza)) 
+tabla
+```
+
+### Valor de t real
+
+```{r}
+t <- qt(p = (1 - confianza) / 2, df = n-1) # dos colas
+t <- abs(t)
+t
+```
+
+### Intervalo de confianza
+
+```{r}
+li <- media.m - t * (desv.m /sqrt(n) )
+ls <- media.m + t * (desv.m /sqrt(n) )
+
+print("intervalo")
+intervalo <- c(li, ls)
+intervalo
+```
+
+### Evaluar el intervalo
+
+El intervalo de confianza con valores entre `r intervalo[1]` y
+`r intervalo[2]` con un 95% de confianza se interpreta que el fabricante
+a un 95% de confianza puede estar seguro de que la profundidad media de
+las cuerdas oscila entre `r intervalo[1]` y `r intervalo[2]`. Como el
+valor de la media es `r media.p` es posible a un 95% que la media de la
+población de `r media.p` esté dentro de la región de confianza.
+
+### Visualizar gráfica Gauss
+
+```{r}
+visualize.t(stat = c(-t, t), df = n-1, section = "tails") +
+  text(0, 0.2, expression("95%"), col = "red") 
+
+```
+
+## Vendedores
+
+Se ha obtenido una muestra de $15$ vendedores de una Editorial para
+estimar el valor medio de las ventas por trabajador en la Empresa. La
+media y la desviación de la muestra ( en miles de euros ) son $5$ y
+$1.464$, respectivamente.
+
+Se pide deducir el intervalo de confianza al 90%
+
+### Los datos
+
+```{r}
+media.m <- 5
+desv.m <- 1.464
+n <- 15
+
+confianza <- 0.90
+
+```
+
+### Construir una tabla de datos
+
+```{r}
+tabla <- data.frame(variables = c("n", "Grados libertad", "Media muestra", "Desv.Std muestra", "Media Pob.", "Confianza"), datos = c(n, (n-1), media.m, desv.m, NA, confianza)) 
+tabla
+```
+
+### Valor de t real
+
+```{r}
+t <- qt(p = (1 - confianza) / 2, df = n-1) # dos colas
+t <- abs(t)
+t
+```
+
+### Intervalo de confianza
+
+```{r}
+li <- media.m - t * (desv.m /sqrt(n) )
+ls <- media.m + t * (desv.m /sqrt(n) )
+
+print("intervalo")
+intervalo <- c(li, ls)
+intervalo
+```
+
+El intervalo de confianza con valores entre `r intervalo[1]` y
+`r intervalo[2]` con un 90% de confianza se interpreta que la media de
+la población debe estar en ese intervalo.
+
+### Visualizar gráfica Gauss
+
+```{r}
+
+visualize.t(stat = c(-t, t), df = n-1, section = "tails") +
+  text(0, 0.2, expression("90%"), col = "red") 
+
+```
+
+# Interpretación
+
+Pendiente
+
+# Bibliografía
