@@ -22,8 +22,8 @@ entre dos variables para su adecuada y correcta interpretración.
 
 # Descripción
 
-Se cargan o se construyen datos y se determinan covarizna, correlación y
-diagrama de dispersión
+Se cargan o se construyen datos y se determinan covarianza, correlación
+y diagrama de dispersión
 
 Antes se cargan las librerías a utilizar
 
@@ -42,12 +42,12 @@ library(PerformanceAnalytics) # Para coorelaciones gráficas
 ## Cargar funciones preparadas
 
 ```{r message=FALSE, warning=FALSE}
-source("https://raw.githubusercontent.com/rpizarrog/Probabilidad-y-EstadIstica-VIRTUAL-DISTANCIA/main/funciones/f.diagramas.graficos.r", encoding = "UTF-8")
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Enero%20Junio%202022/funciones/f.diagramas.graficos.r", encoding = "UTF-8")
 ```
 
 # Marco teórico
 
-Se necesitan datos para calcular la covariaza, la correlación y mostrar
+Se necesitan datos para calcular la covarianza, la correlación y mostrar
 el diagrama de dispersión.
 
 ## Datos
@@ -149,7 +149,7 @@ desviación estándar muestral de $x$ por la desviación estándar muestral
 de $y$.
 
 $$
-correlación = r = \frac{covarianza}{S_x \cdot S_y} = \frac{42.7618}{42.7618\cdot12.88964}=\frac{476.5714}{551.1843}=0.8646318
+correlación = r = \frac{covarianza}{S_x \cdot S_y} = \frac{476.5714}{42.7618\cdot12.88964}=\frac{476.5714}{551.1843}=0.8646318
 $$
 
 $$
@@ -214,12 +214,12 @@ lineal[@anderson_estadistica_2008].
 Se cargan datos de la dirección de internet [registro de Jugadores de
 FIFA](registro%20de%20Jugadores%20de%20FIFA)
 
-![](images/jugadores%20FIFA.jfif){width="400"}
+![](images/jugadores%20FIFA-02.jfif)
 
 ## Cargar datos
 
 ```{r}
-datos.bruto <- read.csv("https://raw.githubusercontent.com/rpizarrog/Trabajos-en-R-AD2021/main/datos/players_20.csv", stringsAsFactors = TRUE, encoding = "UTF-8")
+datos.bruto <- read.csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Enero%20Junio%202022/datos/players_20.csv", stringsAsFactors = TRUE, encoding = "UTF-8")
 
 str(datos.bruto)
 ```
