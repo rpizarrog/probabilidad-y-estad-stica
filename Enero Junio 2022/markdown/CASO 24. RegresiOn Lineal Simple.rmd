@@ -273,13 +273,12 @@ y
 
 ### Interpretar el ejercicio
 
--   Se utilizó la función lm() para crear el modelo de regresión lineal
-    y determinar los coeficientes de a y b.
--   Se utilizó la función predict() para predecir nuevos valores de x o
-    comerciales.
+-   Se utilizó la función *lm()* para crear el modelo de regresión
+    lineal y determinar los coeficientes de $a$ y $b$.
+-   Se utilizó la función *predict()* para predecir nuevos valores de x
+    o ventas.
 -   Se comprobó las predicciones
--   Por ejemplo para un valor de 3 en comerciales la predicción de
-    ventas es de 61.68.
+-   Para un valor de 170 el valor de la predicción es 64.28 en ventas
 
 ## Ejercicio ventas en función de comerciales
 
@@ -644,7 +643,7 @@ mean(datos$peso)
 ```{r}
 ggplot() + 
   geom_point(data = datos, aes(x = estatura, y = peso), colour='blue') +
-  geom_point(aes(x= mean(datos$esta65tura), y = mean(datos$peso)), col = 'green') +
+  geom_point(aes(x= mean(datos$estatura), y = mean(datos$peso)), col = 'green') +
   geom_line(aes( x = datos$estatura, y = predict(modelo, datos)), color = "red") +
   xlab("Estatura") + 
   ylab("Peso") + 
@@ -672,7 +671,7 @@ y
 ### Interpretar el ejercicio
 
 Conforme a los datos obtenido de una muestra de mediciones del cuerpo
-humano en relacion las variables independiente estatura y la variable
+humano en relación las variables independiente estatura y la variable
 dependiente el peso. Se concluye lo siguiente:
 
 El valor de la correlación entre las variables estatura y peso es de
