@@ -1,0 +1,369 @@
+---
+title: "Caso 25. Muestreo y Tipos de Muestreo"
+author: "Rubén Pizarro"
+date: "31/05/2022"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 5
+    code_folding: hide
+    toc_float: yes
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+Determinar y simular muestreos
+
+# Descripción
+
+Con un conjunto de datos utilizar mecanismos de programación para determinar muestreos mediante técnicas de aleatorio simple, aleatorio sistemático, aleatorio estratificado y por conglomerados.
+
+# Sustento teórico
+
+El propósito de la estadística inferencial consiste en determinar y conocer el comportamiento sobre una población a partir de una muestra.
+
+Una muestra es una porción, una proporción o parte de la población de interés. En muchos casos, el muestreo resulta más accesible y sencillo que el estudio de toda la población. [@lind_estadistica_2015].
+
+Por otra parte la importancia del muestreo como lo menciona [@anderson_estadistica_2008] es cuestión de minimizar costo de trabajo, recopilar información de una muestra es sustancialmente menor, que hacerlo de una población completa; especialmente cuando se deben realizar entrevistas personales para recopilar la información.
+
+Finamente, los métodos de muestreo aleatorio y sin sesgos son muy importantes para realizar inferencias estadísticas válidas [@lind_estadistica_2015].
+
+## Muestreo aleatorio simple
+
+![](images/aleatorio%20simple-02.jfif)
+
+Una muestra aleatoria simple de tamaño $n$ de una población finita de tamaño $N$ es una muestra seleccionada de manera que cada posible muestra de tamaño $n$ tenga la misma probabilidad de ser seleccionada [@anderson_estadistica_2008].
+
+De un conjunto de $N$ elementos de una población, un muestreo aleatorio simple sería una especie de rifa o tómbola para elegir de de entre los $N$ total de población una cantidad de $n$ número de la muestra.
+
+## Muestreo aleatorio sistemático
+
+![](images/muestreo-sistematico.jpg){width="400"}
+
+Se selecciona un punto aleatorio de inicio y posteriormente se elige cada k-ésimo miembro de la población [@lind_estadistica_2015].
+
+Suele emplearse como alternativa al muestreo aleatorio simple, en especial cuando las poblaciones son grandes se lleva mucho tiempo tomar una muestra aleatoria simple en la que primero hay que hallar un número aleatorio y después contar o buscar en el marco el elemento correspondiente [@anderson_estadistica_2008].
+
+El primer elemento se elige aleatoriamente, lo que permite suponer que una muestra sistemática tiene las propiedades de una muestra aleatoria simple. Esta suposición suele ser correcta cuando el marco es un ordenamiento aleatorio de los elementos de la población [@anderson_estadistica_2008]
+
+## Muestreo aleatorio estratificado
+
+![](images/muestreo%20estratificado.png){width="400"}
+
+Cuando una población se divide en grupos a partir de ciertas características, el muestreo aleatorio estratificado garantiza que cada grupo o estrato se encuentre representado en la muestra [@lind_estadistica_2015].
+
+[@anderson_estadistica_2008] describe el muestreo aleatorio estratificado en donde los elementos de la población primero se dividen en grupos, a los que se les llama estratos, de manera que cada elemento pertenezca a uno y sólo un estrato. La base para la formación de los estratos, que puede ser departamento, edad, tipo de industria, entre otros, está a discreción de la persona que diseña la muestra.
+
+Por otra parte, para asegurar que la muestra sea una representación imparcial de las $N$ observaciones, se debe determinar la frecuencia relativa y a partir de ahí generar las cantidad de muestra de cada estrato. [@lind_estadistica_2015].
+
+## Muestreo por conglomerados
+
+![](images/muestreo%20conglomerado.png){width="400"}
+
+La población se divide en conglomerados a partir de los límites naturales geográficos u otra clase. A continuación, estos se seleccionan al azar y se toma una muestra de forma aleatoria con elementos de cada grupo [@lind_estadistica_2015].
+
+# Desarrollo
+
+## Cargar librerías
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(mosaic)
+library(readr)
+library(ggplot2)  # Para gráficos
+library(knitr)    # Para formateo de datos
+library(fdth)     # Para tablas de frecuencias
+library(leaflet)  # Para hacer mapas
+```
+
+## Cargar datos
+
+### Cargar datos de nombres de personas
+
+-   Se carga un conjunto de 100 nombres de personas con sus atributo de género y la actividad deportiva o cultura que practican,
+-   Cargando un datos llamando a una función que construye los datos.
+-   El argumento encoding significa que acepte acentos en los datos.
+
+```{r warning=FALSE, message=FALSE}
+
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Enero%20Junio%202022/funciones/construir%20datos%20y%20funciones.r", encoding = "UTF-8")
+
+kable(head(personas, 10), caption = "Los primeros diez registros de nombres en el conjunto dedatos")
+kable(tail(personas, 10), caption = "Las útimos diez registros de nombres en el conjunto de datos")
+```
+
+### Cargar datos de alumnos
+
+-   Se cargan os datos de alumnos inscritos en una Institución de educación superior en en un semestre con los atributos siguientes:
+
+    -   No de control (modificado y no real),
+    -   Número Consecutivo de alumno
+    -   Semestre que cursa
+    -   Créditos aprobados
+    -   Carga académica que cursa
+    -   Promedio aritmético
+    -   Carrera
+
+```{r warning=FALSE, message=FALSE}
+alumnos <- read_csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Enero%20Junio%202022/datos/datos%20alumnos.csv")
+
+kable(head(alumnos, 10), caption = "Los primeros diez registros de alumnos")
+kable(tail(alumnos, 10), caption = "Las útimos diez registros de alumnos")
+
+```
+
+### Sembrar una semilla
+
+```{r}
+set.seed(2021)
+
+```
+
+### Simular muestreos
+
+#### Muestreo aleatorio simple
+
+-   Hay que encuestar a diez personas de 100 para hacerles alguna entrevista, ¿a quienes?
+-   Con el conjunto de datos seleccionar 10 personas aleatoriamente con la función ***sample()***
+
+```{r}
+N <- nrow(personas)
+n <- 10
+muestra <- sample(personas$nombres, n)
+kable(muestra, caption = "La muestra de personas")
+  
+```
+
+-   Con el conjunto de datos alumnos, hay que encontrar a 100 alumnos, ¿A cuáles?
+
+```{r}
+N <- nrow(alumnos)
+n <- 100
+registros <- sample(N, n) # Genera los números
+muestra <- alumnos[registros, ]
+kable(muestra, caption = "La muestra de alumnos")
+  
+```
+
+#### 3.2. Muestreo aleatorio sistemático
+
+-   Con el conjunto de datos personas, iniciar en un valor aletorio e identificar los siguientes de 10 en 10 hasta tener diez personas.
+
+```{r}
+N <- nrow(personas)
+n = 10
+saltos <- round(N / n, 0)
+inicio <- round(sample(N, 1) / n, 0)
+#inicio
+
+cuales <- seq(from = inicio, to =N, by= saltos)
+kable(personas[cuales, ], caption = "La muestra sistematizada de personas")
+```
+
+-   Con el conjunto de datos alumnos, hay que encontrar a 100 alumnos, ¿A cuáles?, bajo el muetreo sistematizado
+
+```{r}
+N <- nrow(alumnos)
+n = 100
+saltos <- round(N / n, 0)
+inicio <- round(sample(N, 1) / n, 0)
+
+cuales <- seq(from = inicio, to =N, by= saltos)
+
+kable(alumnos[cuales, ], caption = "La muestra de alumnos")
+  
+```
+
+#### Muestreo aleatorio estratificado
+
+-   Con el conjunto de datos de personas se trata de encontrar 10 , pero que sea representativa de acuerdo y conforme al género femenino y masculino.
+-   ¿Cuál es la frecuencia relativa del género femenino?
+-   ¿Cuál es la frecuencia relativa del género masculino?
+-   Ambas frecuencias multiplicar por el tamaño de la muestra para garantizar imparcialidad en la muestra.
+
+```{r}
+N <- nrow(personas)
+n <- 10
+femeninos  <- filter(personas, generos=='F')
+masculinos <- filter(personas, generos=='M')
+
+frfem <- nrow(femeninos) / N
+frmas <- nrow(masculinos) / N
+
+frfem 
+frmas 
+
+muestraFem <- sample(femeninos, n * frfem)
+kable(muestraFem, caption = "La muestra de personas Femenino")
+
+muestraMas <- sample(masculinos, n * frmas)
+kable(muestraMas, caption = "La muestra de personas Masculino")
+
+```
+
+-   Simular muestreo estratificado por carreas de alumnos determinando las frecuencias relativas por medio de la función **fdt_cat()**
+
+```{r}
+N <- nrow(alumnos)
+n <- 100
+
+tabla_frec <- data.frame(fdt_cat(alumnos$Carrera))
+
+tabla_frec$muestra <-  round(tabla_frec$rf * n, 0)
+
+kable(tabla_frec, caption = "Tabla de frecuencia de alumnos")
+```
+
+-   ¿Cuáles alumnos?
+-   Sólo simular carreras de SISTEMAS Y CIVIL
+
+```{r}
+N <- nrow(alumnos)
+n <- 100
+sistemas  <- filter(alumnos, Carrera =='SISTEMAS')
+civil <- filter(alumnos, Carrera == 'CIVIL')
+
+
+frsistemas <- nrow(sistemas) / N
+frcivil <- nrow(civil) / N
+
+frsistemas
+frcivil 
+
+muestrasistemas <- sample(sistemas, round(n * frsistemas, 0))
+kable(muestrasistemas, caption = "La muestra de alumnos de Sistemas")
+
+muestracivil <- sample(civil, round(n * frcivil, 0))
+kable(muestracivil, caption = "La muestra de alumnos de Civil")
+
+```
+
+#### Muestreo por conglomerados
+
+-   En un proceso de simulación, al conjunto de datos alumnos agregar tres columnas: la localidad, latitud y longitud
+-   Primero cargar datos de localidades de Durango
+
+```{r}
+
+N <- nrow(alumnos)
+n <- 100
+
+locdurangomx <- read.csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Enero%20Junio%202022/datos/locdurangomx.csv", encoding = "UTF-8")
+
+```
+
+Segundo por medio de función **sample()** generar cinco registros aleatorios de localidades y agregar un sexto registro de Victoria de Durango.
+
+Las localidades será un domicilio para simular el lugar en donde geográficamente viven los alumnos.
+
+```{r}
+set.seed(2021)
+localidades6 <- locdurangomx[sample(nrow(locdurangomx), 5), ]
+
+localidades6 <- rbind(localidades6, locdurangomx[1,])
+localidades6
+
+```
+
+-   Tercero agregar las columnas: nombre de localidad, latitud y longitud al conjunto de datos alumnos con una probabilidad de que sean de Victoria de Durango del 60%.
+-   Mostrar los primeros diez y últimos diez alumnos verificando las tres nuevas columnas.
+
+```{r}
+registros <- locdurangomx[sample(localidades6$X, N, replace = TRUE, prob = c(.10, 0.12, 0.05, 0.07, 0.06, 0.60)),c("Nom_Loc", "Lat_Decimal", "Lon_Decimal")]
+
+alumnos$localidad <- registros$Nom_Loc
+alumnos$latitud <- registros$Lat_Decimal
+alumnos$longitud <- registros$Lon_Decimal
+
+kable(head(alumnos, 10), caption = "Los primeros diez registros de alumnos")
+kable(tail(alumnos, 10), caption = "Las útimos diez registros de alumnos")
+```
+
+-   Cuarto encontrar frecuencias por localidad
+
+```{r}
+N <- nrow(alumnos)
+n <- 100
+
+tabla_frec <- data.frame(fdt_cat(alumnos$localidad))
+
+tabla_frec$muestra <-  round(tabla_frec$rf * n, 0)
+
+kable(tabla_frec, caption = "Tabla de frecuencia de alumnos por localidad")
+```
+
+-   Quinto Determinar el porcentaje que le corresponde a cada conglomerado conforme a la frecuencia relativa.
+
+-   ¿Cuáles alumnos?, de acuerdo al conglomerado o la localidad
+
+-   Simular por las seis localidades
+
+```{r}
+N <- nrow(alumnos)
+n <- 100
+
+# Determinar cada conglomerado
+loc1 <- filter(alumnos, localidad == tabla_frec$Category[1])
+loc2 <- filter(alumnos, localidad == tabla_frec$Category[2])
+loc3 <- filter(alumnos, localidad == tabla_frec$Category[3])
+loc4 <- filter(alumnos, localidad == tabla_frec$Category[4])
+loc5 <- filter(alumnos, localidad == tabla_frec$Category[5])
+loc6 <- filter(alumnos, localidad == tabla_frec$Category[6])
+
+
+# Determinar frecuencias de cada conglomerado similiar a la tabla tabla_frec
+frloc1 <- nrow(loc1) / N
+frloc2 <- nrow(loc2) / N
+frloc3 <- nrow(loc3) / N
+frloc4 <- nrow(loc4) / N
+frloc5 <- nrow(loc5) / N
+frloc6 <- nrow(loc6) / N
+
+# Crear muestras
+muestraloc1 <- sample(loc1, round(n * frloc1, 0))
+kable(muestraloc1, caption = paste("La muestra de alumnos de Localidad ",tabla_frec$Category[1] ))
+
+
+muestraloc2 <- sample(loc2, round(n * frloc2, 0))
+kable(muestraloc2, caption = paste("La muestra de alumnos de Localidad ",tabla_frec$Category[2] ))
+
+muestraloc3 <- sample(loc3, round(n * frloc3, 0))
+kable(muestraloc3, caption = paste("La muestra de alumnos de Localidad ",tabla_frec$Category[3] ))
+
+muestraloc4 <- sample(loc4, round(n * frloc4, 0))
+kable(muestraloc4, caption = paste("La muestra de alumnos de Localidad ",tabla_frec$Category[4] ))
+
+muestraloc5 <- sample(loc5, round(n * frloc5, 0))
+kable(muestraloc5, caption = paste("La muestra de alumnos de Localidad ",tabla_frec$Category[5] ))
+
+muestraloc6 <- sample(loc6, round(n * frloc6, 0))
+kable(muestraloc6, caption = paste("La muestra de alumnos de Localidad ",tabla_frec$Category[6] ))
+
+
+```
+
+##### Visualizar con mapas
+
+-   Cargar la librerías para mapas previamente
+-   Usando los valores de latitud y longitud
+
+```{r}
+
+map<-leaflet() %>%
+  addTiles() %>%
+  addMarkers(lat=localidades6$Lat_Decimal[1],lng=localidades6$Lon_Decimal[1] ,popup = localidades6$Nom_Loc[1]) %>%
+   addMarkers(lat=localidades6$Lat_Decimal[2],lng=localidades6$Lon_Decimal[2] ,popup=localidades6$Nom_Loc[2]) %>%
+   addMarkers(lat=localidades6$Lat_Decimal[3],lng=localidades6$Lon_Decimal[3] ,popup=localidades6$Nom_Loc[4]) %>%
+   addMarkers  (lat=localidades6$Lat_Decimal[5],lng=localidades6$Lon_Decimal[5] ,popup=localidades6$Nom_Loc[5]) %>%
+   addMarkers  (lat=localidades6$Lat_Decimal[6],lng=localidades6$Lon_Decimal[6] ,popup=localidades6$Nom_Loc[6])
+# Mostrar el mapa 
+map
+```
+
+### Interpretación de tipos de muestreo
+
+Pendiente
+
+# Referencias Bibliográficas
