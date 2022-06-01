@@ -1,0 +1,553 @@
+---
+title: "Caso 28. Teorema de Límite Central"
+author: "Rubén Pizarro Gurrola"
+date: "31/05/2022"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+bibliography: references.bib
+---
+
+# Objetivo
+
+Demostrar el teorema de límite central
+
+# Descripción
+
+Se cargan unos de datos de población y se aplica el teorema de límite central
+
+# Fundamento teórico
+
+Los conceptos de error muestral y la aplicación a la distribución muestral de medias presentados anteriormente; permite utilizar la distribución de probabilidad normal para crear intervalos de confianza de la media poblacional descrita en casos siguientes así como la pruebas de hipótesis
+
+El teorema central del límite hace hincapié en que, en el caso de muestras aleatorias grandes, la forma de la distribución muestral de la media se aproxima a la distribución de probabilidad normal.
+
+Una definición sería TEOREMA CENTRAL DEL LÍMITE: si todas las muestras de un tamaño en particular se seleccionan de cualquier población, la distribución muestral de la media se aproxima a una distribución normal; esta mejora con muestras más grandes [@lind2015].
+
+La aproximación es más exacta en el caso de muestras grandes que en el de muestras pequeñas; lo cual es una de las conclusiones más útiles de la estadística porque permite razonar sobre la distribución de las medias muestrales sin ninguna información acerca de la forma de la distribución de la población de la que se toma la muestra. [@lind2015]
+
+El teorema central del límite se cumple en el caso de todas las distribuciones.
+
+Cuando se seleccionan muestras aleatorias simples de tamaño $n$ de una población $N$, **la distribución muestral de la media muestral** puede aproximarse a la **media poblacional** mediante una distribución normal a medida que el tamaño de la muestra se hace grande (Anderson, Sweeney, and Williams 2008a).
+
+El planteamiento del teorema, la suposición de normalidad en la distribución de la media $\bar{x}$ se vuelve más precisa a medida que $n$ se hace más grande [@walpole2012].
+
+Ahora bien, la media muestral se le conoce como el estimador puntual de la media poblacional $\mu$, a la desviación estándar muestral $S$ como el estimador puntual de la desviación estándar poblacional $\sigma$ [@anderson2008].
+
+La distribución muestral de la media un estadístico que depende de la distribución de la población, del tamaño de las muestras y del método de selección de las muestras.[@walpole2012]
+
+Como la variable aleatoria media muestral puede tener muchos valores diferentes, suele ser de interés conocer la media de todos los valores de $\bar{x}$ que se obtienen con diferentes muestras aleatorias simples.
+
+La media de todas las variables aleatoria es el valor esperado de $\bar{x}$. El valor esperado se denota como $E(\bar{x})$ [@anderson2008].
+
+Con respecto a determinar si un estimador puntual como la media muestral $\bar{x}$ esta se debe valorar por sus propiedades de insesgadez, eficiencia y consistencia.
+
+-   **insesgadez**. Si el valor esperado del estadístico muestral $E(\hat\theta)$ es igual al parámetro poblacional $E(\theta$ que se estudia, se dice que el estadístico muestral es un estimador insesgado del parámetro poblacional. Algunas veces, el valor del estimador puntual $E(\hat\theta)$ puede ser menor que $E(\theta)$ y otras veces sea mayor que $E(\theta)$. La importancia radica en si la distribución muestral está muy sesgada, los estadísticos generados pueden ser subestimados o sobreestimados [@anderson2008].
+-   **Eficiencia.** Una distribución muestral es mas eficiente cuando tiene menor error muestral, siendo este último la diferencia de la media poblacional $\mu$ con la media muestral $\bar{x}$. Se dice que el estimador puntual con menor error estándar tiene mayor eficiencia relativa que los otros [@anderson2008].
+-   **Consistencia.** Cuanto se obtienen varias muestra se debe observar que la media muestral $\bar{x}$ debe acercarse a la media poblacional $\mu$ conforme la muestra aumenta.
+
+Si la población es una distribución normal, entonces, en el caso de cualquier tamaño de muestra, la distribución muestral de las medias también será de naturaleza normal.
+
+Si la distribución poblacional es simétrica (pero no normal), la forma normal de la distribución muestral de las\
+medias se presenta con muestras tan pequeñas como 10.
+
+Por otra parte, si se comienza con una distribución sesgada o con colas anchas, quizá se requieran muestras de 30 o más para registrar la característica de normalidad [@lind2015]
+
+![Imagen. Población y distribución muestrales. Fuente. [\@lind2015]](images/distribuciones%20normales%20y%20muestras%20Teorema%20de%20Limite%20Central.jpg "Población y distribución muestrales"){width="400"}
+
+Es posible comparar la media de las medias de la muestra con la media de la población. $$
+\text{media de la población = }\mu = \frac{\sum_{i=1}^{N} x_i}{N} 
+$$
+
+$$
+\text{media de medias de la distribución muestral = }\mu_{\bar{x}} = \frac{\sum_{i=1}^{n} \bar{x}_i}{n} 
+$$
+
+Ahora bien ¿qué pasa con respecto a la desviación estándar de una población con respecto a la desviación de una distribución de medias?
+
+En los ejemplos que se muestran abajo hay menor dispersión en la distribución de la media muestral que en la distribución de la población, lo cual indica la diferencia entre los rangos de la población y los de las medias muestrales.
+
+Además se advierte que la media de las medias de las muestras se encuentra cerca de la de la población; es posible demostrar que la media de la distribución muestral es la media poblacional (es decir, $\mu = \mu_{\bar{x}}$ y si la desviación estándar de la población es $\sigma$, la de las medias muestrales es $\frac{\sigma}{\sqrt{n}}$, en la que $n$ es el número de observaciones de cada muestra.
+
+Entonces, es el error $\frac{\sigma}{\sqrt{n}}$ estándar de la media. En realidad, el nombre completo es *desviación estándar de la distribución muestral* de la media.
+
+$$
+\text{Error estándar=}\frac{\sigma}{\sqrt{n}}
+$$
+
+# Desarrollo
+
+## Cargar librerías
+
+```{r message=FALSE, warning=FALSE}
+library(cowplot) # Gráficos
+library(ggplot2) # Gráficos
+library(knitr)   # Tablas 
+library(fdth)    # Tabla de frecuencias
+```
+
+## Cargar datos
+
+Se toma el ejercicio de un negocio 40 empleados que tienen ciertos años de trabajo en una empresa, los datos son generados para este caso y la fuente del ejercicio original está en el libro de [@lind2015] página 235.
+
+Se estiman valores de los trabajadores con años de servicio y los datos con ciertas características. Los datos de la población creados a partir de la función *sample()* tienden a ser un población con sesgo positivo:
+
+Como el negocio ha crecido en años recientes, la distribución indica que 29 de los 40, o sea el 72% de los empleados han estado en la compañía durante menos de seis años.
+
+También hay 11 empleados que tienen más de seis años. 4 de éstos 11 han laborado en la compañía doces años o más.
+
+La variable de interés es años de servicio (agnios) del conjunto de datos población.
+
+### Simulando los años de servicio
+
+```{r}
+set.seed(2021)
+```
+
+### La población por años de servicio
+
+#### Datos generados aleatoriamente
+
+```{r}
+menos.de.seis <- sample(x = 1:5, size = 29, replace = TRUE)
+mas_de_seis <- sample(x = 6:11, size = 7, replace = TRUE)
+mas_de_doce <- sample(x = 12:19, size = 4, replace = FALSE)
+
+```
+
+```{r}
+poblacion <- data.frame(agnios = c(menos.de.seis, mas_de_seis, mas_de_doce))
+poblacion$agnios
+
+```
+
+#### Conforme a datos del ejercicio del libro
+
+Será opcional usar estos datos
+
+```{r}
+#agnios <- c(11,4,18,2,1,2,0,2,2,4,3,4,1,2,2,3,3,19,8,3,7,1,0,2,7,0,4,5,1,14,16,8,9,1,1,2,5,10,2,3)
+
+#poblacion <- data.frame(agnios)
+```
+
+### Tabla de Frecuencia
+
+Similar al ejercicio original del libro, el 82.50% de los trabajadores tiene entre 0 y 8 años aproximadamente y el 17.50% tiene por encima de 8 años
+
+```{r}
+tabla <- fdt(poblacion$agnios, breaks = "Sturges")
+tabla
+
+```
+
+Parámetro poblacional de la media
+
+Se determina la media de la población de los años de servicio y la desviación estándar para comparar su uso y estimar con la desviación estándar de la población, la dispersión de la distribución de medias.
+
+$$
+\mu = \frac{\sum_{i=1}^{n} agnios_i}{N}=
+$$
+
+```{r}
+summary(poblacion$agnios)
+
+
+media.p <- round(mean(poblacion$agnios),2)
+desv.p <- sd(poblacion$agnios)
+
+media.p; desv.p
+```
+
+### Histograma de la población.
+
+Se presenta el histograma con la única variable de interés años de servicio de los $N=40$ trabajadores.
+
+```{r}
+N <- nrow(poblacion)
+```
+
+```{r}
+g1 <- ggplot(poblacion, aes(x = agnios)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "lightblue") +
+  labs(title = "Población",
+      subtitle = paste("N=",N," Media=", media.p),
+              caption = "Fuente propia") +  
+  geom_vline(xintercept = media.p, col='red') +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g1 <- g1 + theme(
+  plot.title = element_text(color = "black", size = 12, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=6),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+
+
+plot_grid(g1, nrow = 1, ncol = 1)
+```
+
+Se observa un sesgo positivo en la distribución de la población. La distribución es asimétrica positiva.
+
+## Distribución muestral para VEINTICINCO muestras n=5
+
+El valor del tamaño de la población $N=40$. Las muestras tendrán cinco elementos cada una por lo que el valor del tamaño de las muestras $n=5$.
+
+Se toma un valor de venticinco muestras por decir un número pero en realidad hay 658008 muestras de tamaño $n=5$ que se pueden tomar de la población de $N=40$ empleados, las cuales se determinan con la fórmula de las combinaciones.
+
+### Inicializando variables
+
+```{r}
+n <- 5 # Tamaño de cada muestra
+N <- length(poblacion$agnios) # Tamaño de la población
+n; N
+
+nm <- 25 # Número de muestras
+nm
+
+
+```
+
+### Construyendo muestras
+
+```{r}
+muestras = as.list(NULL)
+m.muestras = NULL
+
+for (i in 1:nm) {
+    muestras[[i]] <- sample(x = poblacion$agnios, size = n, replace = FALSE)
+    
+  m.muestras[i] <- round(mean(muestras[[i]]),2)
+}
+```
+
+### Tabla de distribución
+
+Formando tabla de distribución de medias en la última columna la media de las muestras.
+
+Crear los valores de las medias por renglón con al función **t()** se convierte columnas a renglones.
+
+```{r}
+distribucion.medias <- data.frame(muestras)
+
+distribucion.medias <- data.frame(t(distribucion.medias))
+
+```
+
+Poner nombres de columnas x1, x2, x3, x4, x5 y nombres de observaciones M1, M2, M3, .... M25
+
+```{r}
+colnames(distribucion.medias) <- paste0("x", seq(1:n))
+rownames(distribucion.medias) <- paste0("M", seq(1:nm))
+```
+
+#### Media muestral
+
+Agregar la columna medias del vector m.muestras previamente generado en el ciclo de 1 a 25.
+
+```{r}
+distribucion.medias <- cbind(distribucion.medias, medias = m.muestras)
+                        
+```
+
+#### Distribución muestral de la media
+
+Mostrar la tabla de distribución de medias de todas las muestras.
+
+```{r}
+kable(distribucion.medias, caption = paste("Distribución muestral de la media ", nm, " muestras, tamaño de la muestra n=", n))
+```
+
+#### Rangos
+
+```{r}
+range(poblacion$agnios)
+range(distribucion.medias$medias)
+
+```
+
+#### Error estándar
+
+El error estándar es la desviación estándar de la distribución muestral de la media o la dispersión de la misma en el sentido del rango de la distribución. $$
+\text{Error estándar=}\frac{\sigma}{\sqrt{n}}
+$$
+
+```{r}
+err.std <- round(desv.p / sqrt(n),2 )
+paste("El error estándar es de ", err.std, "para n=",n, "y número de muestras nm = ", nm, ". El Err. Std. significa  la dispersión de la distribución muestral de la media.")
+
+```
+
+#### Histograma de la distribución
+
+```{r message=FALSE, warning=FALSE}
+g2 <- ggplot(distribucion.medias, aes(x = medias)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "lightblue") +
+  labs(title = "Distribución muestral",
+      subtitle = paste("NM = ", nm, "; n = ",n , "; Me = ", round(mean(distribucion.medias$medias),2), "Er.Std=",err.std),
+              caption = "Fuente propia") +  
+  geom_vline(xintercept = round(mean(distribucion.medias$medias),2), col='red') +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g2 <- g2 + theme(
+  plot.title = element_text(color = "black", size = 12, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+
+
+plot_grid(g1, g2, nrow = 1, ncol = 2)
+```
+
+Se observa la diferencia de forma de las distribuciones poblacional y muestral de medias; la población de tiempos de servicio de los empleados(izquierda) tiene un sesgo positivo, y la distribución de estas 25 medias muestrales no refleja el mismo sesgo positivo.
+
+También se observa una diferencia en el rango de las medias muestrales en comparación con el rango de la población.
+
+En la población, los periodos de servicio variaron de 1 a 19 años. Cuando se seleccionaron muestras de tamaño 30, las medias de las muestras variaron de 2.6 a 9.2 años.
+
+## Distribución muestral para VEINTICINCO muestras n=30
+
+El valor del tamaño de la población $N=40$. Las muestras tendrán treinta elementos cada una por lo que el valor del tamaño de las muestras $n=30$. Ahora se aumenta el número de elementos de la muestra.
+
+### Inicializando variables
+
+¿Qué sucede si se aumenta el número de elementos de la muestra $n=30$ y el mismo número de muestras 25?
+
+```{r}
+n <- 30 # Tamaño de cada muestra
+N <- length(poblacion$agnios) # Tamaño de la población
+n; N
+
+nm <- 25 # Número de muestras
+nm
+
+
+```
+
+### Construyendo muestras
+
+```{r}
+muestras = as.list(NULL)
+m.muestras = NULL
+
+for (i in 1:nm) {
+    muestras[[i]] <- sample(x = poblacion$agnios, size = n, replace = FALSE)
+    
+  m.muestras[i] <- round(mean(muestras[[i]]),2)
+}
+```
+
+### Tabla de distribución
+
+Formando tabla de distribución de medias en la última columna la media de las muestras.
+
+Crear los valores de las medias por renglón con al función **t()** se convierte columnas a renglones.
+
+```{r}
+distribucion.medias <- data.frame(muestras)
+
+distribucion.medias <- data.frame(t(distribucion.medias))
+
+```
+
+Poner nombres de columnas x1, x2, x3, x4, x5 ... x20 y nombres de observaciones M1, M2, M3, .... M30
+
+```{r}
+colnames(distribucion.medias) <- paste0("x", seq(1:n))
+rownames(distribucion.medias) <- paste0("M", seq(1:nm))
+```
+
+#### Media muestral
+
+Agregar la columna medias del vector **m.muestras** previamente generado en el ciclo de 1 a 25.
+
+```{r}
+distribucion.medias <- cbind(distribucion.medias, medias = m.muestras)
+                        
+```
+
+#### Distribución muestral de la media
+
+Mostrar la tabla de distribución de medias de todas las muestras
+
+```{r}
+kable(distribucion.medias, caption = paste("Distribución muestral de la media ", nm, " muestras, ", "tamaño de la muestra n=",n))
+```
+
+#### Rango
+
+```{r}
+range(poblacion$agnios)
+range(distribucion.medias$medias)
+
+```
+
+En la población, los periodos de servicio variaron de 1 a 19 años. Cuando se seleccionaron muestras de tamaño 30, las medias de las muestras variaron de 4.67 a 6.37 años.
+
+#### Error estándar
+
+El error estándar es la desviación estándar de la distribución muestral de la media o la dispersión de la misma en el sentido del rango de la distribución. $$
+\text{Error estándar=}\frac{\sigma}{\sqrt{n}}
+$$
+
+```{r}
+err.std <- round(desv.p / sqrt(n),2 )
+paste("El error estándar es de ", err.std, "para n=",n, "y número de muestras nm = ", nm, ". El Err. Std. significa  la dispersión de la distribución muestral de la media.")
+
+```
+
+#### Histograma de la distribución
+
+```{r message=FALSE, warning=FALSE}
+g3 <- ggplot(distribucion.medias, aes(x = medias)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "green") +
+  labs(title = "Distribución muestral ",
+                  subtitle = paste("NM = ", nm, "; n = ",n , "; Me = ", round(mean(distribucion.medias$medias),2), "Err.Std=",err.std),
+              caption = "Fuente propia") +  
+  geom_vline(xintercept = round(mean(distribucion.medias$medias),2), col='red') +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g3 <- g3 + theme(
+  plot.title = element_text(color = "black", size = 12, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=6),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+
+
+plot_grid(g1, g2, g3, nrow = 1, ncol = 3)
+```
+
+A medida que incrementa el tamaño de la muestra, la distribución muestral de las medias se aproxima a la distribución de probabilidad normal; este hecho se ilustra con el teorema central del límite [@lind2015].
+
+Hay menos dispersión en la distribución muestral de las medias que en la distribución de la población.
+
+## Distribución muestral para CIEN muestras n=30
+
+El valor del tamaño de la población $N=40$. Las muestras tendrán treinta elementos cada una por lo que el valor del tamaño de las muestras $n=30$.
+
+Ahora se aumenta el número de muestras a $nm=100$
+
+### Inicializando variables
+
+```{r}
+n <- 30 # Tamaño de cada muestra
+N <- length(poblacion$agnios) # Tamaño de la población
+n; N
+
+nm <- 100 # Número de muestras
+nm
+
+
+```
+
+### Construyendo muestras
+
+```{r}
+muestras = as.list(NULL)
+m.muestras = NULL
+
+for (i in 1:nm) {
+    muestras[[i]] <- sample(x = poblacion$agnios, size = n, replace = FALSE)
+    
+  m.muestras[i] <- round(mean(muestras[[i]]),2)
+}
+```
+
+### Tabla de distribución
+
+Formando tabla de distribución de medias en la última columna la media de las muestras.
+
+Crear los valores de las medias por renglón con al función **t()** se convierte columnas a renglones.
+
+```{r}
+distribucion.medias <- data.frame(muestras)
+
+distribucion.medias <- data.frame(t(distribucion.medias))
+
+```
+
+Poner nombres de columnas x1, x2, x3, x4, x5 ... x20 y nombres de observaciones M1, M2, M3, .... M25 ... M100
+
+```{r}
+colnames(distribucion.medias) <- paste0("x", seq(1:n))
+rownames(distribucion.medias) <- paste0("M", seq(1:nm))
+```
+
+#### Media muestral
+
+Agregar la columna medias del vector **m.muestras** previamente generado en el ciclo de 1 a total de muestras.
+
+```{r}
+distribucion.medias <- cbind(distribucion.medias, medias = m.muestras)
+                        
+```
+
+#### Distribución muestral de la media
+
+Mostrar la tabla de distribución de medias de todas las muestras
+
+```{r}
+kable(distribucion.medias, caption = paste("Distribución muestral de la media ", nm, " muestras, ", "tamaño de la muestra n=",n))
+```
+
+#### Rango
+
+```{r}
+range(poblacion$agnios)
+range(distribucion.medias$medias)
+
+```
+
+En la población, los periodos de servicio variaron de 1 a 19 años. Cuando se seleccionaron muestras de tamaño 30, las medias de las muestras variaron de 4.67 a 6.37 años.
+
+#### Error estándar
+
+El error estándar es la desviación estándar de la distribución muestral de la media o la dispersión de la misma en el sentido del rango de la distribución. $$
+\text{Error estándar=}\frac{\sigma}{\sqrt{n}}
+$$
+
+```{r}
+err.std <- round(desv.p / sqrt(n),2 )
+paste("El error estándar es de ", err.std, "para n=",n, "y número de muestras nm = ", nm, ". El Err. Std. significa  la dispersión de la distribución muestral de la media.")
+```
+
+#### Histograma de la distribución
+
+```{r message=FALSE, warning=FALSE}
+g4 <- ggplot(distribucion.medias, aes(x = medias)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "yellow") +
+  labs(title = "Distribución muestral ",
+                  subtitle = paste("NM = ", nm, "; n = ",n , "; Med = ", round(mean(distribucion.medias$medias),2), "Err.Std=",err.std),
+              caption = "Fuente propia") +  
+  geom_vline(xintercept = round(mean(distribucion.medias$medias),2), col='red') +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g4 <- g4 + theme(
+  plot.title = element_text(color = "black", size = 12, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+
+
+plot_grid(g1, g2, g3, g4, nrow = 2, ncol = 2)
+```
+
+Entre más muestras haya se acerca a una distribución normal (amarillo cien muestras).
+
+# Interpretación
+
+El teorema central del límite indica que, sin importar la forma de la distribución de la población, la distribución muestral de la media se aproximará a la distribución de probabilidad normal; cuanto mayor sea el número de observaciones en cada muestra, más evidente será la convergencia [@lind2015].
+
+La media de la distribución muestral de medias será exactamente igual a la media poblacional si se seleccionan todas las muestras posibles del mismo tamaño de cualquier población $\mu = \mu_{\bar{x}}$.
+
+# Bibliografía
