@@ -33,6 +33,8 @@ Las muestras se emplean para determinar características de la población. Por e
 
 ERROR DE MUESTREO es la diferencia entre el estadístico de una muestra y el parámetro de la población correspondiente [@lind2015].
 
+Por otra parte, se puede decir es la diferencia entre un valor poblacional (parámetro) y el estimado (estadístico), derivado de una muestra probabilística, que es debido al hecho de que sólo se observa una muestra de los valores, tan diferentes como una selección imperfecta, sesgos en las respuestas o su estimación, errores de observación y registro, entre otras cosas.
+
 # Desarrollo
 
 ## Configuraciones iniciales
@@ -190,7 +192,7 @@ g1 <- ggplot(poblacion, aes(x = sueldo)) +
   geom_histogram(aes(y = ..density..),
                  colour = 1, fill = "blue") +
   labs(title = "Población",
-      subtitle = paste("ME=", media.p, "; ds=", desv.p,  "; Err muestral media=",dif.media),
+      subtitle = paste("ME=", media.p, "; ds=", desv.p,  "; Err muest. media=",dif.media),
               caption = "Fuente propia") +  
   
   geom_vline(xintercept = media.m, col='red') +
@@ -209,7 +211,7 @@ g2 <- ggplot(muestra, aes(x = sueldo)) +
                  colour = 1, fill = "green") +
     geom_vline(xintercept = media.m, col='red') +
   labs(title = "Muestra",
-      subtitle = paste("me=", media.m, "; ds.=", desv.m,  "; Err. muestral de Desv.Std.=",dif.desv),
+      subtitle = paste("me=", media.m, "; ds.=", desv.m,  "; Err. muestral de sd.=",dif.desv),
               caption = "Fuente propia") +
   geom_density(lwd = 1.2,
                linetype = 2,
