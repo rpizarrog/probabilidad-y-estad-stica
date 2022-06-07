@@ -1,0 +1,563 @@
+---
+title: "Caso 29. Intervalos de Confianza para media poblacional"
+author: "Rubén Pizarro Gurrola"
+date: "07/06/2022"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+bibliography: references.bib
+---
+
+# Objetivo
+
+Determinar intervalos de confianza de media poblacional con desviación estándar de la población conocida y desconocida.
+
+# Descripción
+
+Se calculan intervalos de confianza de medias poblacionales con varios ejercicios extraídos de la literatura
+
+# Fundamento teórico
+
+La inferencia estadística, específicamente la toma y predicción de decisiones desempeña un papel muy importante en la vida de casi todas las personas.
+
+Hay muchas formas de tomar estas decisiones o predicciones, algunas son subjetivas y otras son objetivas por naturaleza. L a pregunta es que tan buena son las decisiones y en que´argumentos se basan estas decisiones?
+
+Aun cuando se pueda pensar que su propia capacidad de tomar decisiones es muy buena, la experiencia sugiere que éste puede no ser el caso.
+
+Es la función del estadístico matemático dar métodos de toma de inferencia estadística son mejores y más confiables que únicamente cálculos subjetivos.[@mendenhall2010].
+
+La inferencia estadística se encarga de apoyar el proceso de toma decisiones o predicciones acerca de parámetros. Tal vez estos parámetros de interés sean la media poblacional $\mu$, la desviación estándar poblacional $\sigma$ o la proporción de una población $p$.
+
+Para este caso en los ejercicios mostrados mas adelante, se describen estimación de las medias poblacionales.
+
+Cabe recordar que si se trata de mediciones poblacionales estos se llaman parámetros y si se trata de mediciones muestrales estos se llaman estadísticos.
+
+$$
+población = parámetros \\
+muestra = estadísticos
+$$
+
+De acuerdo a [@mendenhall2010] estimación implica predecir el valor del parámetro.
+
+Para estimar el valor de un parámetro poblacional, se puede usar datos de la muestra en la forma de un estimador. Los estimadores se determinan usando información de las observaciones muestrales y, en consecuencia, por definición son también estadísticas.
+
+Por definición, un estimador es una regla, generalmente expresada como fórmula, que establece cómo calcular una estimación basada en información de la muestra.
+
+Se pueden encontrar dos tipos de estimaciones
+
+Estimaciones puntuales que significa que con base en datos muestrales, se calcula un solo número o un estimador puntual.
+
+Estimaciones por intervalos que implica encontrar dos valores numéricos que se calculan para formar un intervalo dentro del cual se espera esté el parámetro poblacional. Los intervalos son el interés de este caso.
+
+Ahora bien, es posible intuir que la distribución muestral de un estimador está centrada alrededor del parámetro que se trate de estimar, pero todo lo que se tiene es la estimación calculada de las $n$ mediciones contenidas en la muestra.
+
+¿A qué distancia del verdadero valor del parámetro estará esta estimación? ¿Qué tan diferente es el valor del estadísticos con respecto al parámetro? La distancia entre la estimación y el verdadero valor del parámetro se denomina error de estimación. [@mendenhall2010].
+
+Se puede suponer que los tamaños muestrales son siempre grandes y que los estimadores provienen de distribuciones muestrales que pueden ser aproximadas por una distribución normal por el teorema del límite central.
+
+La variabilidad del estimador se mide usando este error estándar y está determinado por:
+
+$$
+\frac{\sigma}{\sqrt{n}}
+$$
+
+Este error estándar se incorpora y se utiliza para estimar intervalos de confianza como la media poblacional.
+
+Ahora bien, el objetivo de la estimación por intervalo es aportar información de qué tan cerca se encuentra la estimación puntual, obtenida de la muestra, del valor del parámetro poblacional [@anderson2008].
+
+Se identifican las fórmulas para estimar intervalos de confianza con desviación poblacional conocida y no conocida respectivamente.
+
+## Fórmula para desviación estándar SI conocida en la población.
+
+$$
+IC = \bar{x} \pm z \cdot \frac{\sigma}{\sqrt{n}}
+$$
+
+[@lind2015]
+
+## Fórmula para desviación estándar No conocida en la población.
+
+$$
+IC = \bar{x} \pm t \cdot \frac{S}{\sqrt{n}}
+$$
+
+Se presentan ejercicios para estimar intervalos de confianza del parámetro media poblacional a partir de datos muestrales.
+
+# Desarrollo
+
+## Cargar librerías
+
+```{r}
+library(visualize) # Gráficos de distribuciones
+library(cowplot) # Gráficos
+library(ggplot2) # Gráficos
+```
+
+## Cargar funciones
+
+```{r}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Enero%20Junio%202022/funciones/funciones.para.distribuciones.r")
+
+```
+
+## Intervalo de confianza para media con desviación estándar de población conocida
+
+### Científico y contaminantes químicos
+
+![](images/contaminantes%20en%20comida.jfif){width="400"}
+
+Un científico interesado en vigilar contaminantes químicos en alimentos y, por lo tanto, la acumulación de contaminantes en la dieta humana, seleccionó una muestra aleatoria de $n=50$ adultos hombres.
+
+Se encontró que el promedio de ingesta diaria de productos lácteos fue de $\bar{x} = 756$ gramos por día, con una desviación estándar de s $s = 35$ gramos por día.
+
+Se debe construir un intervalo de confianza de 95% para la ingesta diaria media de productos lácteos para hombres.
+
+**¿Cuál será el intervalo de confianza al 95%?**
+
+#### Los datos
+
+```{r}
+media.m <- 756
+desv.m <- desv.p <- 35
+confianza <- 0.95
+n <- 50
+
+```
+
+#### Intervalo de confianza
+
+Se calcula el error estándar SE y margen de error ME.
+
+```{r}
+SE <- desv.p / sqrt(n)
+SE
+
+ME <- f.z.int.conf(confianza = confianza) * SE
+ME
+
+```
+
+$$
+756 \pm 9.701327
+$$
+
+Se puede tener confianza al 95% en que la estimación muestral de 756 gramos está a no más de $SE \approx 9$ gramos de la media poblacional.
+
+Se calcula el intervalo de confianza
+
+```{r}
+intervalo <- f.intervalo.confianza.z(media = media.m, desv = desv.m, confianza = confianza, n = n)
+intervalo
+```
+
+El intervalo tiene valores entre: `r intervalo[1]` y `r intervalo[2]`.
+
+#### Visualización de la distribución
+
+Identificando el valor de *z crítico*.
+
+```{r}
+z.critico <- f.z.int.conf(confianza = confianza)
+z.critico
+```
+
+```{r}
+visualize.norm(stat = c(-z.critico, z.critico), section = "tails") +
+  text(0, 0.2, paste(confianza * 100, "%", "\n", 
+                     "alfa=", (1 - confianza), "\n",  "alfa / 2 = ", 
+                     (1 - confianza) /  2, sep = ""),  col = "black")
+```
+
+### Velocidad en una calle
+
+![](images/radar_tramo__vehiculo.jpg){width="400"}
+
+Se quiere estimar la velocidad media en una calle con un límite teórico de 50km por hora.
+
+Con un radar oculto, se observó que la velocidad media de una muestra de 25 coches fue de 58km/hora. Si la desviación típica de la velocidad en esta calle es de 6km/hora,
+
+**Calcular un intervalo de 95 % de confianza para la verdadera velocidad media.**
+
+#### Los datos
+
+```{r}
+media.m <- 58
+desv.m <- desv.p <- 6
+confianza <- 0.95
+n <-25
+
+```
+
+#### Intervalo de confianza
+
+Se calcula el error estándar SE y margen de error ME.
+
+```{r}
+SE <- desv.p / sqrt(n)
+SE
+
+ME <- f.z.int.conf(confianza = confianza) * SE
+ME
+
+
+```
+
+$$
+58 \pm 2.351957
+$$
+
+Se puede tener confianza al 95% en que la estimación muestral de 58 km/h está a no más de $SE \approx 2.3$ gramos de la media poblacional.
+
+Se calcula el intervalo de confianza
+
+```{r}
+intervalo <- f.intervalo.confianza.z(media = media.m, desv = desv.m, confianza = confianza, n = n)
+intervalo
+```
+
+El intervalo tiene valores entre: `r intervalo[1]` y `r intervalo[2]`.
+
+#### Visualización de la distribución
+
+Identificando el valor de *z crítico*.
+
+```{r}
+z.critico <- f.z.int.conf(confianza = confianza)
+z.critico
+```
+
+```{r}
+visualize.norm(stat = c(-z.critico, z.critico), section = "tails") +
+  text(0, 0.2, paste(confianza * 100, "%", "\n", 
+                     "alfa=", (1 - confianza), "\n",  "alfa / 2 = ", 
+                     (1 - confianza) /  2, sep = ""),  col = "black")
+```
+
+#### 
+
+## Intervalo de confianza para media con desviación estándar de la población desconocida
+
+### Ambientalista y habitat de oso polar
+
+![](images/oso%20polar.jpg){width="400"}
+
+Un ambientalista está realizando un estudio del oso polar, especie que se encuentra en el océano Ártico y sus alrededores. Su zona de distribución está limitada por la existencia de hielo en el mar, que usan como plataforma para cazar focas, principal sostén de los osos.
+
+La destrucción de su hábitat en el hielo del Ártico, que se ha atribuido al calentamiento global, amenaza la supervivencia de los osos como especie; puede extinguirse antes de un siglo.
+
+Una muestra aleatoria de $n=50$ osos polares produjo un peso promedio de $\bar{x}= 980$ libras con una desviación estándar de $\sigma = 105$ libras.
+
+**¿Cuál será el intervalo de confianza al 95%?**
+
+#### Los datos
+
+```{r}
+media.m <- 980
+desv.m <- 105
+confianza <- 0.95
+n <- 50
+
+```
+
+#### Intervalo de confianza
+
+Se calcula el error estándar SE y margen de error ME.
+
+```{r}
+SE <- desv.m / sqrt(n)
+SE 
+
+ME <- f.t.int.conf(confianza = confianza, n = n) * SE 
+ME
+
+```
+
+$$
+980 \pm 29.84067
+$$
+
+Se puede tener confianza al 95% en que la estimación muestral de 980 libras está a no más de $SE \approx 29$ libras de la media poblacional.
+
+Se calcula el intervalo de confianza
+
+```{r}
+intervalo <- f.intervalo.confianza.t(media = media.m, desv = desv.m, confianza = confianza, n = n)
+intervalo
+```
+
+El intervalo tiene valores entre: `r intervalo[1]` y `r intervalo[2]`.
+
+#### Visualización de la distribución
+
+Identificando el valor de *t crítico*.
+
+```{r}
+t.critico <- f.t.int.conf(confianza = confianza, n = n)
+t.critico
+```
+
+```{r}
+visualize.t(stat = c(-t.critico, t.critico),  df = n-1, section = "tails") +
+  text(0, 0.2, paste(confianza * 100, "%", "\n", 
+                     "alfa=", (1 - confianza), "\n",  "alfa / 2 = ", 
+                     (1 - confianza) /  2, sep = ""),  col = "black")
+```
+
+### Pruebas de alcoholemia
+
+![](images/alcoholimetro.jpg){width="400"}
+
+En 100 pruebas de alcoholemia de conductores que han saltado (se han pasado) un semáforo en una ciudad el nivel medio de alcohol en aire era de 0.65 mg/litro con una desviación estándar típica de 0.1 mg/litro.
+
+**Hallar un intervalo de 95 % de confianza** para la verdadera nivel media de alcohol en el aire para conductores que saltan el semáforo.
+
+#### Los datos
+
+```{r}
+media.m <- 0.65
+desv.m <- 0.1
+confianza <- 0.95
+n <- 100
+
+```
+
+#### Intervalo de confianza
+
+Se calcula el error estándar SE y margen de error ME.
+
+```{r}
+SE <- desv.m / sqrt(n)
+SE 
+
+ME <- f.t.int.conf(confianza = confianza, n = n) * SE 
+ME
+
+```
+
+$$
+0.65 \pm 0.01984217
+$$
+
+Se puede tener confianza al 95% en que la estimación muestral de 0.65 está a no más de $SE \approx 0.01$ libras de la media poblacional.
+
+Se calcula el intervalo de confianza
+
+```{r}
+intervalo <- f.intervalo.confianza.t(media = media.m, desv = desv.m, confianza = confianza, n = n)
+intervalo
+```
+
+El intervalo tiene valores entre: `r intervalo[1]` y `r intervalo[2]`.
+
+#### Visualización de la distribución
+
+Identificando el valor de *t crítico*.
+
+```{r}
+t.critico <- f.t.int.conf(confianza = confianza, n = n)
+t.critico
+```
+
+```{r}
+visualize.t(stat = c(-t.critico, t.critico),  df = n-1, section = "tails") +
+  text(0, 0.2, paste(confianza * 100, "%", "\n", 
+                     "alfa=", (1 - confianza), "\n",  "alfa / 2 = ", 
+                     (1 - confianza) /  2, sep = ""),  col = "black")
+```
+
+## Función *z.test()*
+
+R dispone de la función *z.test()* para determinar entre muchas otras cosas intervalos de confianza a partir de datos de una muestra con desviación estándar de población SI conocida. Es decir, usando distribución *normal de z.*
+
+Para usar la función *z.test()* de manera especial se debe instalar el paquete "BSDA". Ejecutar *install.packages("BSDA")* , luego cargar la librería, antes de utilizar dicha función.
+
+```{r message=FALSE, warning=FALSE}
+library(BSDA)
+
+```
+
+Se utiliza un ejemplo del ejercicio del científico para investigar contaminantes en la comida y estimar intervalos de confianza a partir de una muestra de $n=50$ y de media aproximada de $756$ con desviación aproximada de $35$.
+
+### Datos
+
+Se espera tener los niveles de confianza al 90%, 95% y 99% respectivamente.
+
+Se inicializan variables.
+
+```{r}
+confianza <- c(0.90, 0.95, 0.99)
+n <- 50
+media <- 756
+desv <- 35
+```
+
+### Generando la muestra
+
+Se simula una muestra de $n=50$ de tipo normal a dos posiciones decimales alrededor de la media y la desviación establecida.
+
+```{r}
+muestra <- round(rnorm(n = n, mean = media, sd = desv),2)
+
+muestra
+
+```
+
+### Media de muestra y desviación
+
+Se determina la media y desviación estándar de los simulados a partir de la muestra.
+
+```{r}
+media.m <- mean(muestra)
+desv.m <- desv.p <- sd(muestra)
+media.m; desv.m
+
+```
+
+### Niveles de confianza
+
+Se determinan los intervalos de confianza a 90%, 95% y 99% repectivamente, primero usando *z.test()* y luego la función *f.intervalo.confianza.z()* para comparar los resultados.
+
+#### Niveles al 90%
+
+```{r}
+IC <- z.test(x = muestra, sigma.x = desv.p, conf.level = confianza[1])
+IC$conf.int
+
+```
+
+```{r}
+intervalo <- f.intervalo.confianza.z(media = media.m, desv = desv.p, confianza = confianza[1], n = n)
+intervalo
+
+```
+
+#### Niveles al 95%
+
+```{r}
+IC <- z.test(x = muestra, sigma.x = desv.p, conf.level = confianza[1])
+IC$conf.int
+
+```
+
+```{r}
+intervalo <- f.intervalo.confianza.z(media = media.m, desv = desv.p, confianza = confianza[2], n = n)
+intervalo
+
+```
+
+#### Niveles al 99%
+
+```{r}
+IC <- z.test(x = muestra, sigma.x = desv.p, conf.level = confianza[3])
+IC$conf.int
+
+```
+
+```{r}
+intervalo <- f.intervalo.confianza.z(media = media.m, desv = desv.p, confianza = confianza[3], n = n)
+intervalo
+
+```
+
+## Función *t.test()*
+
+R dispone de la función *t.test()* para determinar entre muchas otras cosas intervalos de confianza a partir de datos de una muestra con desviación estándar de población desconocida. Es decir, usando distribución *t student* .
+
+Para usar la función *t.test()*, no se requiere cargar ninguna librería, ya que forma parte de los paquetes base de R.
+
+Se utiliza un ejemplo del ejercicio del ambientalista para estimar intervalos de confianza a partir de muestra de $n=50$ y de media aproximada de $980$ con desviación aproximada de $105$
+
+### Datos
+
+Se espera tener los niveles de confianza al 90%, 95% y 99% respectivamente.
+
+Se inicializan variables.
+
+```{r}
+confianza <- c(0.90, 0.95, 0.99)
+n <- 50
+media <- 980
+desv <- 105
+```
+
+### Generando la muestra
+
+Se simula una muestra de $n=50$ de tipo normal a dos posiciones decimales alrededor de la media y la desviación establecida.
+
+```{r}
+muestra <- round(rnorm(n = n, mean = media, sd = desv),2)
+
+muestra
+
+```
+
+### Media de muestra y desviación
+
+Se determina la media y desviación estándar de los simulados a partir de la muestra.
+
+```{r}
+media.m <- mean(muestra)
+desv.m <- sd(muestra)
+media.m; desv.m
+
+```
+
+### Niveles de confianza
+
+Se determinan los intervalos de confianza a 90%, 95% y 99% repectivamente, primero usando *t.test()* y luego la función *f.intervalo.confianza.t()* para comparar los resultados.
+
+#### Niveles al 90%
+
+```{r}
+IC <- t.test(x = muestra, conf.level = confianza[1])
+IC$conf.int
+
+```
+
+```{r}
+intervalo <- f.intervalo.confianza.t(media = media.m, desv = desv.m, confianza = confianza[1], n = n)
+intervalo
+
+```
+
+#### Niveles al 95%
+
+```{r}
+IC <- t.test(x = muestra, conf.level = confianza[2])
+IC$conf.int
+
+```
+
+```{r}
+intervalo <- f.intervalo.confianza.t(media = media.m, desv = desv.m, confianza = confianza[2], n = n)
+intervalo
+
+```
+
+#### Niveles al 99%
+
+```{r}
+IC <- t.test(x = muestra, conf.level = confianza[3])
+IC$conf.int
+
+```
+
+```{r}
+intervalo <- f.intervalo.confianza.t(media = media.m, desv = desv.m, confianza = confianza[3], n = n)
+intervalo
+
+```
+
+# Interpretación
+
+Como lo menciona Mendenhall, William, Robert J. Beaver, and Barbara M. Beaver (2010), siempre se debe buscar una explicación en el texto del informe que diga si se está utilizando la desviación estándar o el error estándar en las estimaciones.
+
+Para estos ejercicios se utilizó el error estándar $SE$ para estimar los intervalos de confianza tanto para si se conoce la desviación estándar de la población como si no es conocida.\
+Para determinar y calcular los intervalos de confianza se utilizaron funciones previamente programadas que se encuentran en el enlace provisto para ello usando la función *source().*
+
+Se puede utilizar cualquier valor de nivel de confianza.
+
+# Bibliografía
