@@ -1,0 +1,23 @@
+---
+title: "prueba2"
+author: "Rubén Pizarro Gurrola"
+date: '2022-08-29'
+output: html_document
+---
+
+# Sumar dos variables
+
+Esto es un documento de prueba que estará en el documento llamado prueba2. Es una sencilla práctica que tiene el propósito de agregar texto libre a un documento markdown
+
+## Se declaran las dos variables y se suman
+
+```{r}
+var1 <- 50
+var2 <- 70
+suma <- var1 + var2
+suma
+```
+
+Se puede agregar código R, que son piezas de código ejecutable individualmente pero que son parte de todo el documento.
+
+El resultado del código se puede ver preeliminarmente en consola y en el documento markdown construído ya en formato HTML
