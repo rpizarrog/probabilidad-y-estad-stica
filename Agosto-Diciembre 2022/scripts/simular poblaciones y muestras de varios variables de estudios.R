@@ -58,3 +58,39 @@ muestra.num.materias
 media.muestra.num.materias <- mean(muestra.num.materias)
 media.muestra.num.materias
 
+
+# Simular datos de aves
+# edad: de 2 a 4 años
+# peso: de 1 a 2 kgs.
+# color: NEGRO, GRIS, BLANCO
+# long.pico: 1 a 3 cms. 
+# long.ala: 10 a 15 cms
+
+# Muestras representativas  de aves 1000
+ave.edad <- sample(x = 2:4, size = 1000, 
+                   replace = TRUE)
+ave.edad
+
+ave.peso <- sample(x = 1:2, size = 1000, 
+               replace = TRUE)
+ave.peso
+
+ave.color <- sample(x = c("NEGRO", "GRIS", "BLANCO"), size = 1000, 
+                    replace = TRUE)
+ave.color
+
+ave.long.pico <- sample(x = 1:3, size = 1000, 
+                               replace = TRUE)
+ave.long.pico
+
+ave.long.ala <- sample(x = 10:15, size = 1000, 
+                       replace = TRUE)
+ave.long.ala
+
+datos.aves <- data.frame(ave.edad, ave.peso, 
+                         ave.color, ave.long.ala,
+                         ave.long.pico)
+datos.aves
+
+
+
