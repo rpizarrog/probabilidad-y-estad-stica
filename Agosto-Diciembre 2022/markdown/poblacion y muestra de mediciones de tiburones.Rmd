@@ -1,0 +1,51 @@
+---
+title: "poblacion y muestra de mediciones de tiburones"
+author: "Rubén Pizarro Gurrola"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Objetivo
+
+Simular población y muestra de mediciones de longitud de tiburones y determinar parámetro media y estadístico media
+
+# Descripción
+
+Se simula mediciones de longitud de tiburones que está entre 4 a 7 metros
+
+# Crear una poblacion
+
+Se utiliza la función *sample*() para generar la población
+
+Se utiliza la función *head*() para mostrar los primeros cien registros para no mostrar los 750000 (setescientos cincuenta mil)
+
+```{r}
+
+poblacion <- sample(x = 4:7, size = 750000, replace = TRUE)
+head(poblacion, 1000)
+```
+
+Determinar media de la pobacion
+
+```{r}
+media.p <- mean(poblacion)
+media.p
+```
+
+# Crear una muestra
+
+```{r}
+muestra <- sample(x = poblacion, size = 100)
+muestra
+```
+
+# Determinar media de la muestra
+
+```{r}
+media.m <- mean(muestra)
+media.m
+```
+
+# Interpretación
+
+El valor del parámetro de la media poblacional es similar al estadístico de la media muestral
