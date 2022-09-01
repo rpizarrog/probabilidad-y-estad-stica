@@ -36,3 +36,25 @@ muestra.califica
 media.muestra.califica <- mean(muestra.califica)
 media.muestra.califica
 
+
+# Otro ejempl NUMERO DE MATERIAS QUE CURSAN LOS ALUMNOS
+# EN UN RANGO DE 3 A 7
+pob.num.materias <- sample(x = 3:7, size = 6600, 
+                             replace = TRUE)
+pob.num.materias
+
+# Algunas veces la media si arroja valores reales
+# no significa nada porque la realidad es que son valores enteros
+# Se redeondea con la función round() o se puede dejar con valores reales
+# depende del signiicado de los datos y de la interpretación
+media.num.materias <- mean(pob.num.materias)
+media.num.materias
+
+# muestra número de materias
+
+muestra.num.materias <- sample(x = pob.num.materias, size = 660)
+muestra.num.materias
+
+media.muestra.num.materias <- mean(muestra.num.materias)
+media.muestra.num.materias
+
