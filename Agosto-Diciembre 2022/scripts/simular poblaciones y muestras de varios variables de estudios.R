@@ -93,4 +93,19 @@ datos.aves <- data.frame(ave.edad, ave.peso,
 datos.aves
 
 
+# Estadísticos de la muestra
+media.ave.long.ala <- mean(ave.long.ala)
+media.ave.long.ala
+
+media.ave.long.pico <- mean(ave.long.pico)
+media.ave.long.pico
+
+
+# INTERPRETCION
+# El valor estadístico de la longitud de ala de la 
+# muestra de 1000 palomas es de 12.45 cms.
+# El valor estadístico de la longitud de pico de la 
+# muestra de 1000 palomas es de 1.972 cms.
+
+
 
