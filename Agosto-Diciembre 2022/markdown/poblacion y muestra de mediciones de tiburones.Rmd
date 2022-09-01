@@ -2,7 +2,12 @@
 title: "poblacion y muestra de mediciones de tiburones"
 author: "Rubén Pizarro Gurrola"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
 ---
 
 # Objetivo
@@ -11,17 +16,17 @@ Simular población y muestra de mediciones de longitud de tiburones y determinar
 
 # Descripción
 
-Se simula mediciones de longitud de tiburones que está entre 4 a 7 metros
+Se simula mediciones de longitud de tiburones que está entre 3 a 7 metros.
 
-# Crear una poblacion
+# Crear una población
 
-Se utiliza la función *sample*() para generar la población
+Se utiliza la función *sample*() para generar la población de 750000 (setescientos cincuenta mil) tiburones que hay en el oceano.
 
-Se utiliza la función *head*() para mostrar los primeros cien registros para no mostrar los 750000 (setescientos cincuenta mil)
+Se utiliza la función *head*() para mostrar los primeros mil registros para no mostrar los 750000 (setescientos cincuenta mil)
 
 ```{r}
 
-poblacion <- sample(x = 4:7, size = 750000, replace = TRUE)
+poblacion <- sample(x = 3:7, size = 750000, replace = TRUE)
 head(poblacion, 1000)
 ```
 
@@ -33,6 +38,8 @@ media.p
 ```
 
 # Crear una muestra
+
+Se construye una muestra de 100 datos de las medidas de longitud de los tiburones de la a partir de la población.
 
 ```{r}
 muestra <- sample(x = poblacion, size = 100)

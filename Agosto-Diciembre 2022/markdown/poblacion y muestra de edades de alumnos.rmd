@@ -1,0 +1,43 @@
+---
+title: "Población y muestra de edades de alumnos"
+author: "Rubén Pizarro Gurrola"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Objetivo
+
+Lo que sea
+
+# Descripción 
+
+Lo que sea
+
+# Crear una poblacion
+
+```{r}
+
+poblacion <- sample(x = 18:25, size = 5600, replace = TRUE)
+poblacion
+```
+
+Determinar media de la pobacion 
+```{r}
+media.p <- mean(poblacion)
+media.p
+```
+
+
+# Crear una muestra
+```{r}
+muestra <- sample(x = poblacion, size = 560)
+muestra
+```
+
+
+# Determinar media de la muestra
+```{r}
+media.m <- mean(muestra)
+media.m
+```
+
