@@ -1,0 +1,305 @@
+---
+title: "Caso 5. Espacio muestral"
+author: "Rubén Pizarro Gurrola"
+date: "1/3/2022"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+Crear eventos a partir de un espacio muestral de alumnos.
+
+# Descripción
+
+-   Se crea un espacio muestral de alumno llamando una función que se encuentra en la dirección de *github.com*
+
+-   Se carga ejecutando la función
+
+-   Se describen los datos con summary()
+
+-   Se crean algunos eventos relativos al espacio muestral
+
+# Fundamento teórico
+
+Al hacer diseños experimentales, estudios observacionales y estudios retrospectivos, el resultado final es un conjunto de datos que, por supuesto, está sujeto a la incertidumbre.
+
+Aunque sólo uno de ellos tiene la palabra experimento en su descripción, el proceso de generar los datos o el proceso de observarlos forma parte de un experimento. [@walpole2012].
+
+El espacio muestral se define con una literal matemática $S$e implica el conjunto de todos los resultados posibles de un experimento estadístico se le llama El espacio muestral y se representa con el símbolo S. [@mendenhall2010].
+
+A cada resultado en un espacio muestral se le llama elemento o miembro del espacio muestral, o simplemente punto muestral. Si el espacio muestral tiene un número finito de elementos, podemos listar los miembros separados por comas y encerrarlos entre llaves.
+
+La imagen siguiente identifica que el resultado de un experimento es el espacio muestral a partir de ahí se puede construir eventos que se utilizan para calcular probabilidades.
+
+![](images/experimento%20espacio%20muestral%20eventos%20y%20probabilidades.png){width="400"}
+
+Por consiguiente, el espacio muestral $S$, es el conjunto de los resultados posibles o eventos.
+
+Cuando se lanza una moneda al aire, se puede escribir como:
+
+$$
+S = \text{{'aguila', 'sello'}}
+$$
+
+Por ejemplo si se construye todo el espacio muestral de tirar un solo dado y conocer las posibles resultados de los puntos que se ven cara arriba del dado, sería que un dado puede caer 1, 2, 3, 4, 5 o 6 entonces. Los valores del 1 al 6 son los puntos muestrales de $S$.
+
+$$
+S = {1, 2, 3, 4, 5, 6}
+$$
+
+Los espacios muestrales con un número grande o infinito de puntos muestrales se describen mejor mediante un enunciado o método de la regla.
+
+Por ejemplo, si el conjunto de resultados posibles de un experimento fuera el conjunto de ciudades en el mundo con una población de más de un millón de habitantes, nuestro espacio muestral se escribiría como:
+
+$$
+S = \text{x | x ciudades con pobación de mas de un millón de habitantes}
+$$
+
+Se lee: $S$ es el conjunto de todas las x's, tales que x es una ciudad con una población de más de un millón de habitantes.
+
+Ahora bien, el concepto de eventos tiene que ver con un conjunto de puntos muestrales. Evento es un subconjunto de todo el espacio muestral.
+
+De tal forma que en el caso del experimento de tirar un dado, el espacio muestral
+
+Puede tener tal vez tres eventos en los que le interese al investigador:
+
+E2, los números impares, es decir los nones o que no son pares.
+
+Entonces, se pueden identificar ciertos eventos del espacio muestral.
+
+E1: Los alumnos con promedio mayor a 85
+
+E2: Los alumnos del género femenino
+
+E3: Los alumnos de la carrera de sistemas o de otra carrera;
+
+E4: Los alumnos con peso igual o superior a 80 kgs ;
+
+Los eventos E1, E2, E3, E4 y cualquier otro evento siendo subconjuntos de todo el espacio muestral contienen puntos muestrales o elementos, que sirven para concluir con algunas ideas, además, estos eventos pueden combinarse unos con otros de tal forma que pueden conformar otros eventos o conjuntos y enriquecer aún más las ideas concluyentes.
+
+# Desarrollo
+
+## Función which()
+
+Antes de ver algunos ejemplos se recomienda entender la función *which()* que se utiliza para determinar posiciones de un vector bajo una expresión de comparación. Luego esas posiciones sirven para acceder a los elementos de un vector.
+
+Se presenta un ejercicio para probar la función *which()*.
+
+La función *which()* devuelve la posición o *índice (index) de un elemento dentro de un vector*, ejemplo, se tienen 12 números:
+
+|   1    |  2  |  3  |  4  | **5**  | **6**  |  7  | **8**  |  9  | 10  | 11  | 12  |
+|:------:|:---:|:---:|:---:|:------:|:------:|:---:|:------:|:---:|:---:|:---:|:---:|
+| **30** | 40  | 50  | 60  | **20** | **10** | 40  | **20** | 50  | 40  | 60  | 50  |
+
+Sólo las posiciones 1, 5, 6 y 8 tienen valores por debajo de 40 que equivalen a 30, 20, 10 y 20 respectivamente.
+
+Con la función *which()* se encuentran las posiciones de ese vector y luego haciendo uso de [posiciones] se encuentran los valores que están por debajo de 40.
+
+```{r}
+numeros <- c(30,40,50,60,20,10,40,20,50,40,60,50)
+numeros
+n <- length(numeros)
+
+```
+
+## Posiciones y valores con which()
+
+```{r}
+posiciones <- which(numeros < 40)
+paste("Las posiciones o índices (index)")
+posiciones
+numeros[posiciones]
+
+```
+
+## Espacios muestrales
+
+Se construye espacios muestrales y alguno eventos respectivos de experimentos de lanzar un dado y de contar alumnos inscritos en una institución de educación superior.
+
+### Dados
+
+![](images/dado%20%20DEL%201%20AL%206.jpg){width="400"}
+
+El espacio muestral de tirar un dado y sus seis posibles valores que pueda caer.
+
+```{r}
+S <- c(1,2,3,4,5,6)
+S
+```
+
+#### Evento pares
+
+Regresando al caso del dado. Con esa misma función *which()* se construyen los eventos para el caso de un solo dado.
+
+El operador *%in%* evalúa si los valores de S están en el vector *c(2,4,5)*. Con la función *paste()* se muestra el mensaje.
+
+```{r}
+pares <- S[which(S %in% c(2, 4, 6))]
+pares
+
+paste("Los números pares ")
+paste(pares)
+
+paste("Existen ", length(pares), " puntos muestrales del total de ", length(S) , " que tiene S")
+```
+
+#### Evento nones
+
+El operador *%in%* evalúa si los valores de S están en el vector *c(1,3,5)*. Con la función *paste()* se muestra el mensaje.
+
+```{r}
+nones <- S[which(S %in% c(1, 3, 5))]
+paste("Los números impares ")
+paste(nones)
+
+paste("Existen ", length(nones), " puntos muestrales del total de ", length(S) , " que tiene S")
+```
+
+#### Evento menores a 4
+
+El operador \< evalúa si los valores de S están por debajo de cuatro.
+
+```{r}
+menor.cuatro <- S[which(S < 4)]
+menor.cuatro
+
+paste(menor.cuatro)
+paste("Existen ", length(menor.cuatro), " puntos muestrales del total de ", length(S) , " que tiene S")
+
+paste("Existen ", length(menor.cuatro), " puntos muestrales del total de ", length(S) , " que tiene S")
+
+```
+
+### Alumnos
+
+![](images/alumnos%20universitarios-01.jpg){width="400"}
+
+Crear espacio muestral alumnos
+
+$$
+S = alumnos = \text{{x | x son estudiantes inscritos en una institución educativa de nivel superior}}
+$$
+
+#### Cargar la función
+
+Se carga la función que se encuentra en *github.com*
+
+```{r}
+source("https://raw.githubusercontent.com/rpizarrog/Probabilidad-y-EstadIstica-VIRTUAL-DISTANCIA/main/funciones/funcion%20crea%20alumnos.r") 
+```
+
+#### Crear data.frame alumnos
+
+Se crea un conjunto de datos en un *data.frame* llamado alumnos.
+
+```{r}
+alumnos <- genAlumnos(10000, 2022)
+
+```
+
+##### Factorizar alumnos
+
+Factorizar significa categorizar variables que son de tipo *character* o textos y se puede utilizar para identificar frecuencias con datos *character* y/o tipo factor con la función *summary()*.
+
+Utilizar la función *as.factor()* para factorizar o categorizar en estadística y en el ámbito de ciencia de los datos significa limpiar datos, transformar datos y preparar datos para realizar análisis posteriores.
+
+```{r}
+alumnos$matricula <- as.factor(alumnos$matricula)
+alumnos$carrera <- as.factor(alumnos$carrera)
+alumnos$genero <- as.factor(alumnos$genero)
+
+```
+
+#### Mostrar diez registros iniciales
+
+```{r}
+head(alumnos, 10)
+```
+
+#### Mostrar diez registros finales
+
+```{r}
+tail(alumnos, 10)
+```
+
+#### Estructura de los datos
+
+*str()* muestra la estructura de los datos.
+
+```{r}
+str(alumnos)
+```
+
+#### Describir los datos
+
+La función *summary()* identifica los principales estadísticos descriptivos de los datos.
+
+```{r}
+summary(alumnos)
+```
+
+### Eventos de alumnos
+
+Se crean los eventos de alumnos
+
+#### Alumnos de una carrera 'SISTEMAS'
+
+Con la función *subset()* se filtran o selecconan registros con una condición dada.
+
+Con la función *nrow()* se determinan la cantidad de registros de sistemas. *nrow()* actúa sobre un *data.frame* y *lenght()* sobre un vector.
+
+```{r}
+sistemas <- subset(alumnos, carrera == 'SISTEMAS')
+nrow(sistemas)
+summary(sistemas)
+
+```
+
+#### Evento femeninos
+
+```{r}
+femeninos <- subset(alumnos, genero == 'F')
+
+summary(femeninos)
+```
+
+#### Evento masculinos
+
+```{r}
+masculinos <- subset(alumnos, genero == 'M')
+
+summary(masculinos)
+```
+
+# Interpretación
+
+Se simulan dos experimentos: el primero es tirar un dado y se identifica su espacio muestral y el segundo es los estudiantes que son espacio muestral de alumnos inscritos.
+
+Se construyeron espacios muestrales de dados siendo 6 los puntos muestrales del dado y 5000 de alumnos
+
+A partir de los espacios muestrales se construyeron eventos
+
+El espacio muestral del dado su estructura es un vector y el espacio muestral de alumnos la estructura es un data.frame.
+
+**Modificar con una valor de 10000 alumnos** $n$ **del espacio muestral y semilla de 2022 conteste lo siguiente:**
+
+-   ¿Cuántos alumnos son del género Femenino y en qué porcentaje %?. Salieron F:4981 y representa 49.81%.
+
+-   ¿Cuántos alumnos son del género Masculino y en qué porcentaje %? 5019 y representa el 50.19%
+
+-   ¿Cuántos alumnos tiene promedio mayor que 92 y en qué porcentaje %?
+
+-   ¿Cuántos alumnos son de la carrera de SISTEMAS y en qué porcentaje?, Son SISTEMAS :793 y represena el 7.93%
+
+-   ¿Hay más alumnos de SISTEMAS o de CIVIL? Hay mas de sistemas 793 con respecto a los de civil que son 728.
+
+-   ¿Cuántos alumnos están por encima del 180 cms? 2559 alumnos miden mas de 18 cms. y representan el 25.59%
+
+# Bibliografía
