@@ -1,5 +1,6 @@
 # Algunas funciones para variables discretas
 f.discretas.ve.v.sd <- function(casos) {
+  library(ggplot2)
   # Inicializando valores
   n <- sum(casos)
   x = 0:(length(casos) - 1)
@@ -20,6 +21,11 @@ f.discretas.ve.v.sd <- function(casos) {
   varianza <- sum(x_menos_VE.CUAD.prob_x)
   desv.std <- sqrt(varianza)
 
+
+  # Grafica
+  plot <- ggplot(mpg, aes(displ, hwy, colour = class)) +
+          geom_point()
+
   tabla <- data.frame(x, casos, prob_x,
                       acumulado, x.prob_x,
                       VE,
@@ -27,8 +33,10 @@ f.discretas.ve.v.sd <- function(casos) {
                       x_menos_VE.CUAD.prob_x
                       )
   estadisticos <- list(tabla = tabla, x = x, N = n,
-                       VE = VE, varianza = varianza, desv.std = desv.std)
+                       VE = VE, varianza = varianza, desv.std = desv.std, plot)
 
   estadisticos
+
+  return(plot)
 
 }
