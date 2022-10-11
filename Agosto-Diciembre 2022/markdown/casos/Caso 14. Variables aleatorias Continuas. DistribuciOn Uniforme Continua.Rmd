@@ -1,0 +1,874 @@
+---
+title: "Caso 14. Variables aleatorias Continuas. Distribución Uniforme Continua"
+author: "Rubén Pizarro Gurrola"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+bibliography: references.bib
+---
+
+# Objetivo
+
+Identificar variables aleatorias continuas y calcular la función de densidad y probabilidades con la **distribución de probabilidad uniforme.**
+
+# Descripción
+
+Realizar ejercicios del uso de variables continuas mediante la distribución de probabilidad uniforme.
+
+# Fundamento teórico
+
+Una diferencia fundamental entre las variables aleatorias discretas y las variables aleatorias continuas es cómo se calculan las probabilidades.
+
+En las variables aleatorias discretas la función de probabilidad $f(x)$ da la probabilidad de que la variable aleatoria tome un valor determinado.
+
+En las variables aleatorias continuas, la contraparte de la función de probabilidad es la función de densidad de probabilidad, que también se denota $f(x)$.
+
+Cuando se calculan probabilidades de variables aleatorias continuas se calcula la probabilidad de que la variable aleatoria tome alguno de los valores dentro de un intervalo.
+
+La diferencia está en que la **función de densidad de probabilidad no da probabilidades directamente**. Si no que el **área bajo la curva de** $f(x)$ que corresponde a un intervalo determinado proporciona la probabilidad de que la variable aleatoria tome uno de los valores de ese intervalo[@anderson_estadistica_2008].
+
+Siempre que una probabilidad sea proporcional a la longitud del intervalo, la variable aleatoria estará distribuida uniformemente [@anderson_estadistica_2008].
+
+Como en cualquier punto determinado el área bajo la gráfica de $f(x)$ es cero, una de las consecuencias de la definición de la probabilidad de una variable aleatoria continua es que la probabilidad de cualquier valor determinado de la variable aleatoria es cero.
+
+Se toma el ejemplo de variable continua de estaturas de personas:
+
+![](images/estaturas%20personas.jpg)
+
+La variable aleatoria estatura se considera continua por dos razones: tiene valores de números reales, es decir, una persona puede medir $\text {196.23 cm.}$ o una persona puede medir $\text{196.30 cm. o 151.32 cm}$.
+
+La otra razón del porqué considerarla como variable continua es porque es muy difícil encontrar a una persona que exactamente mida $\text{162.35 cm.}$ Sería muy difícil por eso se menciona que la $\text{P(x=1.62.35) es igual a 0}$.
+
+Sin embargo la idea de las variables aleatorias es encontrar probabilidades de un determinado rango por ejemplo la probabilidad de encontrar personas con una estatura de entre $\text{150 y 170}$; si de una muestra de $100$ personas hay $20$ personas que estén dentro de este rango entonces la probabilidad es del $20\%$.
+
+En la siguiente imagen, se presenta una distribución de una variable aleatoria continua, por ejemplo, el peso en kgs. de algún producto que se tiene que enviar por servicio de paquetería.
+
+![](images/area%20bajo%20la%20curva%20de%20variables%20continuas.png)
+
+El rango de toda la población sería entre 10 y 60 kgs aproximadamente. Se observa de manera muy general en la imagen que el valor de la media $μ$ del producto es entre $\text{36 o 37}$, tal vez $\text{36.5, o 36.7}$. El área total en color azul vale el $100\%$.
+
+La idea de la variable aleatoria continua es determinar cuál es la probabilidad de un intervalo, por ejemplo de entre $\text{30 y 35 kgs.}$ o de cuál es la probabilidad de una variable continua que está entre $\text{34 y 38}$. Esto se observa en la siguiente figura.
+
+![](images/areas%20bajo%20la%20curva%20dos%20areas.jpg)
+
+Sin embargo no todas las variables continuas tienen una representación como la curva en forma de campana, es posible encontrarlas como un rectángulo tal como se observa en la figura siguiente:
+
+![](images/variables%20continuas%20con%20rectangulos.jpg)
+
+Se puede deducir que lo que se busca en términos de probabilidad es cuánto vale el área en el intervalo $c1$ y $c2$ y también tal vez el área bajo la curva (rectángulo) $d1$ y $d2$, si toda el área vale el 100%.
+
+## Ejemplo de variable continua en R
+
+### Tabla de distribución
+
+Ejemplo extraído de: [@quintela2019], se debe instalar la librería "*pander*". *install.packages("pander") y xtable install.packages("xtable").*
+
+```{r message=FALSE, warning=FALSE}
+# install.packages("pander")
+# install.packages("xtable")
+library(pander)
+library(xtable)
+numeros=c(2,3,4,4.5,4.5,5.6,5.7,5.8,6,6.1,6.5,7,7,
+    7,7.5,7.5,7.5,8.3,9,10.2,10.4,11,11.1,11.5,12,13)
+div<-table(cut(numeros,breaks=7))
+tabla1 <- data.frame(div)
+names(tabla1) <- c("Intervalos", "Frecuencias ($n_i$)" )
+x<- xtable(tabla1)
+pander(x)
+```
+
+Esta clasificación o tabla de distribución representa el número de datos que hay en cada intervalo. El indicar los intervalos de la forma $(a,b]$ indica que el dato $a$ no se cuenta en este intervalo, y sí se cuenta el dato $b$.
+
+Como alternativa, se puede emplear otro paquete llamado *fdth* utilizado en casos anteriores para representar tablas de distribución, generando intervalos o clases similares.
+
+```{r message=FALSE, warning=FALSE}
+library(fdth)
+tabla2 <- fdt(numeros, k = 7)
+tabla2
+```
+
+### Histograma
+
+El gráfico para representar una variable continua con sus clases y sus frecuencia es el histograma.
+
+Enla instrucción *geom_histogram(aes(x = numeros), bins = 7)*, se representa el histograma en donde el argumento *bins* representa los cortes y *numeros* son los valores de la variable aleatoria continua inicialziada con anticipación.
+
+```{r}
+library(ggplot2)
+ggplot() +
+  geom_histogram(aes(x = numeros), bins = 7)
+```
+
+### La densidad
+
+Los conceptos de variable aleatoria continua y de función de densidad se definen a partir de la noción de probabilidad. Como una mera aproximación, se dice que la función de densidad sería el polígono de frecuencias que se construiría si se tuviese un conjunto infinito de datos.
+
+En este caso, el polígono tendría la forma de una función matemática continua y derivable.
+
+$$
+\hat{f}_{h}(x_0)=\dfrac{1}{nh}\sum_{i=1}^{n}K\left( \dfrac{x_0-x_{i}}{h}
+\right)
+$$
+
+$K$ es una función (llamada *núcleo* o **kernel**) continua y derivable, y $h$ es un parámetro llamado *ventana* (**bandwidth**), que ejerce un papel equivalente al del ancho de los intervalos en el histograma (o, equivalentemente, el número de intervalos). Se presenta el gráfico de densidad
+
+```{r}
+ggplot() +
+  geom_density(aes(x = numeros), col= 'blue') 
+  
+  
+```
+
+o bien convirtiendo las variable *numeros* a un *dataframe* y dibujando el histograma con la densidad al mismo tiempo y definiendo el ancho de clase a partir de *tabla2*\$breaks[3] que sería como restar $3.5729 - 1.98 = 1.5929$ el valor de la primera clase en la *tabla2,* o la resta de los intervalos de cualquier otra clase en la propia tabla.
+
+```{r}
+bw <- tabla2$breaks[3]
+datos <- data.frame(x = numeros) 
+ggplot(data = datos, aes(x = x)) +
+    geom_histogram(aes(y = ..density..), binwidth = bw, fill = "grey") +
+    geom_density(col='blue') 
+```
+
+## Distribución de probabilidad uniforme
+
+La **distribución uniforme continua** es una familia de distribuciones de probabilidad para variables aleatorias continuas, tales que para cada miembro de la familia, todos los intervalos de igual longitud en la distribución en su rango son igualmente probables. El dominio está definido por dos parámetros, $a$ y $b$, que son sus valores mínimo y máximo respectivamente.
+
+La distribución o modelo uniforme puede considerarse como proveniente de un proceso de extracción aleatoria .El planteamiento radica en el hecho de que la probabilidad se distribuye uniformemente a lo largo de un intervalo . Así : dada una variable aleatoria continua, $x$ , definida en el intervalo $[a,b]$ de la recta real, se dice que $x$ tiene una distribución uniforme en el intervalo $[a,b]$.
+
+### Función de densidad de distribución de probabilidad uniforme
+
+$$
+f(x) = 
+\begin{cases}
+\frac{1}{b-a} &,\, \text{para }a\leq x \leq b ,\\
+0&,\, \text{en cualquier otro caso }
+\end{cases}
+$$
+
+La gráfica de esta función, conocida como *curva o función de densidad,* es un rectángulo, por ello la distribución uniforme continua se conoce también como *distribución rectangular* y es la más simple de las distribuciones continuas. [@lifeder]
+
+![](images/funcion%20de%20densidad%20distribucion%20uniforme.jpg)
+
+### Función de probabilidad F(x)
+
+Para calcular probabilidades se puede determinar a función de la distribución $F(X)$ o lo que es lo mismo la Función Acumulada de probabilidad de la distribución uniforme con la siguiente fórmula:
+
+$$
+F(x) = \begin{cases}0; \text{ para }x \le a \\\frac{x-a}{b-a} \text{ para } a\le x \le b \\1 ; \text{ para }  x >b
+\end{cases}
+$$
+
+La probabilidad únicamente depende del valor de $(x-a)$
+
+En donde:
+
+-   $F(x)$es la función de distribución o función de probabilidad acumulada
+
+-   $x$ es la variable aleatoria uniforme
+
+-   $a$ y $b$ son los valores del intervalo mínimo y máximo respectivamente.
+
+### Valor Esperado
+
+El cálculo del valor esperado y de la varianza de una variable aleatoria continua es análogo al de una variable aleatoria discreta. Sin embargo, como en este caso interviene el cálculo integral la deducción de estas fórmulas queda fuera de los ejercicios de este caso.
+
+$$E(x) = \frac{(a+b)}{2}$$
+
+### Varianza
+
+$$Var(x) = \frac{(b-a)^2}{12}$$
+
+### Desviación
+
+$$\alpha = \sqrt{Var(x)}$$
+
+# Desarrollo
+
+## Cargar librerías
+
+-   Posiblemente se utilicen algunas de ellas
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+library(dplyr)
+library(knitr)
+options(scipen = 999) # Notación normal
+```
+
+Cargar funciones preparadas de las cuales interesa una función para visualizar gráficas de distribuciones uniformes *plotunif()*.
+
+```{r}
+# source ("https://raw.githubusercontent.com/rpizarrog/Trabajos-en-R-AD2021/main/funciones/funciones.para.distribuciones.r")
+```
+
+## Densidad en R
+
+Con R, se puede determinar las probabilidades de la distribución uniforme calculando el área bajo el rectángulo haciendo las operaciones siguientes:
+
+$$
+prob = (b - a) \times f.dens(x)  
+$$
+
+siempre y cuando se haya determinado el valor de la densidad *f.dens* que es precisamente la altura del rectángulo.
+
+o utilizar la función *dunif()* para calcular la densidad del área
+
+$$
+prob = (b-a) \times dunif(x = a:b, min = min, max = max)
+$$
+
+[@rcoder]
+
+o bien por medio de la función *punif()* que calcula y encuentra la probabilidad acumulada $\frac{x-a}{b-a}$
+
+$$
+prob = punif(q=\text{vector de valores}, min = min.intervalo, max=max.intervalo)  
+$$
+
+## Solución de ejercicios
+
+Se identifican ejercicios de distribución de probabilidad uniforme.
+
+### Vuelo de un avión
+
+![](images/vuelo%20Chicago%20NY.jfif){width="400"}
+
+Considere una variable aleatoria $x$ que representa el tiempo de vuelo de un avión que viaja de Chicago a Nueva York. Suponga que el tiempo de vuelo es cualquier valor en el intervalo de 120 minutos a 140 minutos [@anderson_estadistica_2008].
+
+Dado que la variable aleatoria $x$ toma cualquier valor en este intervalo, $x$ es una variable aleatoria **continua** y no una variable aleatoria discreta.
+
+Hay que razonar que se cuenta con datos suficientes como para concluir que la probabilidad de que el tiempo de vuelo esté en cualquier intervalo de 1 minuto es el mismo que la probabilidad de que el tiempo de vuelo esté en cualquier otro intervalo de 1 minuto dentro del intervalo que va de 120 a 140 minutos.
+
+Como cualquier intervalo de 1 minuto es igual de probable, se dice que la variable aleatoria $x$ tiene una **distribución de probabilidad uniforme** [@anderson_estadistica_2008].
+
+#### Función de densidad
+
+La función de densidad de la distribución uniforme se calcula mediante al fórmula y ésta como tal no da la probabilidad, pero sirve para obtener la probabilidad determinando el área bajo la curva.
+
+Tratándose de una distribución uniforme el área bajo la curva es la parte proporcional del rectángulo.
+
+La variable *f.dens* que se utiliza, es la función de densidad o la altura del rectángulo.
+
+```{r}
+a.min <- 120
+b.max <- 140
+f.dens <- 1 / (b.max -a.min) # Es la altura
+```
+
+```{=tex}
+\newcommand{\a}{`r a.min`}
+\newcommand{\b}{`r b.max`}
+\newcommand{\resta}{`r b.max - a.min`}
+```
+$$
+f(x) = 
+\begin{cases}
+\frac{1}{`r b.max`-`r a.min`}=\frac{1}{`r b.max - a.min`} &,\, \text{para }`r a.min`\leq x \leq `r b.max`,\\
+0&,\, \text{en cualquier otro caso }
+\end{cases}
+$$
+
+Se inicializan y utilizan las variables *a.min* y *b.max* como coordenadas de x, y, y la altura que es la función de densidad previamente calculada.
+
+```{r}
+altura <- f.dens
+x <- c(a.min, b.max) # 120, 140
+ y <- c(altura, altura) # 0.5, 0.5
+datos <- data.frame(x, y)
+datos
+```
+
+Se muestra el área bajo la curva usando *geom_area()* en la función *ggplot()* en programación R.
+
+```{r}
+ggplot(data = datos, aes(x,y )) +
+  geom_area(fill = "lightblue") +
+  xlim(100, 160) +
+  ggtitle(label = "Distribución uniforme continua", subtitle = paste("f(x) = ",f.dens))
+```
+
+#### ¿Cuál es la probabilidad de que el tiempo de vuelo se encuentre entre **120** y **130** minutos?
+
+-   ¿cuál es $P(120 \leq x \leq 130)$?
+
+-   La $P(120 \leq x \leq 130) = 0.50$
+
+##### Gráfica del área bajo el rectángulo con *plotunif()* y *unif_area()*
+
+##### Densidad 120-140
+
+```{r}
+ggplot(datos) + 
+  geom_area(aes(x = x, y = y),
+            fill = 'lightblue') +
+  xlim(100, 160) +
+  ggtitle(label = "Distribución uniforme continua", subtitle = paste("f(x) = ",f.dens))
+```
+
+##### Densidad 120-130
+
+Se agregan nuevas coordenadas para el rectángulo de color rosa
+
+```{r}
+datos <- cbind(datos, x2=c(120,130), y2=y)
+datos
+```
+
+```{r}
+ggplot(datos) + 
+  geom_area(aes(x = x, y = y),
+            fill = 'lightblue') +
+  geom_area(aes(x = x2, y = y2),
+            fill = 'pink') +
+  xlim(100, 160) +
+  ggtitle(label = "Distribución uniforme continua", subtitle = paste("f(x) = ",f.dens))
+```
+
+Se busca saber cual es la densidad de el área de color rosa
+
+##### Solución aritmética
+
+Para encontrar la probabilidad de vuelo entre 130 y 120 es encontrar el área bajo la curva (el rectángulo en la distribución uniforme).
+
+Si el área total de manera uniforme en un intervalo de 120 a 140 es es 0.05, entonces en un intervalo de 120 a 130 es la mitad del área.
+
+La variable *altura* es igual al valor de la función de densidad en la distribución uniforme, las variables a y b son los valores del nuevo intervalo que por supuesto están dentro del intervalo original de 120 y 140.
+
+Esta área es rectangular y el área de un rectángulo es simplemente el ancho multiplicado por la altura. Si el ancho del intervalo es igual a $130 - 120 = 10$ y la altura es igual al valor de la función de densidad de probabilidad $$f(x) = 1/20=0.05$$, se tiene, $$ área = ancho \times alto $$ entonces, $$10 \times (\frac{1}{20}) = 10 \times 0.05 = .50$$. [@anderson_estadistica_2008].
+
+```{r}
+a <- 120
+b <- 130
+prob.x <- (b-a) * f.dens 
+paste("La probabilidad de que el tiempo de vuelo se encuentre entre ", a , " y ", b, " minutos es del:", prob.x * 100, "%")
+```
+
+##### Solución por medio de la función de densidad dunif()
+
+Da el mismo resultado que usando la solución aritmética encontrando el área del rectángulo correspondiente.
+
+```{r}
+prob.x <- (b - a) * dunif(x = a, min = a.min, max = b.max) 
+prob.x
+```
+
+##### Solución por medio de la función de probabilidad *punif()*
+
+Significa las probabilidad de que el vuelo tarde menos que $130$ minutos o lo que es lo mismo que esté entre $120$ y $130$ minutos
+
+```{r}
+punif(q = 130, min = 120, max = 140) - punif(q = 120, min = 120, max = 140)
+```
+
+o de conforme a la fórmula de la probabilidad acumulada.
+
+$prob = \frac{x-a}{b-a}$
+
+```{r}
+prob <- (130 - 120) / (140-120)
+prob
+```
+
+#### ¿cuál es la probabilidad de un tiempo de vuelo entre 128 y 136 minutos?
+
+-   ¿cuál es $P(128 \leq x \leq 136)$?
+-   La $P(128 \leq x \leq 136) = 0.40$
+
+##### Solución aritmética
+
+```{r}
+a <- 128
+b <- 136
+prob.x <- altura * (b-a)
+prob.x
+paste("La probabilidad de que el tiempo de vuelo se encuentre entre ", a , " y ", b, " minutos es del:", prob.x * 100, "%")
+```
+
+```{r}
+x2 <- c(a, b)
+y2 <- c(altura, altura)
+datos$x2 <- x2
+datos$y2 <- y2
+datos
+```
+
+```{r}
+ggplot(datos) + 
+  geom_area(aes(x = x, y = y),
+            fill = 'lightblue') +
+  geom_area(aes(x = x2, y = y2),
+            fill = 'pink') +
+  xlim(100, 160) +
+  ggtitle(label = "Distribución uniforme continua", subtitle = paste("f(x) = ",f.dens))
+```
+
+##### Solución por medio de la función de densidad dunif()
+
+Debe dar el mismo resultado
+
+```{r}
+prob.x <- (b - a) * dunif(x = a, min = a.min, max = b.max) 
+prob.x
+```
+
+##### Solución por medio de la función de probabilidad *punif()*
+
+Se muestran todas las probabilidades acumuladas desde 120 a 140 bajo la distribución uniforme.
+
+```{r}
+distribucion <- data.frame(x=120:140, prob = dunif(x = 120:140, min = a.min, max = b.max), prob.acum = punif(q = 120:140, min = a.min, max = b.max))
+distribucion
+```
+
+*punif()* determina la probabilidad acumulada, entonces de la probabilidad acumulada hasta 136 se le resta la probabilidad acumulada hasta 128 y con ello la diferencia es la probabilidad entre 128 y 136.
+
+```{r}
+ggplot(data = distribucion, mapping = aes(x = x, y = prob.acum)) + 
+  geom_line()
+```
+
+con *punif()*
+
+```{r}
+punif(q = b, min = 120, max = 140) - punif(q = a, min = 120, max = 140)
+```
+
+$prob = \frac{x=136-a}{b-a} - \frac{x=128-a}{b-a}$
+
+```{r}
+prob <- (136-120)/(140-120) - (128-120)/(140-120)
+prob
+```
+
+#### Valor esperado
+
+\newcommand{\VE}{`r (a.min + b.max) / 2`}
+
+$$E(x) = \frac{(`r a.min`+ `r b.max`)}{2}=`r (a.min + b.max) / 2`$$
+
+```{r}
+VE <- (a.min + b.max) / 2
+paste("El valor esperado es de: ", VE)
+```
+
+-   El valor esperado es el tiempo medio en que puede llegar el avión.
+
+#### Varianza
+
+\newcommand{\var}{`r round((b.max - a.min)^2 / 12,2)`}
+
+$$Var(x) = \frac{(`r b.max`-`r a.min`)^2}{12}=`r round((b.max - a.min)^2 / 12,2)`$$
+
+```{r}
+varianza.x <- (b.max - a.min)^2 / 12
+paste("La varianza es: ", round(varianza.x,2))
+```
+
+#### Desviación
+
+\newcommand{\ds}{`r round(sqrt(varianza.x),2)`}
+
+$$\alpha = \sqrt{Var(x)} = \sqrt{`r round((b.max - a.min)^2 / 12,2)`} = `r round(sqrt(varianza.x),2)`$$
+
+```{r}
+ds <- sqrt(varianza.x)
+paste("La desviación estándard es igual a : ", round(ds, 2), " que significa que ese valor se dispersa conforme al valor medio esperado de ", VE)
+```
+
+##### Interpretación del ejercicio
+
+El ejercicio del avion es una distribución uniforme dado que presenta un intérvalo de 120 a 140 minutos el tiempo que tarda el vuelo de una ciudad a otra, es decir los valores iniciales de $a$ y $b$ respectivaente.
+
+La probabilidad de que el vuelo tarde $130$ minutos es de $50%$ dado que densidad es de $0.05$ y el intervalo es de $10$ o sea $130 -120$ entonces el área bajo la curva es de $0.05 * 10 = 0.50$.
+
+La probabilidad de que el vuelo tarde de $128 \text{ a } 136$ minutos, significa que hay un intervalo de $8$ minutos y si se multiplica por la altura de $0.05$ entonces la probabilidad es del $40%$.
+
+La densidad de una distribución uniforme puede encontrare por medio de la función base de *dunif()* y la probabilidad acumula o la función de probabilidad se puede encontrar por medio de la función *punif()*.
+
+Otra alternativa para calcular la densidad y probabilidades de una distribución uniforme es mediante la fórmula $f(x) = \frac {1} {b-a}$ y el cálculo de probabilidades puede hacer mediante la fórmula $F(x) = \frac{x-a}{b-a}$
+
+### Caso de Licitaciones
+
+![](images/caso%20licitaciones.jpg){width="400"}
+
+Al estudiar licitaciones de embarque, una empresa dedicada a la fabricación de circuitos impresos, encuentra que los contratos nacionales tienen licitaciones distribuidas uniformemente entre 20 y 25 unidades (en miles de dólares).[@aqueronte_r_2009]
+
+Se determina lo siguiente:
+
+-   Función de densidad
+
+-   ¿Cuál es la probabilidad de que la licitación esté entre 22 y 24 (mil dólares)?
+
+-   ¿Cuál es la probabilidad de que sea inferior a 22 (mil dólares)?
+
+-   ¿Cuál es la probabilidad de que rebase los 24 (mil dólares)?
+
+-   ¿Cuál es el valor esperado?
+
+-   ¿Cuál es la varianza?
+
+-   ¿Cuál es la desviación estándar?
+
+#### Función de densidad
+
+```{r}
+a.min <- 20
+b.max <- 25
+f.dens <- 1 / (b.max - a.min)
+f.dens
+```
+
+```{=tex}
+\newcommand{\a}{`r a.min`}
+\newcommand{\b}{`r b.max`}
+\newcommand{\resta}{`r b.max - a.min`}
+```
+$$
+f(x) = 
+\begin{cases}
+\frac{1}{`r b.max`-`r a.min`}=\frac{1}{`r b.max - a.min`} &,\, \text{para }`r a.min`\leq x \leq `r b.max`,\\
+0&,\, \text{en cualquier otro caso }
+\end{cases}
+$$
+
+#### ¿Cuál es la probabilidad de que la licitación esté entre 22 y 24 (mil dólares)?
+
+-   ¿$P(22 \leq x \leq 24)$?
+
+-   La $P(22 \leq x \leq 24) = 0.40$
+
+##### Solución aritmética
+
+```{r}
+a <- 22
+b <- 24
+p.x <- f.dens * (b-a)
+paste("La probabilidad de que la licitación esté entre ", a , " y ", b, " es del:", p.x * 100, "%")
+```
+
+##### Solución por medio de la función de densidad punif()
+
+```{r}
+p.x <- (b - a) * dunif(x = a, min = a.min, max = b.max) 
+p.x
+```
+
+##### Solución con *punif()*
+
+```{r}
+prob <- punif(q = 24, min = 20, max = 25) - punif(q = 22, min = 20, max = 25)
+prob
+```
+
+##### Solución con *F(x)*
+
+```{r}
+a <- 20
+b <- 25
+prob <- (x=24-a) / (b-a) - (x=22-a) / (b-a)
+prob
+```
+
+##### 
+
+```{r}
+a.min <- 20
+b.max <- 25
+altura <- f.dens <- 1 / (b.max - a.min)
+x <- c(a.min, b.max)
+y <- c(altura, altura)
+datos <- data.frame(x = x, y=y, x2 =c(22,24), y2 = y)
+datos
+ggplot(datos) + 
+  geom_area(aes(x = x, y = y),
+            fill = 'lightblue') +
+  geom_area(aes(x = x2, y = y2),
+            fill = 'pink') +
+  xlim(15, 30) +
+  ggtitle(label = "Distribución uniforme continua", subtitle = paste("f(x) = ",f.dens))
+```
+
+#### Cuál es la probabilidad de que sea inferior a 22 (mil dólares)?
+
+##### Solución aritmética
+
+```{r}
+a <- 20
+b <- 22
+p.x <- f.dens * (b-a)
+paste("La probabilidad de que sea inferior a ", b , " (mil dólares) es del: ", p.x * 100, "%")
+```
+
+##### Solución por medio de la función de densidad dunif()
+
+```{r}
+a <- 20
+b <- 22
+p.x <- (b - a) * dunif(x = a, min = a.min, max = b.max) 
+p.x
+```
+
+```{r}
+a.min <- 20
+b.max <- 25
+altura <- f.dens <- 1 / (b.max - a.min)
+x <- c(a.min, b.max)
+y <- c(altura, altura)
+datos <- data.frame(x = x, y=y, x2 =c(20,22), y2 = y)
+datos
+ggplot(datos) + 
+  geom_area(aes(x = x, y = y),
+            fill = 'lightblue') +
+  geom_area(aes(x = x2, y = y2),
+            fill = 'pink') +
+  xlim(15, 30) +
+  ggtitle(label = "Distribución uniforme continua", subtitle = paste("f(x) = ",f.dens))
+```
+
+#### Probabilidad de que rebase los 24 (mil dólares)
+
+El atributo *lower.tail = TRUE* en la función *punif()* significa que es el complemento para llegar a 1. Es decir $1 - P(x > 24)$.
+
+```{r}
+punif(q = 20:25, min = 20, max = 25)
+```
+
+```{r}
+b = 25
+a = 24
+p.x <- (b - a) * dunif(x = a, min = a.min, max = b.max) 
+p.x
+prob <- punif(q = 24, min = 20, max = 25, lower.tail = FALSE) 
+paste("La probabilidad de que sea mayor a 24 es: ", prob)
+```
+
+```{r}
+a.min <- 20
+b.max <- 25
+altura <- f.dens <- 1 / (b.max - a.min)
+x <- c(a.min, b.max)
+y <- c(altura, altura)
+prob <- c(punif(q = 24, min = 20, max = 25, lower.tail = TRUE), punif(q = 24, min = 20, max = 25, lower.tail = FALSE))
+datos <- data.frame(x = x, y=y, x2 =c(24,25), y2 = y, prob = prob)
+datos
+ggplot(datos) + 
+  geom_area(aes(x = x, y = y),
+            fill = 'lightblue') +
+  geom_area(aes(x = x2, y = y2),
+            fill = 'pink') +
+  geom_text(aes(x = x2, y = y, label = prob), position = position_dodge(0.5), colour = "brown") +
+  xlim(15, 30) +
+  ggtitle(label = "Distribución uniforme continua", subtitle = paste("f(x) = ",f.dens))
+```
+
+### Taxis en Durango
+
+![](images/taxi%20durango.jpg){width="400"}
+
+En la zona centro de la ciudad de Durango, México el tiempo de espera para tomar un taxi es de 0 a 15 minutos.
+
+-   Valor mínimo es 0
+
+-   Valor máximo es de 15
+
+#### Función de densidad
+
+```{r}
+f.dens <- dunif(0, min = 0, max = 15)
+f.dens
+```
+
+#### ¿Cuál es la probabilidad de tomar un taxi en menos de 5 minutos?Solución aritmética
+
+```{r}
+a <- 0
+b <- 5
+prob <- (b-a) * f.dens 
+prob
+```
+
+##### Solución con *dunif()*
+
+```{r}
+prob <- (b-a) * dunif(0, min = 0, max = 15)
+prob
+```
+
+##### Solución con *punif()*
+
+```{r}
+prob <- punif(q = 5, min = 0, max = 15) - punif(q = 0, min = 0, max = 15)
+prob
+```
+
+##### Solución F(x)
+
+```{r}
+x <- 5
+a <- 0
+b <- 15
+prob <- (x-a)/(b-a)
+prob
+```
+
+##### Solución gráfica
+
+```{r}
+a.min <- 0
+b.max <- 15
+altura <- f.dens <- round(1 / (b.max - a.min),4)
+x <- c(a.min, b.max)
+y <- c(altura, altura)
+x2 <- c(0,5)
+y2 <- y
+prob <- c(round(punif(q = 5, min = 0, max = 15, lower.tail = TRUE), 4), round(punif(q = 5, min = 0, max = 15, lower.tail = FALSE), 4))
+datos <- data.frame(x = x, y=y, x2 = x2, y2 = y, prob = prob)
+datos
+ggplot(datos) + 
+  geom_area(aes(x = x, y = y),
+            fill = 'lightblue') +
+  geom_area(aes(x = x2, y = y2),
+            fill = 'pink') +
+  geom_text(aes(x = x2, y = y, label = prob), position = position_dodge(0.5), colour = "brown") +
+  xlim(0, 30) +
+  ggtitle(label = "Distribución uniforme continua", subtitle = paste("f(x) = ",f.dens))
+```
+
+##### 
+
+### Compañía de luz
+
+![](images/conpania%20de%20luz.jpg){width="400"}
+
+Una compañía que brinda servicio eléctrico provee niveles de voltajes uniformemente distribuidos, entre 123.0 V y 125.0 V. Esto significa que en la toma doméstica es posible obtener cualquier valor de voltaje que pertenezca a dicho intervalo.
+
+#### ¿Cual es el valor de la función de densidad?
+
+```{r}
+a <- 123
+b <- 125
+1 / (b-a)
+```
+
+```{r}
+f.dens <- dunif(123, min = 123, max = 125)
+f.dens
+```
+
+```{r}
+a.min <- 123
+b.max <- 125
+altura <- f.dens <- round(1 / (b.max - a.min),4)
+x <- c(a.min, b.max)
+y <- c(altura, altura)
+#x2 <- c(0,5)
+#y2 <- y
+# prob <- c(round(punif(q = 5, min = 0, max = 15, lower.tail = TRUE), 4))
+datos <- data.frame(x = x, y=y)
+datos
+ggplot(datos) + 
+  geom_area(aes(x = x, y = y),
+            fill = 'lightblue') +
+  xlim(120, 130) +
+  ggtitle(label = "Distribución uniforme continua", subtitle = paste("f(x) = ",f.dens))
+```
+
+#### ¿Cuál es la probabilidad de que la compañía envíe un voltaje menor a 123.5 V?
+
+```{r}
+#unif_area(min = 123, max = 125, lb = 123, ub = 123.5,main = paste('f(123 <= x <= 125) = ? y F(x<123.5) = ?' ), acolor = "lightblue")
+```
+
+##### Solución aritmética calculando el área con *dunif()*
+
+```{r}
+b <- 123.5
+a <- 123
+prob <- (b-a) * f.dens
+prob
+```
+
+##### Solución con *punif()*
+
+Se muestra la tabla de distribución con la probabilidad acumulada con valores de variables aleatorias generados por una secuencia a con valor inicial de $123$ con saltos de $0.1$ en $0.1$ hasta llegar a un valor de $125$.
+
+```{r}
+variables <- seq(from=123, to=125, by=0.1) 
+tabla <- data.frame(variables, prob.acum = punif(q = variables, min = 123, max = 125))
+tabla
+```
+
+```{r}
+prob <- punif(q = 123.5, min = 123, max = 125) - punif(q = 123, min = 123, max = 125)
+prob
+```
+
+##### Solución con $(x-a)/(b-a)$
+
+```{r}
+prob <- (x=123.5 - 123) / (125 - 123) - (x=123 - 123) / (125 - 123)
+prob
+```
+
+#### ¿Cuál es el valor esperado?
+
+PendIente
+
+#### ¿Cuál es la varianza y la desviación estándar de la distribución?
+
+Pendiente
+
+### Ir al trabajo de una persona
+
+![](images/ir%20a%20su%20trabajo%20una%20persona.jpg){width="400"}
+
+Demuestre en R el siguiente ejercicio:
+
+El tiempo en minutos que tarda un señor para ir de su casa al trabajo oscila de forma uniforme entre 20 y 30. Si debe llegar al trabajo a las 8 de la mañana,
+
+Demuestre en R ¿a qué hora debe salir de su casa para tener una probabilidad de 0.9 o del 90% de no llegar tarde?
+
+Si X denota el tiempo en ir de casa al trabajo (en minutos), su distribución es U(20,30).
+
+Se busca el valor de a tal que $P(X ≤ a) = 0.9$.
+
+$$
+{X ≤ a} = FX(a) = \frac{a − 20}{30 − 20}
+= \frac{a − 20}{10} = 0.9 \therefore a = 29
+$$ Por tanto, debe salir de casa a las 7h 31m.
+
+Pendiente en R
+
+#### ¿Cual es el valor de la función de densidad?
+
+Pendiente
+
+#### Visualizar la probabilidad
+
+Pendiente
+
+#### ¿Cuál es la probabilidad de la persona llegue entre en 26 minutos si sale a las 7:30? Pendiente
+
+Demuestre en R que el tiempo medio que tarda en ir de casa al trabajo es de 25 minutos, y la desviación típica de 2.88 minutos.
+
+#### Valor Esperado
+
+Pendiente
+
+#### Varianza
+
+Pendiente
+
+#### Desviación Estándar
+
+Pendiente
+
+# Interpretación de los ejercicios
+
+Pendiente
+
+### Referencias bibliográficas
