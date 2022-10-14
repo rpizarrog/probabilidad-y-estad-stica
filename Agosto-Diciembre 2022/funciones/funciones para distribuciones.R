@@ -2,10 +2,22 @@
 library(ggplot2)
 library(gtools)
 library(mosaic)
+library(ggplot2)
 # library(dslabs) No se utiliza pero tiene data set interesantes 14 oct 2022
 
 options(scipen=999)
        
+
+prueba_devolver_plot <- function(a, b) {
+  
+  a <- 1:5
+  b <- 6:10
+  datos <- data.frame(a=a, b=b)
+  g <- ggplot(datos, aes(x=a, y=b)) + 
+    geom_point()
+  lista <- list(datos = datos, g = g)
+  lista
+  }
     
 
 
@@ -204,8 +216,39 @@ f.binom.all <- function(n, exito){
   varianza <- n * exito * (1 - exito)
   desv.std <- sqrt(varianza)
   
+  g.dens <- plotDist(dist = "binom", 
+                    params = c(n, exito), 
+                    xlim = c(-1, n+1), 
+                    kind = "d",
+                    xlab ="X's", 
+                    ylab = "Probabilidad", 
+                    main='Distribución Binomial',
+                    sub = "Densidad")
+  
+  g.hist <- plotDist(dist = "binom", 
+                    params = c(n, exito), 
+                    xlim = c(-1, n+1), 
+                    kind = "h", 
+                    xlab ="X's", 
+                    ylab = "Probabilidad", 
+                    main='Distribución Binomial',
+                    sub = "Histograma")
+  
+  g.acum <- plotDist(dist = "binom", 
+                     params = c(n, exito), 
+                     xlim = c(-1, n+1), 
+                     kind = "c", 
+                     xlab ="X's", 
+                     ylab = "Prob Acumulada", 
+                     main='Distribución Binomial',
+                     sub = "")
+  
   distribucion <- list(tabla = tabla, VE = VE, 
-                       varianza = varianza, desv.std = desv.std)
+                       varianza = varianza, desv.std = desv.std, 
+                       g.dens = g.dens, 
+                       g.hist = g.hist,
+                       g.acum = g.acum)
+
   
 }
 
