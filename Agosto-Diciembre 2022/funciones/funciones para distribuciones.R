@@ -244,21 +244,34 @@ f.binom.all <- function(n, exito){
                      main='Distribución Binomial',
                      sub = "")
   
+  g.text <- ggplot(data = tabla) +
+    geom_col(aes(x = x, y = f.x), fill='blue') + 
+    geom_text (aes(x = max(x), y = max(f.x),
+                   label = paste("ve=", VE, "; ", 
+                                 "varianza=", varianza, "; ",
+                                 "sd=", desv.std))) +
+    ggtitle(label = "Distribución binomial",
+                )
+  
   distribucion <- list(tabla = tabla, VE = VE, 
                        varianza = varianza, desv.std = desv.std, 
                        g.dens = g.dens, 
                        g.hist = g.hist,
-                       g.acum = g.acum)
+                       g.acum = g.acum,
+                       g.text = g.text,
+                       g_all = f.hist.dens.discreta(tabla))
 
   
 }
 
+# 15 OCT 2022
 # Devolver histograma, histograma con densidad y acumulado
 f.hist.dens.discreta <- function(datos) {
   library(ggplot2)
   
   g1 <- ggplot(data = datos) +
-    geom_col(aes(x = x, y = f.x), fill='blue')
+    geom_col(aes(x = x, y = f.x), fill='blue') +
+    ggtitle(label = "Histograma")
   
   casos <- NULL
   for(r in 1:nrow(datos)) {
@@ -267,14 +280,17 @@ f.hist.dens.discreta <- function(datos) {
   
   g2 <- ggplot() +
     geom_col(data = datos, aes(x = x, y = f.x)) +
-    geom_density(aes(x = casos), color = 'red')
+    geom_density(aes(x = casos), color = 'red') +
+  ggtitle(label = "Histograma y Densidad")
   
   g3 <- ggplot(data = datos) +
     geom_line(aes(x = x, y = F.x), color = 'red') +
-    geom_point(aes(x = x, y = F.x), color = 'blue') 
+    geom_point(aes(x = x, y = F.x), color = 'blue') +
+    ggtitle(label = "Función acumulada")
   
   lista <- list(hist = g1, dens = g2, acum = g3)
-  
+    
+    
   return(lista)
   
 }
