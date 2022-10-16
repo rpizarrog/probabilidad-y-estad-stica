@@ -2,7 +2,8 @@
 library(ggplot2)
 library(gtools)
 library(mosaic)
-library(ggplot2)
+library(dplyr)
+library(cowplot)
 # library(dslabs) No se utiliza pero tiene data set interesantes 14 oct 2022
 
 options(scipen=999)
@@ -206,7 +207,7 @@ f.tabla_binom <- function(n, exito) {
 f.binom.all <- function(n, exito){
   tabla <- data.frame(x = 0:n,
                       f.x = dbinom(x = 0:n, size = n, prob = exito),
-                      F.x = pbinom(q = 0:n, size = n, prob = 0.80))
+                      F.x = pbinom(q = 0:n, size = n, prob = exito))
   tabla
   
   # Valor esperado
@@ -249,6 +250,32 @@ f.binom.all <- function(n, exito){
                        g.hist = g.hist,
                        g.acum = g.acum)
 
+  
+}
+
+# Devolver histograma, histograma con densidad y acumulado
+f.hist.dens.discreta <- function(datos) {
+  library(ggplot2)
+  
+  g1 <- ggplot(data = datos) +
+    geom_col(aes(x = x, y = f.x), fill='blue')
+  
+  casos <- NULL
+  for(r in 1:nrow(datos)) {
+    casos <- c(casos, c(rep(datos$x[r], round(datos[r,2] * 100))))
+  }
+  
+  g2 <- ggplot() +
+    geom_col(data = datos, aes(x = x, y = f.x)) +
+    geom_density(aes(x = casos), color = 'red')
+  
+  g3 <- ggplot(data = datos) +
+    geom_line(aes(x = x, y = F.x), color = 'red') +
+    geom_point(aes(x = x, y = F.x), color = 'blue') 
+  
+  lista <- list(hist = g1, dens = g2, acum = g3)
+  
+  return(lista)
   
 }
 
