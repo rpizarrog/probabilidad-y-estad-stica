@@ -246,10 +246,10 @@ f.binom.all <- function(n, exito){
   
   g.text <- ggplot(data = tabla) +
     geom_col(aes(x = x, y = f.x), fill='blue') + 
-    geom_text (aes(x = max(x), y = max(f.x),
-                   label = paste("ve=", VE, "; ", 
-                                 "varianza=", varianza, "; ",
-                                 "sd=", desv.std))) +
+    geom_text (aes(x = round(n/2), y = max(f.x),
+                   label = paste("ve=", VE, ";", 
+                                 "var=", round(varianza, 2), ";",
+                                 "sd=", round(desv.std, 2)))) +
     ggtitle(label = "Distribución binomial",
                 )
   
