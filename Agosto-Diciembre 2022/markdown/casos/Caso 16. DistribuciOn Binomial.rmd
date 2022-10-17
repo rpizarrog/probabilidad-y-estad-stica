@@ -42,7 +42,16 @@ Un experimiento de Bernoulli puede tener como resultado un éxito con probabilid
 
 Fórmula:
 
-$$prob(x=k) = \binom{n}{k} \cdot p^{k} \cdot q^{(n-k)} $$ Para $$x = 0,1,2,3...n$$ y recordando las combinaciones cuantos éxitos $k$ en $n$ ensayos.$$\binom{n}{k} = \frac{n!}{k!\cdot(n-k)!}$$
+$$f(x) = prob(x=k) = \binom{n}{k} \cdot p^{k} \cdot q^{(n-k)} $$ Para $$x = 0,1,2,3...n$$ y recordando las combinaciones cuantos éxitos $k$ en $n$ ensayos. Interpretar que $x = k$ para la fórmula.$$
+f(x) = \binom{n}{k} = \frac{n!}{k!\cdot(n-k)!}
+$$
+
+La función acumulada es:
+
+$$
+F(x) = 
+\sum_{0}^{n}f.x_i
+$$
 
 El valor esperado está dado por: $$\mu = n \cdot p$$
 
