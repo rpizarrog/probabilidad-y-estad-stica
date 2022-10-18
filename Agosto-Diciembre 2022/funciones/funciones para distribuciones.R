@@ -5,7 +5,7 @@ library(mosaic)
 library(dplyr)
 library(cowplot)
 library(plotly) # gráficos interactivos
-# library(dslabs) No se utiliza pero tiene data set interesantes 14 oct 2022
+
 
 options(scipen=999)
        
@@ -282,7 +282,6 @@ f.binom.all <- function(n, exito){
                        g.acum.plotly = g.acum.plotly,
                        g_all = f.hist.dens.discreta(tabla))
 
-  
 }
 
 # 15 OCT 2022
