@@ -296,6 +296,39 @@ f.hist.dens.discreta <- function(datos) {
 }
 
 
+# 17 OCT 2022
+# Función para devolver una lista con tabla de distribución valor esperado
+# varianza desviación estádar y algunos gráficos 
+# de una Distribución
+
+f.hiper.all <- function(exitosos, muestra, poblacion){
+  # n = número de ensayos exitosos
+  # N Tamaño de la población de cada N
+  # r o k Tamaño de la muestra extraída de N
+  n <- exitosos; N <- poblacion; r <- muestra
+  VE <- n * (r/N)
+  VE
+  
+  varianza <- VE * (1 - r/N) * ((N-n) / (N-1))
+  varianza
+  
+  desv.std <- sqrt(varianza)
+  
+  m <-n; N <-N; k <- r; n <- N - n
+  x <- 0:muestra
+  
+  tabla <- data.frame(x=x, f.x = round(dhyper(x = x, m = exitosos, n = poblacion - exitosos, k = muestra), 8), 
+                       F.x = round(phyper(q = x, m = exitosos, n = poblacion - exitosos, k = muestra), 8))
+  tabla
+  
+  distribucion <- list(tabla = tabla, VE = VE, 
+                       varianza = varianza, desv.std = desv.std)
+  
+  return(distribucion)
+}
+
+
+
 # Función de distribución de Poisson conforme a la Fórmula
 f.prob.poisson <- function (media, x) {
   e <- exp(1)
@@ -303,18 +336,23 @@ f.prob.poisson <- function (media, x) {
   prob
 }
 
-# Función de disrtibución hipergeométrica
-# Recibe estos pa´rametros:
+# Función de distribución hipergeométrica
+# Recibe estos parámetros:
 # N Total de elementos de la población
 # n Elementos de la muestra o ensayos
-# r número de elementos considerados como éxtio
-# x Valores que puede tener la variabel aleatoria discreta
-f.prob.hiper <- function (x, N, n, r) {
-  numerador <- (factorial(r) / (factorial(x) * factorial(r-x))) * (factorial(N-r) / (factorial(n-x) * factorial((N-r)-(n-x)))) 
-  denominador <- (factorial(N) / (factorial(n) * factorial(N-n)))
+# r número de elementos considerados como éxito
+# x Valores que puede tener la variable aleatoria discreta
+f.prob.hiper <- function (x, poblacion, muestra, exitosos) {
+  N <- poblacion
+  n <- muestra
+  r <- exitosos
+  
+  numerador <- (factorial(r) / (factorial(x) * (factorial(r-x)))) * (factorial(N-r) / (factorial(n-x) * (factorial((N-r)-(n-x)))))
+  denominador<- factorial(N) / (factorial(n) * factorial(N-n))
   
   prob <- numerador / denominador
   prob
+  
 }
 
 # Función que devuelve el valor esperado de una distribución hipergeométrica
