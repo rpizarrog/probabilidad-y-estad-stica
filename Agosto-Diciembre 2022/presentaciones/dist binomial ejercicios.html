@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Distribución Binomial. Ejercicios</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="dist binomial ejercicios_files/libs/clipboard/clipboard.min.js"></script>
+<script src="dist binomial ejercicios_files/libs/quarto-html/quarto.js"></script>
+<script src="dist binomial ejercicios_files/libs/quarto-html/popper.min.js"></script>
+<script src="dist binomial ejercicios_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="dist binomial ejercicios_files/libs/quarto-html/anchor.min.js"></script>
+<link href="dist binomial ejercicios_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="dist binomial ejercicios_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="dist binomial ejercicios_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="dist binomial ejercicios_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="dist binomial ejercicios_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="dist binomial ejercicios_files/libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="dist binomial ejercicios_files/libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="dist binomial ejercicios_files/libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="dist binomial ejercicios_files/libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="dist binomial ejercicios_files/libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="dist binomial ejercicios_files/libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="dist binomial ejercicios_files/libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="dist binomial ejercicios_files/libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Distribución Binomial. Ejercicios</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="distribución-binomial" class="level1">
+<h1>Distribución binomial</h1>
+<ul>
+<li><p>El experimento consiste en <span class="math inline">\(n\)</span> intentos idénticos.</p></li>
+<li><p>Cada intento resulta en uno de dos resultados, el resultado uno se llama éxito, ‘S’, y el otro se llama fracaso, ‘F’.</p></li>
+<li><p>La probabilidad de éxito en un solo intento es igual a <span class="math inline">\(p\)</span> y es igual de un intento a otro. La probabilidad de fracaso es igual a <span class="math inline">\(q= (1 - p)\)</span>.</p></li>
+<li><p>Los intentos son independientes.</p></li>
+<li><p>El interés es el valor de <span class="math inline">\(x\)</span>, o sea, el número de éxitos observado durante los <span class="math inline">\(n\)</span> intentos, para <span class="math inline">\(x = 0, 1, 2, …, n.\)</span></p></li>
+</ul>
+</section>
+<section id="fórmula-densidad" class="level1">
+<h1>Fórmula Densidad:</h1>
+<p><span class="math display">\[
+f(x) = prob(x=k) = \binom{n}{k} \cdot p^{k} \cdot q^{(n-k)}
+\]</span></p>
+<p>Para <span class="math inline">\(x = 0,1,2,3...n\)</span></p>
+<p>y recordando las combinaciones cuantos éxitos <span class="math inline">\(k\)</span> en <span class="math inline">\(n\)</span> ensayos. Interpretar que <span class="math inline">\(x = k\)</span> para la fórmula. <span class="math display">\[
+f(x) = \binom{n}{k} = \frac{n!}{k!\cdot(n-k)!}
+\]</span></p>
+</section>
+<section id="la-función-acumulada-es" class="level1">
+<h1>La función acumulada es:</h1>
+<p><span class="math display">\[
+F(x) =
+\sum_{0}^{n}f.x_i
+\]</span></p>
+</section>
+<section id="el-valor-esperado-está-dado-por" class="level1">
+<h1>El valor esperado está dado por:</h1>
+<p><span class="math display">\[
+\mu = n \cdot p
+\]</span></p>
+</section>
+<section id="la-varianza-y-la-desviación-estándar-se-determinan-mediante" class="level1">
+<h1>La varianza y la desviación estándar se determinan mediante:</h1>
+<p><span class="math display">\[
+\sigma^{2} = n \cdot p \cdot(1-p)
+\]</span></p>
+<p>y</p>
+<p><span class="math display">\[
+\sigma = \sqrt{\sigma^{2}}
+\]</span></p>
+</section>
+<section id="funciones-binomial-en-r" class="level1">
+<h1>Funciones binomial en R</h1>
+<p><img src="images/funciones%20binomial%20en%20R.jpg" class="img-fluid"></p>
+</section>
+<section id="cargar-librerías" class="level1">
+<h1>Cargar librerías</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mosaic) <span class="co"># Gráficos de distribuciones</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowplot) <span class="co"># Para varios gráficos</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly) <span class="co"># Gráficos interactivos</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr) <span class="co"># Tablas amigables</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>) <span class="co"># Notación normal</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># options(scipen=1) # Notación científica</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="noticias-falsas" class="level1">
+<h1>Noticias Falsas</h1>
+<p>Las noticias falsas o <em>fake news</em> (FN) se definen como todas aquellas “informaciones publicadas deliberadamente en medios digitales que no han sido comprobadas ni verificadas, que carecen de fuentes identificadas, confiables y que no cuentan con la supervisión de un editor.</p>
+<p>En otras palabras, son los artículos informativos redactados con el propósito de confundir o engañar a los lectores, cuyo contenido puede comprobarse que es intencionalmente falso.</p>
+</section>
+<section id="ejercicio" class="level1">
+<h1>Ejercicio</h1>
+<p>Un estudio reciente del Instituto Tecnológico de <em>Massachusetts</em> evidenció que las FN poseen 70% de posibilidades de ser tuiteadas.</p>
+</section>
+<section id="datos-iniciales" class="level1">
+<h1>Datos iniciales</h1>
+<p>Se recaban <span class="math inline">\(10\)</span> noticias falsas en redes <em>tweeter sobre algún tema, se sabe que el</em> <span class="math inline">\(70\%\)</span> <em>tiene la probabilidad de ser replicada o reenviarse</em> de nuevo.</p>
+</section>
+<section id="cuál-es-la-probabilidad-de-que-una-noticia-sea-replicada" class="level1">
+<h1>¿Cuál es la probabilidad de que una noticia sea replicada?</h1>
+<p><span class="math inline">\(f(x=1)\)</span></p>
+<p><span class="math display">\[
+f(x) = \binom{n}{x} = \frac{n!}{x!\cdot(n-x)!}\cdot p^{x} \cdot q^{(n-x)}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10</span>; x <span class="ot">=</span> <span class="dv">1</span>; exito <span class="ot">=</span> <span class="fl">0.70</span>; fracaso <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> exito</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factorial</span>(n) <span class="sc">/</span> (<span class="fu">factorial</span>(x) <span class="sc">*</span> <span class="fu">factorial</span>(n <span class="sc">-</span> x)) <span class="sc">*</span> (exito<span class="sc">^</span>x) <span class="sc">*</span> (fracaso<span class="sc">^</span>(n<span class="sc">-</span>x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.000137781</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.70</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.000137781</code></pre>
+</div>
+</div>
+</section>
+<section id="cuál-es-la-probabilidad-de-que-cinco-noticiaas-sean-replicadas" class="level1">
+<h1>¿Cuál es la probabilidad de que cinco noticiaas sean replicadas?</h1>
+<p><span class="math inline">\(f(x=5)\)</span></p>
+<p><span class="math display">\[
+f(x) = \binom{n}{x} = \frac{n!}{x!\cdot(n-x)!}\cdot p^{x} \cdot q^{(n-x)}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10</span>; x <span class="ot">=</span> <span class="dv">5</span>; exito <span class="ot">=</span> <span class="fl">0.70</span>; fracaso <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> exito</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factorial</span>(n) <span class="sc">/</span> (<span class="fu">factorial</span>(x) <span class="sc">*</span> <span class="fu">factorial</span>(n <span class="sc">-</span> x)) <span class="sc">*</span> (exito<span class="sc">^</span>x) <span class="sc">*</span> (fracaso<span class="sc">^</span>(n<span class="sc">-</span>x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1029193</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">5</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.70</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1029193</code></pre>
+</div>
+</div>
+</section>
+<section id="función-personalizada" class="level1">
+<h1>Función personalizada</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="cuál-es-la-probabilidad-de-que-cuatro-noticiaas-sean-replicadas" class="level1">
+<h1>¿Cuál es la probabilidad de que cuatro noticiaas sean replicadas?</h1>
+<p><span class="math inline">\(f(x=4)\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">4</span>; n <span class="ot">&lt;-</span> <span class="dv">10</span>; exito <span class="ot">&lt;-</span> <span class="fl">0.70</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los argumentos se llaman igual que los parámetros usando la función <em>f.prob.binom()</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f.prob.binom</span>(<span class="at">x =</span> <span class="dv">4</span>, <span class="at">n =</span> n, <span class="at">exito =</span> exito)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03675691</code></pre>
+</div>
+</div>
+<p>Comprobando con función <em>dbinom()</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="at">x =</span> x, <span class="at">size =</span> n, <span class="at">prob =</span> exito)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03675691</code></pre>
+</div>
+</div>
+</section>
+<section id="probabilidad-acumulada-fx" class="level1">
+<h1>Probabilidad Acumulada F(x)</h1>
+<p>¿Cuál es la probabilidad de que sean de 0 a 4 noticias replicadas, es decir, menores o iguales a cuatro?</p>
+<p><span class="math inline">\(F(x=4) = f(x=0) + f(x=1) + f(x=2) + f(x=3) + f(x=4)\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">4</span>; n <span class="ot">&lt;-</span> <span class="dv">10</span>; exito <span class="ot">&lt;-</span> <span class="fl">0.70</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pbinom</span>(<span class="at">q =</span> <span class="dv">4</span>, <span class="at">size =</span> n, <span class="at">prob =</span> exito)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04734899</code></pre>
+</div>
+</div>
+</section>
+<section id="usando-función-personalizada-y-cumsum-para-acumulado" class="level1">
+<h1>Usando función personalizada y <em>cumsum()</em> para acumulado</h1>
+<p>¿Cuál es la probabilidad de que sean de 0 a 4 noticias replicadas, es decir, menores o iguales a cuatro?</p>
+<p><span class="math inline">\(F(x=4) = f(x=0) + f(x=1) + f(x=2) + f(x=3) + f(x=4)\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">4</span>; n <span class="ot">&lt;-</span> <span class="dv">10</span>; exito <span class="ot">&lt;-</span> <span class="fl">0.70</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">f.prob.binom</span>(<span class="at">x =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">n =</span> n, <span class="at">exito =</span> exito)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0000059049 0.0001377810 0.0014467005 0.0090016920 0.0367569090</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cumsum</span>(<span class="fu">f.prob.binom</span>(<span class="at">x =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">n =</span> n, <span class="at">exito =</span> exito))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0000059049 0.0001436859 0.0015903864 0.0105920784 0.0473489874</code></pre>
+</div>
+</div>
+</section>
+<section id="creando-tabla-de-distribución" class="level1">
+<h1>Creando tabla de distribución</h1>
+<p>Se manda llamar la función <em>f.binom.all(…) y se deja en resultado.</em> Con esta variable visualizar tabla construída en código encapsulado.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">4</span>; n <span class="ot">&lt;-</span> <span class="dv">10</span>; exito <span class="ot">&lt;-</span> <span class="fl">0.70</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>resultado <span class="ot">&lt;-</span> <span class="fu">f.binom.all</span>(<span class="at">n =</span> n, <span class="at">exito =</span> exito)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>tabla <span class="ot">&lt;-</span> resultado<span class="sc">$</span>tabla</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(tabla, <span class="at">caption =</span> <span class="st">"Tabla de distribución"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Tabla de distribución</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">x</th>
+<th style="text-align: right;">f.x</th>
+<th style="text-align: right;">F.x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000059</td>
+<td style="text-align: right;">0.0000059</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0001378</td>
+<td style="text-align: right;">0.0001437</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.0014467</td>
+<td style="text-align: right;">0.0015904</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.0090017</td>
+<td style="text-align: right;">0.0105921</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.0367569</td>
+<td style="text-align: right;">0.0473490</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.1029193</td>
+<td style="text-align: right;">0.1502683</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.2001209</td>
+<td style="text-align: right;">0.3503893</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.2668279</td>
+<td style="text-align: right;">0.6172172</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.2334744</td>
+<td style="text-align: right;">0.8506917</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.1210608</td>
+<td style="text-align: right;">0.9717525</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.0282475</td>
+<td style="text-align: right;">1.0000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="estadísticos-valor-esperado-varianza-y-desviación-estándar" class="level1">
+<h1>Estadísticos valor esperado, varianza y desviación estándar</h1>
+<p><span class="math display">\[
+VE = \mu = n \cdot p
+\]</span></p>
+<p><span class="math display">\[
+varianza = \sigma^{2} = n \cdot p \cdot(1-p)
+\]</span></p>
+<p><span class="math display">\[
+\text{desv.std.} = \sigma = \sqrt{\sigma^{2}}
+\]</span></p>
+<p>Reutilizando la variable resultado previamente asignada</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>resultado<span class="sc">$</span>VE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>resultado<span class="sc">$</span>varianza</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>resultado<span class="sc">$</span>desv.std</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.449138</code></pre>
+</div>
+</div>
+<p>¿Que significan estos estadísticos?</p>
+</section>
+<section id="y-la-cereza-del-pastel" class="level1">
+<h1>y la cereza del pastel</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/cereza%20en%20el%20pastel.jfif" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="visualización.-histograma-y-densidad" class="level1">
+<h1>Visualización. Histograma y Densidad</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(resultado<span class="sc">$</span>g.hist, resultado<span class="sc">$</span>g.dens)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="dist-binomial-ejercicios_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="visualización.-histograma-y-acumulada" class="level1">
+<h1>Visualización. Histograma y Acumulada</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(resultado<span class="sc">$</span>g.text, resultado<span class="sc">$</span>g_all<span class="sc">$</span>acum)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="dist-binomial-ejercicios_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="visualización-interactiva" class="level1">
+<h1>Visualización interactiva</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>resultado<span class="sc">$</span>g.hist.plotly</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-46396dc14fb21bf4a6d2" style="width:100%;height:464px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-46396dc14fb21bf4a6d2">{"x":{"visdat":{"10cc44834c9":["function () ","plotlyVisDat"]},"cur_data":"10cc44834c9","attrs":{"10cc44834c9":{"x":[0,1,2,3,4,5,6,7,8,9,10],"y":[5.90490000000001e-06,0.000137781,0.0014467005,0.009001692,0.036756909,0.1029193452,0.200120949,0.266827932,0.2334744405,0.121060821,0.0282475249],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Distribución binomial","xaxis":{"domain":[0,1],"automargin":true,"title":"x's"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Función de Prob. f(X)"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,1,2,3,4,5,6,7,8,9,10],"y":[5.90490000000001e-06,0.000137781,0.0014467005,0.009001692,0.036756909,0.1029193452,0.200120949,0.266827932,0.2334744405,0.121060821,0.0282475249],"type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="visualización-interactiva-1" class="level1">
+<h1>Visualización Interactiva</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>resultado<span class="sc">$</span>g.acum.plotly</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-4facd182c624d9e8ffd7" style="width:100%;height:464px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4facd182c624d9e8ffd7">{"x":{"visdat":{"10cc532b4199":["function () ","plotlyVisDat"]},"cur_data":"10cc532b4199","attrs":{"10cc532b4199":{"x":[0,1,2,3,4,5,6,7,8,9,10],"y":[5.90490000000001e-06,0.0001436859,0.0015903864,0.0105920784,0.0473489874,0.1502683326,0.3503892816,0.6172172136,0.8506916541,0.9717524751,1],"mode":"lines","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Distribución binomial","xaxis":{"domain":[0,1],"automargin":true,"title":"x's"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Función Acumulada F(X)"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,1,2,3,4,5,6,7,8,9,10],"y":[5.90490000000001e-06,0.0001436859,0.0015903864,0.0105920784,0.0473489874,0.1502683326,0.3503892816,0.6172172136,0.8506916541,0.9717524751,1],"mode":"lines","type":"scatter","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="interpretación" class="level1">
+<h1>Interpretación</h1>
+</section>
+<section id="preguntas" class="level1">
+<h1>Preguntas</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/preguntas.webp" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
