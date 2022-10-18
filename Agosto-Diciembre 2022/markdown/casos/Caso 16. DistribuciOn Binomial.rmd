@@ -38,7 +38,7 @@ Un experimento binomial es el que tiene estas cinco características:
 
 -   El interés es el valor de $x$, o sea, el número de éxitos observado durante los $n$ intentos, para $x = 0, 1, 2, …, n.$ [@mendenhall_introduccion_2006].
 
-Un experimiento de Bernoulli puede tener como resultado un éxito con probabilidad $p$ y un fracaso con probabilidad $q = 1 − p$. Entonces, la distribución de probabilidad de la variable aleatoria binomial $x$, el número de éxito $k$ en $n$ ensayos independientes [@walpole_probabilidad_2012]:
+Un experimento de *Bernoulli* puede tener como resultado un éxito con probabilidad $p$ y un fracaso con probabilidad $q = 1 − p$. Entonces, la distribución de probabilidad de la variable aleatoria binomial $x$, el número de éxito $k$ en $n$ ensayos independientes [@walpole_probabilidad_2012]:
 
 Fórmula:
 
@@ -314,8 +314,6 @@ A partir de este *resultado,* se identifican, las tablas de probabilidad, el val
 resultado <-  f.binom.all(n = n, exito = exito)
 ```
 
-#### 
-
 **Tabla de probabilidad (0-6)**
 
 ```{r}
@@ -332,6 +330,10 @@ plot_grid(resultado$g.dens, resultado$g.hist )
 
 ```{r}
 plot_grid(resultado$g.text, resultado$g_all$acum )
+```
+
+```{r}
+plot_grid(resultado$g.hist.plotly, resultado$g.acum.plotly)
 ```
 
 #### Probabilidad de encestar cuatro tiros
@@ -446,6 +448,12 @@ o
 
 ```{r}
 plot_grid(resultado$g.text, resultado$g_all$acum)
+```
+
+o
+
+```{r}
+plot_grid(resultado$g.hist.plotly, resultado$g.acum.plotly)
 ```
 
 #### Probabilidad de que sobrevivan al menos diez
@@ -616,6 +624,12 @@ tabla
 plot_grid(resultado$g.dens, resultado$g.hist)
 ```
 
+o bien
+
+```{r}
+plot_grid(resultado$g.hist.plotly, resultado$g.acum.plotly)
+```
+
 #### Probabilidad de que aprueben 15 o menos alumnos
 
 Se calcula la probabilidad de $f(x=0) + f(x=1) + P(f=2) ... + f(x=15)$ o la probabilidad acumulada cuando $F(x=15)$
@@ -755,6 +769,10 @@ plot_grid(resultado$g.dens, resultado$g.hist)
 
 ```{r}
 plot_grid(resultado$g.text, resultado$g_all$acum)
+```
+
+```{r}
+plot_grid(resultado$g.hist.plotly, resultado$g.acum.plotly)
 ```
 
 #### Probabilidad de que se encuentren exactamente 2 buses
