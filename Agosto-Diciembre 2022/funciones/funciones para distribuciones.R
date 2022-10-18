@@ -252,8 +252,8 @@ f.binom.all <- function(n, exito){
                                                            "sd=", round(desv.std, 2))
                 )
   g.hist.plotly <- plot_ly(
-    x = c(datos$x),
-    y = c(datos$f.x),
+    x = c(tabla$x),
+    y = c(tabla$f.x),
     type = "bar") %>%
     layout(title = "Distribución binomial",
            xaxis = list(title = "x's"), 
@@ -262,8 +262,8 @@ f.binom.all <- function(n, exito){
     
 
   g.acum.plotly <- plot_ly(
-    x = c(datos$x),
-    y = c(datos$F.x),
+    x = c(tabla$x),
+    y = c(tabla$F.x),
     type = "scatter" ,
     mode = "lines") %>%
     layout(title = "Distribución binomial",
