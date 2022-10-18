@@ -77,7 +77,8 @@ En los siguientes ejercicios también se utilizan funciones de paqutes base de R
 library(dplyr)
 library(ggplot2)
 library(mosaic) # Gráficos de distribuciones
-library(cowplot) # Para varios gráficos 
+library(cowplot) # Para varios gráficos
+library(plotly)
 
 options(scipen=999) # Notación normal
 # options(scipen=1) # Notación científica
@@ -332,8 +333,15 @@ plot_grid(resultado$g.dens, resultado$g.hist )
 plot_grid(resultado$g.text, resultado$g_all$acum )
 ```
 
+Utilizando *plotly* que se encuentra en la variable *resultado*
+
 ```{r}
-plot_grid(resultado$g.hist.plotly, resultado$g.acum.plotly)
+resultado$g.hist.plotly 
+
+```
+
+```{r}
+resultado$g.acum.plotly
 ```
 
 #### Probabilidad de encestar cuatro tiros
@@ -452,8 +460,15 @@ plot_grid(resultado$g.text, resultado$g_all$acum)
 
 o
 
+Utilizando *plotly* que se encuentra en la variable *resultado*
+
 ```{r}
-plot_grid(resultado$g.hist.plotly, resultado$g.acum.plotly)
+resultado$g.hist.plotly 
+
+```
+
+```{r}
+resultado$g.acum.plotly
 ```
 
 #### Probabilidad de que sobrevivan al menos diez
@@ -626,8 +641,15 @@ plot_grid(resultado$g.dens, resultado$g.hist)
 
 o bien
 
+Utilizando *plotly* que se encuentra en la variable *resultado*
+
 ```{r}
-plot_grid(resultado$g.hist.plotly, resultado$g.acum.plotly)
+resultado$g.hist.plotly 
+
+```
+
+```{r}
+resultado$g.acum.plotly
 ```
 
 #### Probabilidad de que aprueben 15 o menos alumnos
@@ -771,8 +793,15 @@ plot_grid(resultado$g.dens, resultado$g.hist)
 plot_grid(resultado$g.text, resultado$g_all$acum)
 ```
 
+Utilizando *plotly* que se encuentra en la variable *resultado*
+
 ```{r}
-plot_grid(resultado$g.hist.plotly, resultado$g.acum.plotly)
+resultado$g.hist.plotly 
+
+```
+
+```{r}
+resultado$g.acum.plotly
 ```
 
 #### Probabilidad de que se encuentren exactamente 2 buses
@@ -866,6 +895,8 @@ Se observa que los mayores valores probabilísticos está entre 1 y 3, entonces 
 
 # Interpretación
 
-Pendiente
+Pendiente.
+
+Expresar con sus palabras ideas acerca del caso
 
 # Referencias bibliográficas
