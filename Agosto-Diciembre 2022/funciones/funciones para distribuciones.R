@@ -4,6 +4,7 @@ library(gtools)
 library(mosaic)
 library(dplyr)
 library(cowplot)
+library(plotly) # gráficos interactivos
 # library(dslabs) No se utiliza pero tiene data set interesantes 14 oct 2022
 
 options(scipen=999)
@@ -246,12 +247,30 @@ f.binom.all <- function(n, exito){
   
   g.text <- ggplot(data = tabla) +
     geom_col(aes(x = x, y = f.x), fill='blue') + 
-    geom_text (aes(x = round(n/2), y = max(f.x),
-                   label = paste("ve=", VE, ";", 
-                                 "var=", round(varianza, 2), ";",
-                                 "sd=", round(desv.std, 2)))) +
-    ggtitle(label = "Distribución binomial",
+      ggtitle(label = "Distribución binomial",subtitle = paste("ve=", VE, ";", 
+                                                             "var=", round(varianza, 2), ";",
+                                                           "sd=", round(desv.std, 2))
                 )
+  g.hist.plotly <- plot_ly(
+    x = c(datos$x),
+    y = c(datos$f.x),
+    type = "bar") %>%
+    layout(title = "Distribución binomial",
+           xaxis = list(title = "x's"), 
+           yaxis = list(title = "Función de Prob. f(X)")
+           )
+    
+
+  g.acum.plotly <- plot_ly(
+    x = c(datos$x),
+    y = c(datos$F.x),
+    type = "scatter" ,
+    mode = "lines") %>%
+    layout(title = "Distribución binomial",
+           xaxis = list(title = "x's"), 
+           yaxis = list(title = "Función Acumulada F(X)")
+           )
+  
   
   distribucion <- list(tabla = tabla, VE = VE, 
                        varianza = varianza, desv.std = desv.std, 
@@ -259,6 +278,8 @@ f.binom.all <- function(n, exito){
                        g.hist = g.hist,
                        g.acum = g.acum,
                        g.text = g.text,
+                       g.hist.plotly = g.hist.plotly,
+                       g.acum.plotly = g.acum.plotly,
                        g_all = f.hist.dens.discreta(tabla))
 
   
@@ -305,7 +326,7 @@ f.hiper.all <- function(exitosos, muestra, poblacion){
   # n = número de ensayos exitosos
   # N Tamaño de la población de cada N
   # r o k Tamaño de la muestra extraída de N
-  n <- exitosos; N <- poblacion; r <- muestra
+  n <- muestra; N <- poblacion; r <- exitosos
   VE <- n * (r/N)
   VE
   
@@ -328,20 +349,13 @@ f.hiper.all <- function(exitosos, muestra, poblacion){
 }
 
 
-
-# Función de distribución de Poisson conforme a la Fórmula
-f.prob.poisson <- function (media, x) {
-  e <- exp(1)
-  prob <- media^x * e^(-media) / factorial(x)
-  prob
-}
-
 # Función de distribución hipergeométrica
 # Recibe estos parámetros:
 # N Total de elementos de la población
 # n Elementos de la muestra o ensayos
 # r número de elementos considerados como éxito
 # x Valores que puede tener la variable aleatoria discreta
+# Actualización 17 Oct 2022
 f.prob.hiper <- function (x, poblacion, muestra, exitosos) {
   N <- poblacion
   n <- muestra
@@ -365,6 +379,13 @@ f.va.hiper <- function (n, r, N) {
 f.varianza.hiper <- function(VE, n, r, N)  {
   varianza <- VE * (1 - r/N) * ((N-n) / (N-1))
   varianza
+}
+
+# Función de distribución de Poisson conforme a la Fórmula
+f.prob.poisson <- function (media, x) {
+  e <- exp(1)
+  prob <- media^x * e^(-media) / factorial(x)
+  prob
 }
 
 # Devuelve el valor de t para una distribución T Student
