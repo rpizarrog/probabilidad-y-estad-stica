@@ -308,43 +308,12 @@ f.hist.dens.discreta <- function(datos) {
     geom_point(aes(x = x, y = F.x), color = 'blue') +
     ggtitle(label = "Función acumulada")
   
+  
   lista <- list(hist = g1, dens = g2, acum = g3)
     
     
   return(lista)
   
-}
-
-
-# 17 OCT 2022
-# Función para devolver una lista con tabla de distribución valor esperado
-# varianza desviación estádar y algunos gráficos 
-# de una Distribución
-
-f.hiper.all <- function(exitosos, muestra, poblacion){
-  # n = número de ensayos exitosos
-  # N Tamaño de la población de cada N
-  # r o k Tamaño de la muestra extraída de N
-  n <- muestra; N <- poblacion; r <- exitosos
-  VE <- n * (r/N)
-  VE
-  
-  varianza <- VE * (1 - r/N) * ((N-n) / (N-1))
-  varianza
-  
-  desv.std <- sqrt(varianza)
-  
-  m <-n; N <-N; k <- r; n <- N - n
-  x <- 0:muestra
-  
-  tabla <- data.frame(x=x, f.x = round(dhyper(x = x, m = exitosos, n = poblacion - exitosos, k = muestra), 8), 
-                       F.x = round(phyper(q = x, m = exitosos, n = poblacion - exitosos, k = muestra), 8))
-  tabla
-  
-  distribucion <- list(tabla = tabla, VE = VE, 
-                       varianza = varianza, desv.std = desv.std)
-  
-  return(distribucion)
 }
 
 
@@ -367,6 +336,73 @@ f.prob.hiper <- function (x, poblacion, muestra, exitosos) {
   prob
   
 }
+
+# 18 OCT 2022
+# Función para devolver una lista con tabla de distribución valor esperado
+# varianza desviación estándar y algunos gráficos 
+# de una Distribución
+
+f.hiper.all <- function(exitosos, muestra, poblacion){
+  # n = número de ensayos exitosos
+  # N Tamaño de la población de cada N
+  # r o k Tamaño de la muestra extraída de N
+  
+  N <- poblacion 
+  n <- muestra 
+  r <- exitosos
+  x <- 0:muestra
+  
+  VE <- n * (r/N)
+  VE
+  
+  varianza <- VE * (1 - r/N) * ((N-n) / (N-1))
+  varianza
+  
+  desv.std <- sqrt(varianza)
+  
+  
+  tabla <- data.frame(x=x, f.x = round(f.prob.hiper(x = x, poblacion = N, muestra = n, exitosos = r), 8), 
+                F.x = cumsum(round(f.prob.hiper(x = x, poblacion = N, muestra = n, exitosos = r), 8)))
+  tabla
+  
+  
+  g.dens <- plotDist(dist = "hyper", 
+                     kind = "density",
+                     params = c(m = r, n = N - r, k=n), 
+                     xlim = c(-1, n+1), 
+                     xlab ="X's", 
+                     ylab = "Probabilidad. f(x)", 
+                     main='Distribución Hipergeométrica',
+                     sub = paste("VE:",VE, "; ", "Var:",round(varianza,4), "; ", "ds:",round(desv.std, 4)))
+  
+  
+  g.hist <- plotDist(dist = "hyper", 
+                     params = c(m = r, n = N - r, k=n), 
+                     xlim = c(-1, n+1), 
+                     kind = "h", 
+                     xlab ="X's", 
+                     ylab = "Probabilidad. f(x)", 
+                     main='Distribución Hipergeométrica',
+                     sub = paste("VE:",VE, "; ", "Var:",round(varianza,4), "; ", "ds:",round(desv.std, 4)))
+  
+  g.acum <- plotDist(dist = "hyper", 
+                     params = c(m = r, n = N - r, k=n), 
+                     xlim = c(-1, n+1), 
+                     kind = "c", 
+                     xlab ="X's", 
+                     ylab = "Probabilidad Acumulada. F(x)", 
+                     main='Distribución Hipergeométrica',
+                     sub = paste("VE:",VE, "; ", "Var:",round(varianza,4), "; ", "ds:",round(desv.std, 4)))
+  
+  distribucion <- list(tabla = tabla, VE = VE, 
+                       varianza = varianza, desv.std = desv.std,
+                       g.dens = g.dens, g.hist = g.hist, g.acum = g.acum
+                       )
+  
+  return(distribucion)
+}
+
+
 
 # Función que devuelve el valor esperado de una distribución hipergeométrica
 f.va.hiper <- function (n, r, N) {
