@@ -340,7 +340,7 @@ f.prob.hiper <- function (x, poblacion, muestra, exitosos) {
 # 18 OCT 2022
 # Función para devolver una lista con tabla de distribución valor esperado
 # varianza desviación estándar y algunos gráficos 
-# de una Distribución
+# de una distribución hipergeométrica
 
 f.hiper.all <- function(exitosos, muestra, poblacion){
   # n = número de ensayos exitosos
@@ -447,8 +447,94 @@ f.varianza.hiper <- function(VE, n, r, N)  {
 # Función de distribución de Poisson conforme a la Fórmula
 f.prob.poisson <- function (media, x) {
   e <- exp(1)
-  prob <- media^x * e^(-media) / factorial(x)
+  prob <- media ^ x * e ^(-media) / factorial(x)
   prob
+  
+  
+}
+
+
+# 19 OCT 2022
+# Función para devolver una lista con tabla de distribución valor esperado
+# varianza desviación estándar y algunos gráficos 
+# de una distribución Poisson
+
+f.poisson.all <- function(media) {
+  VE <- media
+  
+  varianza <- VE 
+  
+  desv.std <- sqrt(varianza)
+  
+  n = media * 2  # Es infinito.... pero e deja hasta un tope
+  x <- 0:n
+  
+  tabla <- data.frame(x=x, f.x = round(dpois(x = x, lambda = media),8), 
+                      F.x = round(ppois(q = x, lambda = media),8))
+  tabla
+  
+  g.dens <- plotDist(dist = "pois", 
+                     kind = "density",
+                     params = c(media), 
+                     xlim = c(-1, n+1), 
+                     xlab ="X's", 
+                     ylab = "Probabilidad. f(x)", 
+                     main='Distribución Poisson',
+                     sub = paste("VE:",VE, "; ", "Var:",round(varianza,4), "; ", "ds:",round(desv.std, 4)))
+  
+  
+  g.hist <- plotDist(dist = "pois", 
+                     params = c(media), 
+                     xlim = c(-1, n+1), 
+                     kind = "h", 
+                     xlab ="X's", 
+                     ylab = "Probabilidad. f(x)", 
+                     main='Distribución Poisson',
+                     sub = paste("VE:",VE, "; ", "Var:",round(varianza,4), "; ", "ds:",round(desv.std, 4)))
+  
+  g.acum <- plotDist(dist = "pois", 
+                     params = c(media), 
+                     xlim = c(-1, n+1), 
+                     kind = "c", 
+                     xlab ="X's", 
+                     ylab = "Probabilidad Acumulada. F(x)", 
+                     main='Distribución Poisson',
+                     sub = paste("VE:",VE, "; ", "Var:",round(varianza,4), "; ", "ds:",round(desv.std, 4)))
+  
+  g.text <- ggplot(data = tabla) +
+    geom_col(aes(x = x, y = f.x), fill='blue') + 
+    ggtitle(label = "Distribución Poisson",
+            subtitle = paste("ve=", VE, ";", "var=", round(varianza, 2), ";", "sd=", round(desv.std, 2))
+            )
+  
+  g.hist.plotly <- plot_ly(
+    x = c(tabla$x),
+    y = c(tabla$f.x),
+    type = "bar") %>%
+    layout(title = "Distribución Poisson",
+           xaxis = list(title = "x's"), 
+           yaxis = list(title = "Función de Prob. f(X)")
+    )
+  
+  
+  g.acum.plotly <- plot_ly(
+    x = c(tabla$x),
+    y = c(tabla$F.x),
+    type = "scatter" ,
+    mode = "lines") %>%
+    layout(title = "Distribución Poisson",
+           xaxis = list(title = "x's"), 
+           yaxis = list(title = "Función Acumulada F(X)")
+    ) 
+  
+  distribucion <- list(tabla = tabla, VE = VE, 
+                       varianza = varianza, desv.std = desv.std,
+                       g.dens = g.dens, g.hist = g.hist, g.acum = g.acum, g.text = g.text,
+                       g.hist.plotly = g.hist.plotly, g.acum.plotly = g.acum.plotly,
+                       g_all = f.hist.dens.discreta(tabla))
+  
+  return(distribucion)
+  
 }
 
 # Devuelve el valor de t para una distribución T Student
