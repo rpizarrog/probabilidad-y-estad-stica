@@ -24,7 +24,9 @@ Se generan las tablas de probabilidad conforme a distribución hipergeométrica,
 
 Se utilizan las funciones base *dhyper()* y *phyper()* para la probabilidad y función acumulada de la distribución hipergeométrica.
 
-Se utiliza también de manera alternativa la función del enlace *f.prob.hiper()* <https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Enero%20Junio%202022/funciones/funciones.para.distribuciones.r> que permite calcular la probabilidad de una variable aleatoria discreta bajo la distribución hipergeométrica y conforme a la fórmula.
+Se utiliza también de manera alternativa la función del enlace *f.prob.hiper() que se encuentra en el archivo:*
+
+[https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R](https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R%22) y que permite calcular la probabilidad de una variable aleatoria discreta bajo la distribución hipergeométrica y conforme a la fórmula.
 
 # Fundamento teórico
 
@@ -79,6 +81,13 @@ ${\text{k ó r}$ es el número de elementos en la población original que perten
 
 $x$ es la variable aleatoria o el número de elementos en la muestra que pertenecen a dicha categoría.
 
+## Probabilidad acumulada
+
+$$
+F(x) = 
+\sum_{0}^{n}f.x_i
+$$
+
 ## Fórmula para valor esperado
 
 $$E(x) = \mu = n  \cdot\left(\frac{r}{N}\right)$$
@@ -91,19 +100,26 @@ $$Var(x) = \sigma^{2} = n  \cdot\left(\frac{r}{N}\right)\cdot\left(1 - \frac{r}{
 
 $$\sigma = \sqrt{Var(x)} = \sqrt{\sigma^{2}}$$
 
-Ejemplo1: canicas blancas y negras:
+En los siguientes ejercicios también se utilizan funciones de paquetes base de R para la comprensión de la distribución hipergeométrica. Las funciones base que existen para este tipo de distribución son:
 
-Extraer canicas <b style = 'color : white;'>rojas</b>
+Imagen de distribuciones Hipergeométrica
+
+
+## Ejemplos:
+
+### Ejemplo1: canicas blancas y negras:
+
+Extraer canicas <b style = 'color : white;'>blancas</b>
 
 ![](images/caso%20de%20canicas%20hipergeometrica%20blancas%20y%20negras.jpg "Canicas rojas y negras")
 
--   $N=15$ Total de canicas o bolitas Población
+-   $N=15$ Total de canicas de la Población
 
 -   $r = 9$ Canicas blancas. Casos Exitosos
 
 -   $n =$ Cantidad que se extrae $5$. Tamaño de la muestra
 
--   $x=3$ Variable aleatoria desde $0$ hasta tamaño de la muestra
+-   $x=3$ Variable aleatoria que puede tener valores desde $0$ hasta tamaño de la muestra $n$
 
 En alguna literatura de la fórmula de hipergeométrica la variable $m$ es igual a la literal $n$ y $r$ es lo mismo que la literal $k$.
 
@@ -119,77 +135,93 @@ $$
 
 Existe un 41.95% de probabilidades de extraer 3 canicas blancas de un experimento de extraer 5 de una bolsa que contiene 15 canicas de las cuales 9 son blancas y 6 de color negro.
 
+Haciendo operaciones sería:
+
 ```{r}
 N <- 15  # Población
-r <- 9 # Canicas rojas. Casos exitos
+r <- k <- 9 # Canicas rojas. Casos exitos
 # negras <- (N-k) # Canicas negras # 6
 n <- 5 # Extracción de canicas
 x <- 3
-# Haciendo operaciones sería
+
 numerador <- (factorial(r) / (factorial(x) * (factorial(r-x)))) * (factorial(N-r) / (factorial(n-x) * (factorial((N-r)-(n-x)))))
+
 denominador<- factorial(N) / (factorial(n) * factorial(N-n))
+
 prob <- numerador / denominador
 prob
 ```
 
 Directamente con la función *dhyper()*
 
-La función dhyper() recibe como m el tamaño de casos exitosos, como n los casos no exitosos o sea N - r y como kel tamano de la muestra
+La función *dhyper()* como parte de los paquetes base recibe como m el tamaño de casos exitosos, como n los casos no exitosos o sea N - r y como k el tamaño de la muestra.
 
 ```{r}
-# N = población
-# k = Casos Exitosos
-# n = Muestra
-# x = Variable aleatoria
+# Se inicializaron los valores en el bloque de código anterior.
+
 prob <- dhyper(x=x, m = r, n = N - r, k = n)
 prob
 ```
 
-Ejemplo2: Suponga la extracción aleatoria de **8** elementos de un conjunto formado por **40** elementos totales (cartas baraja española) de los cuales **10** son del tipo A (salir oro) y **30** son del tipo complementario (no salir oro).
-
-![](images/baraja%20espaniola.jpg){width="400"}\
-
-Si se realizan las extracciones sin devolver los elementos extraídos y se identifica a $x$ al número de elementos del tipo A (oros obtenidos) que se extraen en las **8** cartas; $x$seguirá una distribución hipergeométrica de parámetros
-
-
-AJUSTAR ...
--   $N = 40$ - Total de barajas
-
--   $m = n = 10$ - Cantidad de oros $10$
-
--   $k=8$ - Cuantas cartas se extraen $8$
-
-Para calcular la probabilidad de obtener $4$ oros:
-
--   $x = 4$
-
-![](images/baraja%20espaniola-01.jpg){width="400"}
-
-Calculando con la función *dhyper()*
-
-```{r}
-N <- 40 # Total de casos
-m <- 10  # Cantidad de oros
-k <- r <- 8 # Cantidad de extracción
-x <- 4  # Variable aleatoria
-dhyper(x = x, m = m, n = (N-m), k = k)
-
-
-```
-
-Cargar *script* que contiene la función *f.prob.hiper()* que genera el mismo resultado que *dhyper()*
+Cargar script que contiene la función f.prob.hiper() que genera el mismo resultado que dhyper()
 
 ```{r warning=FALSE, message=FALSE}
 source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R")
 ```
 
-Ejecutar función
+Ejecutando la función
 
 ```{r}
-f.prob.hiper(x=x, N = N, n = m, r = k)
+N <- 15  # Población
+r <- k <- 9 # Canicas rojas. Casos exitos
+# negras <- (N-k) # Canicas negras # 6
+n <- 5 # Extracción de canicas
+x <- 3
+f.prob.hiper(x = x, poblacion = N, muestra = n, exitosos = r)
+
 ```
 
-Ejemplo 3:
+### Ejemplo2: Baraja española
+
+Suponga la extracción aleatoria de **8** elementos de un conjunto formado por **40** elementos totales (cartas baraja española) de los cuales **10** son del tipo A (salir oro) y **30** son del tipo complementario (no salir oro).
+
+![](images/baraja%20espaniola.jpg){width="400"}\
+
+Si se realizan las extracciones sin devolver los elementos extraídos y se identifica a $x$ al número de elementos del tipo A (oros obtenidos) que se extraen en las **8** cartas; $x$seguirá una distribución hipergeométrica de parámetros
+
+AJUSTAR ... - $N = 40$ - Total de barajas
+
+-   $k = 10$ - Cantidad de oros $10$
+
+-   $n=8$ - Cuantas cartas se extraen $8$
+
+Para calcular la probabilidad de obtener $4$ oros:
+
+-   $x = 4$
+
+Calculando con la función *dhyper()*
+
+```{r}
+N <- 40 # Total de casos
+r <- 10  # Cantidad de oros
+n <- 8 # Cantidad de extracción
+x <- 4  # Variable aleatoria
+dhyper(x = x, m = r, n = (N-r), k = n)
+
+
+```
+
+Ejecutar función *f.prob.hiper()* del script previamente cargado
+
+```{r}
+N <- 40 # Total de casos
+r <- 10  # Cantidad de casos exitosos a evaluar. Cantidad de cartas que sea oros
+n <- 8 # Cantidad de extracción
+x <- 4  # Variable aleatoria
+f.prob.hiper(x = x, poblacion = N, muestra = n, exitosos = r)
+```
+
+### Ejemplo 3: Lotes de componentes
 
 ![](images/lote%2040%20componentes.png){width="400"}
 
@@ -197,16 +229,27 @@ Lotes con 40 componentes cada uno que contengan 3 o más defectuosos se consider
 
 ¿Cuál es la probabilidad de que, en la muestra, se encuentre exactamente un componente defectuoso, si en todo el lote hay 3 defectuosos?
 
-Si se utiliza la distribución hipergeométrica con n = 5, N = 40, k = 3 y x = 1, se encuentra que la probabilidad de obtener un componente defectuoso es:
+Si se utiliza la distribución hipergeométrica con n = 5, N = 40, k = r = 3 y x = 1, se encuentra que la probabilidad de obtener un componente defectuoso es:
 
 Solución con *dhyper()*
 
 ```{r}
 N <- 40 # Tamaño de lote
-m <- 3  # Casos de Exito
-k <- 5  # Extracción
+r <- 3  # Casos de Exito
+n <- 5  # Extracción muestra
 x <- 1  # Variable aleatoria
-dhyper(x = x, m = m, n = (N - m), k = k)
+dhyper(x = x, m = r, n = (N - r), k = n)
+```
+
+```{r}
+N <- 40 # Total de casos
+r <- 3  # Cantidad de casos exitosos a evaluar. Cantidad de componentes defectuosos
+n <- 5 # Cantidad de extracción muestra
+x <- 1  # Variable aleatoria
+
+f.prob.hiper(x = x, poblacion = N, muestra = n, exitosos = r)
+
+
 ```
 
 # Desarrollo
@@ -222,11 +265,15 @@ library(dplyr)
 library(ggplot2)
 library(mosaic) # Gráficos de distribuciones
 library(cowplot) #Imágenes en el mismo renglón
+
+library(plotly)
 options(scipen=999) # Notación normal
 # options(scipen=1) # Notación científica
 ```
 
 ## Cargar funciones
+
+Se carga la función aunque ya estaba previamente cargada
 
 ```{r message=FALSE, warning=FALSE}
 #source("../funciones/funciones.distribuciones.r")
@@ -246,105 +293,108 @@ Una empresa fabrica fusibles que empaca en cajas de 12 unidades cada una.
 
 -   En este ejercicio::
 
--   $n = 5$ Número de casos exitosos
-
 -   $N = 12$ Total de elementos
 
--   $r = 3$ Extracción de la muestra
+-   $n = 3$ Extracción de la muestra
+
+-   $r = 5$ Número de casos exitosos
 
 -   $x$ es la cantidad de fusible defectuosos como variable aleatoria discreta, desde $0$ hasta $n$ o hasta un valor específico[@anderson_estadistica_2008].
+
+A partir de este ejercicio se utiliza la función *f.hiper.all()* del *script* cargado con anticipación a través de la función *source().*
+
+Esta función devuelve la tabla de distribución, los estadísticos de valor esperado o esperanza matemática (media de la distribución); la varianza y la desviación estándar como medidas para identificar que tanto varía con respecto al valor esperado; los gráficos histograma, densidad y acumulado con respecto a la distribución hipergeométrica.
 
 ### Tabla de probabilidad desde cero a tres
 
 Primero inicializar valores
 
 ```{r}
-N <- 12 
-n <- N - 5
-r <- 3
+N <- 12 # Población
+n <- 3  # Muestra
+r <- 5  # Casos exitosos
 x <- 0:r
+```
+
+Se manda llamar la función y dejar todo en la variable resultado
+
+```{r}
+resultado <- f.hiper.all(poblacion = N, muestra = n, exitosos = r)
 ```
 
 Distribución de la probabilidad por medio de la función creada llamada *f.prob.hiper()* y con *cumsum()*
 
 ```{r}
-tabla1 <- data.frame(x=x, f.prob.x = f.prob.hiper(x = x, N = N, n = n, r = r))
-tabla1 <- cbind(tabla1, f.acum.x = cumsum(tabla1$f.prob.x))
-tabla1
-```
-
--   Distribución de la probabilidad por medio de la función base de R llamada *dhyper()*
--   Deben generarse los mismos datos en *tabla1* y *tabla2*
-
-```{r}
-m <-n; N <-N; k <- r; n <- N - m
-tabla2 <- data.frame(x=x, f.prob.x = round(dhyper(x = x,m = m, n = n, k = k), 8))
-tabla2 <- cbind(tabla2, f.acum.x = round(phyper(q = x,m = m, n = n, k = k), 8))
-tabla2
+tabla <- resultado$tabla
+tabla
 ```
 
 ### Gráfica de probabilidad
 
-Se presentan la gráfica de probabilidad y la probabilidad acumulada en *g1* y *g2* respectivamente.
+Se presentan la gráfica de probabilidad con histograma y la densidad respectivamente. Se utiliza la llamada de la variable resultado.
 
 ```{r}
-g1 <- ggplot(data = tabla2, aes(x,f.prob.x) ) +
-  geom_point(colour = "red") +
-  geom_line(colour = 'blue') +
-  ggtitle("Función de densidad P(x)")
-#g1
-g2 <- ggplot(data = tabla2, aes(x,f.acum.x) ) +
-  geom_point(colour = "red") +
-  geom_line(colour = 'blue') +
-  ggtitle("Función acumulada F(x)")
-#g2
-plot_grid(g1, g2)
+
+plot_grid(resultado$g.hist, resultado$g.dens)
+```
+
+Histograma y acumulado
+
+```{r}
+plot_grid(resultado$g.hist, resultado$g_all$acum)
+```
+
+Usando plotly para visualizaciones dinámicas
+
+```{r}
+resultado$g.hist.plotly
+resultado$g.acum.plotly
 ```
 
 ### Probabilidad uno de tres
 
 ¿Cuál es la probabilidad de que el inspector encuentre que uno de los tres fusibles está defectuoso?
 
-Utilizando la tabla de distribución.
+#### Utilizando la tabla de distribución.
 
 ```{r}
 x <- 1
-prob <- tabla2$f.prob.x[x+1]
+prob <- tabla$f.x[x+1]
 paste("La probabilidad de que el inspector encuentre que uno de los tres fusibles está defectuoso es: ", round(prob * 100,4), "%")
 ```
 
-Utilizando *dhyper()*
+#### Utilizando *dhyper()*
 
 ```{r}
-prob <- dhyper(x = 1, m = m, n = n, k = k)
+prob <- dhyper(x = 1, m = r, n = N - r, k = n)
 paste("La probabilidad de que el inspector encuentre que uno de los tres fusibles está defectuoso es: ", round(prob * 100,4), "%")
 ```
 
-Probabilidad de menos de tres fusibles
+### Probabilidad de menos de tres fusibles
 
 ¿Cuál es la probabilidad de encontrar menos de tres fusibles defectuosos
 
 $P(x\leq2) = P(X=0) + P(x=1) + P(x=2)$ o la función acumulada hasta tres $F(x=3)$
 
-Utilizando la tabla de distribución
+#### Utilizando la tabla de distribución
 
 ```{r}
 x <- 2
-prob <- tabla2$f.acum.x[x+1]
+prob <- tabla$F.x[x+1]
 paste("La probabilidad de menos de tres fusibles: ", round(prob * 100,4), "%")
 ```
 
-Utilizando sum(dhyper())
+#### Utilizando sum(dhyper())
 
 ```{r}
-prob <- sum(dhyper(x = 0:x, m = m, n = n, k = k))
+prob <- sum(dhyper(x = 0:x, m = r, n = N - r, k = n))
 paste("La probabilidad de menos de tres fusibles: ", round(prob * 100,4), "%")
 ```
 
-Utilizando phyper()
+#### Utilizando phyper()
 
 ```{r}
-prob <- phyper(q = x, m = m, n = n, k = k)
+prob <- phyper(q = x,  m = r, n = N - r, k = n)
 paste("La probabilidad de que el inspector encuentre que uno de los tres fusibles está defectuoso es: ", round(prob * 100,4), "%")
 ```
 
@@ -355,10 +405,8 @@ paste("La probabilidad de que el inspector encuentre que uno de los tres fusible
 -   Mandar llamar la función creada anticipadamente *f.va.hiper()*.
 
 ```{r}
-N <- 12 
-n <- 3
-r <- 5
-VE <- f.va.hiper(n = n, N = N, r = r)
+
+VE <- resultado$VE
 paste("El valor esperado o media de este ejercicios es de: ", VE)
 ```
 
@@ -367,8 +415,8 @@ paste("El valor esperado o media de este ejercicios es de: ", VE)
 ¿Cuál es la varianza y la desviación estándar?. También se utilizan las funciones previamente preparadas.
 
 ```{r}
-varianza <- f.varianza.hiper(VE = VE, n = 3, N = 12, r = 5)
-desvstd <- sqrt(varianza)
+varianza <- resultado$varianza
+desvstd <- resultado$desv.std
 paste("El valor de la varianza es de: ", round(varianza,4), " y la desviación std es de: ", round(desvstd, 4))
 ```
 
@@ -384,13 +432,15 @@ La varianza es de `r round(varianza,4)` y la desviación es de `r round(desvstd,
 
 ## Lote de Componentes
 
-Lotes con $40$ componentes cada uno que contengan 3 o más defectuosos se consideran inaceptables. El procedimiento para obtener muestras del lote consiste en seleccionar $5$ componentes al azar y rechazar el lote si se encuentra un componente defectuoso. En todo el lote hay $3$ defectuosos.
+![](images/Componentes%20varios.jpg){width="400"}
+
+Lotes con $100$ componentes cada uno que contengan 6 o más defectuosos se consideran inaceptables. El procedimiento para obtener muestras del lote consiste en seleccionar $10$ componentes al azar y rechazar el lote si se encuentra un componente defectuoso. En todo el lote hay $6$ defectuosos.
 
 [@camacho_avila_probabilidad_2019], [@walpole_probabilidad_2012]
 
--   $n = 3$,
--   $N = 40$,
--   $k = 5$ y
+-   $N = 100$,
+-   $n = 10$,
+-   $r = 6$ y
 -   $x = 0,1,2,3,4...n$
 
 ### Tabla de probabilidad desde cero a cinco
@@ -398,35 +448,44 @@ Lotes con $40$ componentes cada uno que contengan 3 o más defectuosos se consid
 -   Primero inicializar valores
 
 ```{r}
-N <- 40
-m  <- n <- 3
-r <- 5
-x <- 0:n
-m <-n; N <-N; k <- r; n <- N - m
+N <- 100  # Población
+n <- 10   # Muestra
+r <- 6   # Casos Exitosos
+x <- 0:n # variable aleatoria discreta x
+
+```
+
+```{r}
+resultado <- f.hiper.all(poblacion = N, muestra = n, exitosos = r)
 ```
 
 Se construye la tabla de distribución
 
 ```{r}
-tabla <- data.frame(x=x, f.prob.x = round(dhyper(x = x,m = m, n = n, k = k), 8))
-tabla <- cbind(tabla, f.acum.x = cumsum(tabla$f.prob.x))
+tabla <- resultado$tabla
 tabla
 ```
 
 ### Gráfica de probabilidad
 
+Se presentan la gráfica de probabilidad con histograma y la densidad respectivamente. Se utiliza la llamada de la variable resultado.
+
 ```{r}
-g1 <- ggplot(data = tabla, aes(x,f.prob.x) ) +
-  geom_point(colour = "red") +
-  geom_line(colour = 'blue') +
-  ggtitle("Función de densidad P(x)")
-#g1
-g2 <- ggplot(data = tabla, aes(x,f.acum.x) ) +
-  geom_point(colour = "red") +
-  geom_line(colour = 'blue') +
-  ggtitle("Función acumulada F(x)")
-#g2
-plot_grid(g1, g2)
+
+plot_grid(resultado$g.hist, resultado$g.dens)
+```
+
+Histograma y acumulado
+
+```{r}
+plot_grid(resultado$g.hist, resultado$g_all$acum)
+```
+
+Usando plotly para visualizaciones dinámicas
+
+```{r}
+resultado$g.hist.plotly
+resultado$g.acum.plotly
 ```
 
 ### Probabilidad de exactamente un componente
@@ -435,38 +494,38 @@ plot_grid(g1, g2)
 
 ```{r}
 x <- 1
-prob <- tabla$f.prob.x[x+1]
+prob <- tabla$f.x[x+1]
 paste("La probabilidad de que, en la muestra, se encuentre exactamente un componente defectuoso de tres es: ", round(prob * 100,4), "%")
 ```
 
-### Probabilidad de al menos tres
+### Probabilidad de a  lo más tres
 
 ¿Cuál es la probabilidad de encontrar menos de tres componentes defectuosos $P(x \leq3) = P(x=0)+P(x=1)+P(x=2)+P(x=3)$ o la función acumulada $F(x=3)$
 
 ```{r}
 x <- 3
-prob <- phyper(q = x,m = m, n = n, k = k)
+prob <- phyper(q = x,m = r, n = N - r, k = n)
 paste ("La probabilidad de encontrar menos de tres componentes", round(prob, 4))
 ```
 
 ### ¿Cuál es el valor esperado
 
 ```{r}
-VE <- f.va.hiper(n = n, N = N, r = r)
+VE <- resultado$VE
 paste("El valor esperado o media de este ejercicios es de: ", VE)
 ```
 
 ### ¿Cuál es la varianza y la desviación estándar?
 
 ```{r}
-varianza <- f.varianza.hiper(VE = VE, n = 3, N = 12, r = 5)
-desvstd <- sqrt(varianza)
+varianza <- resultado$varianza
+desvstd <- resultado$desv.std
 paste("El valor de la varianza es de: ", round(varianza,4), " y la desviación std es de: ", round(desvstd, 4))
 ```
 
 ### Interpretación
 
-En este ejercicio en su contexto, sólo 30% de las veces detecta un lote malo (con 3 componentes defectuosos). [@camacho_avila_probabilidad_2019].
+En este ejercicio en su contexto, hay un 89% de probabilidades de detectar 1 componente malo de una muestra de 10 de entre 100. Por lo que el lote se rechaza [@camacho_avila_probabilidad_2019].
 
 ## Artículos defectuosos
 
@@ -480,34 +539,43 @@ Se tiene un lote de $100$ artículos de los cuales $12$ están defectuosos. Se e
 
 ```{r}
 N <- 100
-m <- n <- 12
-r <- 10
+n <- 10
+r <- 12
 x <- 0:n
-m <-n; N <-N; k <- r; n <- N - n
+
 ```
 
-Distribución de la probabilidad por medio de la función creada llamada *f.prob.hiper()*
+Distribución de la probabilidad por medio de la función creada llamada f.hiper.all() en la variable resultado
 
 ```{r}
-tabla <- data.frame(x=x, f.prob.x = round(dhyper(x = x, m = m, n = n, k = r), 8))
-tabla <- cbind(tabla, f.acum.x = cumsum(tabla$f.prob.x))
+resultado <- f.hiper.all(poblacion = N, muestra = n, exitosos = r)
+```
+
+```{r}
+tabla <- resultado$tabla
 tabla
 ```
 
 ### Gráfica de probabilidad
 
+Se presentan la gráfica de probabilidad con histograma y la densidad respectivamente. Se utiliza la llamada de la variable resultado.
+
 ```{r}
-g1 <- ggplot(data = tabla, aes(x,f.prob.x) ) +
-  geom_point(colour = "red") +
-  geom_line(colour = 'blue') +
-  ggtitle("Función de densidad P(x)")
-#g1
-g2 <- ggplot(data = tabla, aes(x,f.acum.x) ) +
-  geom_point(colour = "red") +
-  geom_line(colour = 'blue') +
-  ggtitle("Función acumulada F(x)")
-#g2
-plot_grid(g1, g2)
+
+plot_grid(resultado$g.hist, resultado$g.dens)
+```
+
+Histograma y acumulado
+
+```{r}
+plot_grid(resultado$g.hist, resultado$g_all$acum)
+```
+
+Usando plotly para visualizaciones dinámicas
+
+```{r}
+resultado$g.hist.plotly
+resultado$g.acum.plotly
 ```
 
 ### Probabilidad de tres defectuosos
@@ -516,7 +584,7 @@ plot_grid(g1, g2)
 
 ```{r}
 x <- 3
-prob <- tabla$f.prob.x[x+1]
+prob <- tabla$f.x[x+1]
 paste("La probabilidad de que haya 3 defectuosos en una muestra de 10 es de", prob)
 ```
 
@@ -524,7 +592,7 @@ Con la función dhyper()
 
 ```{r}
 x <- 3
-dhyper(x = x, m = m, n = n, k = k)
+dhyper(x = x, m = r, n = N - r, k = n)
 paste("La probabilidad de que haya 3 defectuosos en una muestra de 10 es de", prob)
 ```
 
@@ -533,7 +601,7 @@ paste("La probabilidad de que haya 3 defectuosos en una muestra de 10 es de", pr
 ¿Cuál es el valor esperado?
 
 ```{r}
-VE <- f.va.hiper(n = n, N = N, r = r)
+VE <- resultado$VE
 paste("El valor esperado o media de este ejercicios es de: ", VE)
 ```
 
@@ -542,8 +610,8 @@ paste("El valor esperado o media de este ejercicios es de: ", VE)
 ¿Cuál es la varianza y la desviación estándar?
 
 ```{r}
-varianza <- f.varianza.hiper(VE = VE, n = 3, N = 12, r = 5)
-desvstd <- sqrt(varianza)
+varianza <- resultado$varianza
+desvstd <- resultado$desv.std
 paste("El valor de la varianza es de: ", round(varianza,4), " y la desviación std es de: ", round(desvstd, 4))
 ```
 
@@ -557,6 +625,14 @@ Pendiente
 
 Un estudiante tiene que preparar cien temas. En el examen se sacan tres a sorteo, de los cuales deberá exponer uno y aprobar al menos uno. El estudiante decide estudiar o preparar solamente la mitad y probar suerte. [@quintela2019].
 
+$N=100$ La población
+
+$n=3$ La muestra
+
+$r = 50$. Los que estudia, son los casos de éxito
+
+$x = 0,1,2,3$
+
 ### Tabla de distribución
 
 Valores iniciales
@@ -566,60 +642,72 @@ N <- 100
 n <- 3
 r <- 50 
 x <- 0:n
-m <-n; N <-N; k <- r; n <- N - n
+
 ```
 
-Se construye la tabla de distribución
+Se construye la tabla de distribución de la probabilidad por medio de la función creada llamada *f.hiper.all()* en la variable resultado.
 
 ```{r}
-tabla <- data.frame(x=x, f.prob.x = round(dhyper(x = x, m = m, n = n, k = r), 8))
-tabla <- cbind(tabla, f.acum.x = cumsum(tabla$f.prob.x))
+resultado <- f.hiper.all(poblacion = N, muestra = n, exitosos = r)
+```
+
+```{r}
+tabla <- resultado$tabla
 tabla
 ```
 
 ### Gráfica de probabilidad
 
+Se presentan la gráfica de probabilidad con histograma y la densidad respectivamente. Se utiliza la llamada de la variable resultado.
+
 ```{r}
-g1 <- ggplot(data = tabla, aes(x,f.prob.x) ) +
-  geom_point(colour = "red") +
-  geom_line(colour = 'blue') +
-  ggtitle("Función de densidad P(x)")
-#g1
-g2 <- ggplot(data = tabla, aes(x,f.acum.x) ) +
-  geom_point(colour = "red") +
-  geom_line(colour = 'blue') +
-  ggtitle("Función acumulada F(x)")
-#g2
-plot_grid(g1, g2)
+
+plot_grid(resultado$g.hist, resultado$g.dens)
 ```
 
-### Probabilidad de que no apruebe
-
-Se calcula la probabilidad cuando $P(x=0)$
+Histograma y acumulado
 
 ```{r}
-prob <- dhyper(x = 0, m = m, n = n, k = k)
+plot_grid(resultado$g.hist, resultado$g_all$acum)
+```
+
+Usando plotly para visualizaciones dinámicas
+
+```{r}
+resultado$g.hist.plotly
+resultado$g.acum.plotly
+```
+
+### Probabilidad de que no apruebe, 
+
+La probabilidad de que no sepa ninguna de entre la muestra extraída.
+
+Se calcula la probabilidad cuando $f(x=0)$
+
+```{r}
+prob <- dhyper(x = 0, m = r, n = N - r, k = n)
 paste ("La probabilidad de que no apruebe es de: ", prob, " o sea ", round(prob*100, 4), "%")
 ```
 
 ### Probabilidad de que apruebe
 
-Se requiere al menos 1 de los temas, o lo que es lo mismo $1 - F(x=0)$
+Se requiere que sepa un tema $f(x=1)$ y con eso pasa
 
 ```{r}
-prob <- 1 - phyper(q = 0, m = m, n = n, k = k)
+prob <- dhyper(x = 1, m = r, n = N - r, k = n)
 paste ("La probabilidad de que apruebe es de: ", prob, " o sea ", round(prob*100, 4), "%")
 ```
 
-O se puede usar la función *phyper()* con el parámetro *lower.tail = FALSE.*
+### Interpretación del ejercicio
 
-```{r}
-prob <- phyper(q = 0, m = m, n = n, k = k, lower.tail = FALSE)
-paste ("La probabilidad de que apruebe es de: ", prob, " o sea ", round(prob*100, 4), "%")
-```
+Hay un $37\%$ de probabilidades de que sepa una respuesta de entre las tres de la muestra, para aumentar esa probabilidad seguramente tendrá que estudiar más temas.
+
+Existe una probabilidad aproximada del $12\%$ de que no sepa ningún tema, es decir de que repruebe.
+
+¿Cuál es la probabilidad de que sepa más de 0 preguntas?, que es la condición de aprobar.$F(x >0) = f(x=1) + f(x=2) + f(x=3) = 1 - F(x=0) = 1 - 0.1212$ es decir, tiene un $88\%$ de probabilidades de aprobar habiendo estudiado solo $50%$ de los cien reactivos. ¡Está bien !
 
 # Interpretación
 
-Pendiente ...
+Pendiente ... con sus palabras ...
 
 # Referencias Bibliográficas
