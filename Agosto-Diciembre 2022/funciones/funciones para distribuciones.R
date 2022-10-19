@@ -361,8 +361,8 @@ f.hiper.all <- function(exitosos, muestra, poblacion){
   desv.std <- sqrt(varianza)
   
   
-  tabla <- data.frame(x=x, f.x = round(f.prob.hiper(x = x, poblacion = N, muestra = n, exitosos = r), 8), 
-                F.x = cumsum(round(f.prob.hiper(x = x, poblacion = N, muestra = n, exitosos = r), 8)))
+  tabla <- data.frame(x=x, f.x = round(dhyper(x = x, m = r, n = N - r, k = n),8), 
+                F.x = round(phyper(q = x, m = r, n = N - r, k = n), 8))
   tabla
   
   
@@ -394,10 +394,38 @@ f.hiper.all <- function(exitosos, muestra, poblacion){
                      main='Distribución Hipergeométrica',
                      sub = paste("VE:",VE, "; ", "Var:",round(varianza,4), "; ", "ds:",round(desv.std, 4)))
   
+  g.text <- ggplot(data = tabla) +
+    geom_col(aes(x = x, y = f.x), fill='blue') + 
+    ggtitle(label = "Distribución Hipergeométrica",subtitle = paste("ve=", VE, ";", 
+                                                             "var=", round(varianza, 2), ";",
+                                                             "sd=", round(desv.std, 2))
+    )
+  g.hist.plotly <- plot_ly(
+    x = c(tabla$x),
+    y = c(tabla$f.x),
+    type = "bar") %>%
+    layout(title = "Distribución Hipergeométrica",
+           xaxis = list(title = "x's"), 
+           yaxis = list(title = "Función de Prob. f(X)")
+    )
+  
+  
+  g.acum.plotly <- plot_ly(
+    x = c(tabla$x),
+    y = c(tabla$F.x),
+    type = "scatter" ,
+    mode = "lines") %>%
+    layout(title = "Distribución Hipergeométrica",
+           xaxis = list(title = "x's"), 
+           yaxis = list(title = "Función Acumulada F(X)")
+    )  
+  
+  
   distribucion <- list(tabla = tabla, VE = VE, 
                        varianza = varianza, desv.std = desv.std,
-                       g.dens = g.dens, g.hist = g.hist, g.acum = g.acum
-                       )
+                       g.dens = g.dens, g.hist = g.hist, g.acum = g.acum, g.text = g.text,
+                       g.hist.plotly = g.hist.plotly, g.acum.plotly = g.acum.plotly,
+                       g_all = f.hist.dens.discreta(tabla))
   
   return(distribucion)
 }
