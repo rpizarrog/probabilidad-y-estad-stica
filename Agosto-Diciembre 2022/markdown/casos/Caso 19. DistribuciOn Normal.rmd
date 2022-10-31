@@ -1,0 +1,719 @@
+---
+title: "Caso 19. Distribución Normal"
+author: "Rubén Pizarro Gurrola"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 5
+    code_folding: hide
+    toc_float: yes
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+Determinar la función de densidad, calculando probabilidades bajo ala curva de densidad de una distribución normal
+
+# Descripción
+
+Realizar distribuciones de probabilidad conforme a la distribución de probabilidad normal a partir de valores iniciales de los ejercicios identificando y visualizando la función de densidad y calculando probabilidades.
+
+# Fundamento teórico
+
+La distribución continua de probabilidad más importante en todo el campo de la estadística es la distribución normal. Su gráfica, que se denomina curva normal, es la curva con forma de campana .
+
+La distribución normal a menudo se denomina distribución Gaussiana, en honor de Karl Friedrich Gauss (1777-1855), quien también derivó su ecuación a partir de un estudio de errores en mediciones repetidas de la misma cantidad [@walpole2012].
+
+![](images/curva%20normal.png){width="300"}
+
+En a imagen anterior se identifican dos valores que se requieren para suponer una curva de distribución normal, la media $\mu$ y la desviación estándar $\sigma$ de los datos.
+
+## Fórmula de la función de densidad
+
+![](images/formula%20densidad%20distribuciOn%20normal.jpg "Distribución Normal"){width="300"}
+
+-   $$
+    f(x)=\frac{1}{\sqrt{2\cdot\pi\cdot\sigma}}\cdot e^{(-\frac{(x-\mu)^2}{2 \cdot \sigma^2})}
+    $$
+
+-   En donde: $\pi = 3.14159$ y $e = 2.71828$
+
+Ejemplo de calcular la densidad para un valor de $x$ de acuerdo a la distribución normal con media y desviación.
+
+Valor de $x=18$; $media=20$; $desv=2$;$e=2.71828$;$pi=3.14159$
+
+Se utiliza la función *f.normal.dens()* que se encuentra previamente programada y devuelve precisamente la probabilidad para un valor específico de x.
+
+```{r}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Enero%20Junio%202022/funciones/funciones.para.distribuciones.r")
+```
+
+Se utilizan también las funciones de la distribución normal de los paquete base de R.
+
+![](images/funciones%20probabilidad%20en%20R%20Normal.png){width="300"}
+
+## Inicializando variables
+
+```{r}
+x= 18
+media <- 20
+desv <- 2
+e <- exp(1)
+pi <- pi
+x; media; desv; e; pi
+```
+
+## Calculando la densidad f(x)
+
+La función de $f(x)$ es lo que representa probabilidad de un solo punto de la curva o lo que es lo mismo la densidad. LA densidad es la altura de la curva normal en ese punto en particular.
+
+```{r}
+prob = f.normal.dens(x = x, desv = desv, media = media)
+prob
+```
+
+## Usando dnorm()
+
+Se utiliza *dnorm()* para calcular la función de densidad o el punto en donde se cruzan el valor de $x$ con su probabilidad en distribución normal.
+
+Debe salir el mismo valor que usando *prob = f.normal.dens()*.
+
+```{r}
+dnorm(x = x, mean = media, sd = desv)
+```
+
+## Calculando la probabilidad acumulada de un intervalo
+
+Calcular la probabilidad acumulada de un intervalo de $x$ continua entre 16 y 22. Es decir encontrar el área que contiene todas las probabilidades (densidades) de los puntos de la distribución normal desde 16 a 22 con los valores de media y desviación $media=20$ y $desv=2$
+
+Ahora bien, R dispone de *pnorm()* para calcular probabilidades acumuladas.
+
+```{r}
+x2 <- 22
+pnorm(q = x2, mean = media, sd = desv)
+```
+
+```{r}
+x1 <- 16
+pnorm(q = x1, mean = media, sd = desv)
+```
+
+#### Restando P(x=22) - P(x=16)
+
+```{r}
+pnorm(q = x2, mean = media, sd = desv) - pnorm(q = x1, mean = media, sd = desv)
+```
+
+El 81.85% es el área bajo la curva.
+
+![](images/distribuci%C3%B3n%20normal%2081.85-01.jpg)
+
+### Tabla de probabilidades
+
+No es necesario tabla de probabilidades al tratar con distribuciones normales.
+
+La distribución normal trata con variables aleatorias continuas, del tal forma que el valor de la probabilidad acumulada es el área bajo la curva y la sumatoria de cada punto de la función de densidad.
+
+**¿Cómo determinar el área bajo la curva?**, con *pnorm().*
+
+```{r}
+options(scipen=999) # Notación normal
+x <- seq(from= 0, to = 18, by = 0.5)
+tabla <- data.frame(x = x, f.x=dnorm(x = x, mean = media, sd = desv), F.x = pnorm(q = x, mean = media, sd = desv))
+tabla
+```
+
+### Gráfica de probabilidades de 0 a 18
+
+¿Cuánto vale el área bajo la curva hasta 18 ó $P(x < 18)$?
+
+```{r message=FALSE, warning=FALSE}
+
+library(ggplot2)
+
+ggplot(data = tabla, aes(x,f.x) ) +
+    geom_point(colour = "red") +
+    geom_line(colour = 'blue') +
+    geom_hline(yintercept = dnorm(x = max(x), mean = media, sd = desv), col='red') +
+  geom_vline(xintercept =  max(x), col='red') +
+  ggtitle(label = "Distribución normal", subtitle = paste("Media = ", media, "; Desviación =", desv, "; valor de x de 0 hasta ",max(x)))
+```
+
+### Gráfica de campana completa
+
+```{r message=FALSE, warning=FALSE}
+library("mosaic")
+plotDist("norm", mean = media, sd = desv, groups = x <= 18, type = "h", xlab ="Valores de la variable continua X", ylab = "Densidad", main='Densidad',sub = paste('Media= ', media, ' Desv Std=', desv )) 
+```
+
+# Desarrollo
+
+## Las librerías
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(mosaic)
+library(readr)
+library(ggplot2)  # Para gráficos
+library(knitr)    # Para formateo de datos
+library(cowplot) #Imágenes en el mismo renglón
+options(scipen=999) # Notación normal
+```
+
+## Caso de mediciones del cuerpo humano (Peso y Estatura)
+
+### Cargar los datos
+
+```{r}
+#datos <- read.table("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/datos/body.dat.txt", quote="\"", comment.char="")
+datos <- read.csv("https://raw.githubusercontent.com/rpizarrog/Trabajos-en-R-AD2021/main/datos/estatura%20peso%20generos.csv")
+#datos <- as.data.frame(datos)
+#colnames(datos)[23:25] <- c("peso", "estatura", "genero")
+# Solo nos interesan las tres últimas columnas
+datos <- select(datos, estatura, peso, genero)
+```
+
+-   Ver los primeros seis y últimos seis registros
+
+### Variables de interés
+
+-   Estatura, altura en centímetros de una persona
+
+-   Peso: Peso de una persona medido en kilogramos
+
+-   Genero: 0 Femenino, 1 Masculino
+
+```{r}
+head(datos)
+tail(datos)
+```
+
+### Dispersión de los datos
+
+-   Diagrama de dispersión del peso
+
+```{r}
+ggplot(datos, aes(x = 1:nrow(datos), y = peso)) +
+  geom_point(colour = "red") 
+  
+```
+
+-   Diagrama de dispersión de la estatura
+
+```{r}
+ggplot(datos, aes(x = 1:nrow(datos), y = estatura)) +
+  geom_point(colour = "blue")
+```
+
+### Histrogramas
+
+-   Histograma del peso
+
+```{r}
+ggplot(datos) +
+  geom_histogram(aes(x = peso))
+```
+
+-   Histograma de la estatura
+
+```{r}
+ggplot(datos) +
+  geom_histogram(aes(x = estatura))
+```
+
+### Medias aritméticas y desviaciones
+
+#### Estadísticos de la variable peso
+
+Se extraen conjuntos de datos para masculinos y femeninos respectivamente.
+
+```{r}
+datos$genero <- as.factor(datos$genero)
+masculinos <- filter(datos, genero == 1)
+femeninos <- filter(datos, genero == 0)
+media.peso.m <- mean(masculinos$peso)
+desv.std.peso.m <- sd(masculinos$peso)
+media.peso.m
+desv.std.peso.m 
+media.peso.f <- mean(femeninos$peso)
+desv.std.peso.f <- sd(femeninos$peso)
+media.peso.f 
+desv.std.peso.f 
+```
+
+#### Tabla de distribución peso MASCULINO
+
+Se toman los valores mínimos y máximos de pesos, de esos valores se disminuye en diez a mínimo y aumenta en diez a máximo para contemplar mayor rango.
+
+```{r}
+x <- round(min(masculinos$peso-10),0):round(max(masculinos$peso+10),0)
+tabla.peso.masculino <- data.frame(x=x, prob.x = dnorm(x = x, mean = media.peso.m, sd = desv.std.peso.m), f.acum.x = pnorm(q = x, mean = media.peso.m, sd = desv.std.peso.m))
+kable(tabla.peso.masculino, caption = "Peso Muestra Masculino")
+```
+
+#### Tabla de distribución peso FEMENINO
+
+```{r}
+x <- round(min(masculinos$peso-10),0):round(max(masculinos$peso+10),0)
+tabla.peso.femenino <- data.frame(x=x, prob.x = dnorm(x = x, mean = media.peso.f, sd = desv.std.peso.f), f.acum.x = pnorm(q = x, mean = media.peso.f, sd = desv.std.peso.f))
+kable(tabla.peso.femenino, caption = "Peso Muestra Femenino")
+```
+
+#### Gráfica de densidad PESO MASCULINO Y FEMENINO
+
+```{r}
+g1 <- ggplot(data = tabla.peso.masculino, aes(x,prob.x) ) +
+  geom_point(colour = "red") +
+  geom_line(colour = 'blue') +
+  ggtitle("Pesos MASCULINO Densidad P(x)", subtitle = paste("media = ",round(media.peso.m, 4), "desv=", round(desv.std.peso.m, 4) )) +
+  geom_vline(xintercept = media.peso.m, colour="red")
+#g1
+g2 <- ggplot(data = tabla.peso.femenino, aes(x,prob.x) ) +
+  geom_point(colour = "red") +
+  geom_line(colour = 'blue') +
+  ggtitle("PESO FEMENINO. Densidad P(x)", subtitle = paste("media = ",round(media.peso.f, 4), "desv=", round(desv.std.peso.f,4) )) +
+  geom_vline(xintercept = media.peso.f, colour="red")
+#g2
+plot_grid(g1, g2)
+```
+
+#### Estadísticos de la variable estatura
+
+```{r}
+media.estatura.m <- mean(masculinos$estatura)
+desv.std.estatura.m <- sd(masculinos$estatura)
+media.estatura.m 
+desv.std.estatura.m 
+media.estatura.f <- mean(femeninos$estatura)
+desv.std.estatura.f <- sd(femeninos$estatura)
+media.estatura.f 
+desv.std.estatura.f 
+```
+
+#### Tabla de distribución Estaturas MASCULINO
+
+Se toman los valores mínimos y máximos de estaturas, de esos valores se disminuye en diez a mínimo y aumenta en diez a máximo para contemplar mayor rango.
+
+```{r}
+x <- round(min(masculinos$estatura-10),0):round(max(masculinos$estatura+10),0)
+tabla.estatura.masculino <- data.frame(x=x, prob.x = dnorm(x = x, mean = media.estatura.m, sd = desv.std.estatura.m), f.acum.x = pnorm(q = x, mean = media.estatura.m, sd = desv.std.estatura.m))
+kable(tabla.estatura.masculino, caption = "Estatura Muestra Masculino")
+```
+
+#### Tabla de distribución Estaturas FEMENINO
+
+```{r}
+x <- round(min(femeninos$estatura-10),0):round(max(femeninos$estatura+10),0)
+tabla.estatura.femenino <- data.frame(x=x, prob.x = dnorm(x = x, mean = media.estatura.f, sd = desv.std.estatura.f), f.acum.x = pnorm(q = x, mean = media.estatura.f, sd = desv.std.estatura.f))
+kable(tabla.estatura.femenino, caption = "Estatura Muestra Femenino")
+```
+
+#### Gráfica de densidad ESTATURA MASCULINO y FEMENINO
+
+```{r}
+g1 <- ggplot(data = tabla.estatura.masculino, aes(x,prob.x) ) +
+  geom_point(colour = "red") +
+  geom_line(colour = 'blue') +
+  ggtitle("ESTATURAS MASCULINO Densidad P(x)", subtitle = paste("media = ",round(media.estatura.m, 4), "desv=", round(desv.std.estatura.m, 4) ))+
+geom_vline(xintercept = media.estatura.m, colour="red")
+#g1
+g2 <- ggplot(data = tabla.estatura.femenino, aes(x,prob.x) ) +
+  geom_point(colour = "red") +
+  geom_line(colour = 'blue') +
+  ggtitle("ESTATURAS FEMENINO. Densidad P(x)", subtitle = paste("media = ",round(media.estatura.f, 4), "desv=", round(desv.std.estatura.f, 4) )) +
+  geom_vline(xintercept = media.estatura.f, colour="red")
+#g2
+plot_grid(g1, g2)
+```
+
+### Calcular probabilidades
+
+#### MASCULINO menor o igual a 60 KGS
+
+¿Cuál es la probabilidad de encontrar a una persona masculino que pese menor o igual de 60 kilogramos?
+
+-   Graficar la función en donde $P(x \leq 60)$
+
+-   Gráfica de densidad
+
+```{r}
+plotDist("norm", mean = media.peso.m, sd = desv.std.peso.m, groups = x <= 60, type = "h", xlab = "Peso Hombres", ylab = "Densidad", sub=paste("Media = ",round(media.peso.m), " Desv. Std = ", round(desv.std.peso.m,4)) ) 
+```
+
+-   Calcular la probabilidad
+
+```{r}
+prob <- pnorm(q = 60, mean = media.peso.m, sd = desv.std.peso.m)
+paste("La probabilidad de encontrar a una persona masculino que pese menor de 60 kilogramos es de:", round(prob * 100,4), "%")
+```
+
+#### FEMENINO menor o igual a 60 KGS
+
+¿Cuál es la probabilidad de encontrar a una persona femenino que pese menor o igual de 60 kilogramos?
+
+-   Graficar la función en donde $P(x \leq 60)$
+-   Gráfica de densidad
+
+```{r}
+plotDist("norm", mean = media.peso.f, sd = desv.std.peso.f, groups = x <= 60, type = "h", xlab = "Peso Mujeres", ylab = "Densidad", sub=paste("Media = ",round(media.peso.f), " Desv. Std = ", round(desv.std.peso.f,4)) )
+```
+
+-   Calcular la probabilidad
+
+```{r}
+prob <- pnorm(q = 60, mean = media.peso.f, sd = desv.std.peso.f)
+paste("La probabilidad de encontrar a una persona femenino que pese menor de 60 kilogramos es de:", round(prob * 100,4), "%")
+```
+
+#### MASCULINO mayor o igual A 180 cms.
+
+¿Cuál es la probabilidad de encontrar a una persona masculino que tenga una estatura mayor o igual de 180 centímetros?
+
+-   Graficar la función en donde $P(x >= 180)$
+-   Gráfica de densidad
+
+```{r}
+plotDist("norm", mean = media.estatura.m, sd = desv.std.estatura.m, groups = x >= 180, type = "h", xlab = "Estatura Hombres", ylab = "Densidad", sub=paste("Media = ",round(media.estatura.m), " Desv. Std = ", round(desv.std.estatura.m,4)) )
+```
+
+-   Calcular la probabilidad
+
+```{r}
+prob <- pnorm(q = 180, mean = media.estatura.m, sd = desv.std.estatura.m, lower.tail = FALSE)
+paste("La probabilidad de encontrar a una persona masculino que tenga una estatura mayor o igual de 180 de:", round(prob * 100,4), "%")
+```
+
+#### MASCULINO mayor o igual A 190 cms.
+
+¿Cuál es la probabilidad de encontrar a una persona masculino que tenga una estatura mayor o igual de 190 centímetros?
+
+-   Graficar la función en donde $x >= 190$
+-   Gráfica de densidad
+
+```{r}
+plotDist("norm", mean = media.estatura.m, sd = desv.std.estatura.m, groups = x >= 190, type = "h", xlab = "Estatura Hombres", ylab = "Densidad", sub=paste("Media = ",round(media.estatura.m), " Desv. Std = ", round(desv.std.estatura.m,4)) )
+```
+
+-   Calcular la probabilidad
+
+```{r}
+prob <- pnorm(q = 190, mean = media.estatura.m, sd = desv.std.estatura.m, lower.tail = FALSE)
+paste("La probabilidad de encontrar a una persona masculino que tenga una estatura mayor o igual de 190 de:", round(prob * 100,4), "%")
+```
+
+#### Masculino estatura entre 160 y 170
+
+¿Cuál es la probabilidad de encontrar a una persona masculino que tenga una estatura entre 160 y 170 centímetros?
+
+-   Graficar la función en donde $P(160 \leq x \leq 170)$
+-   Gráfica de densidad
+
+```{r}
+plotDist("norm", mean = media.estatura.m, sd = desv.std.estatura.m, groups = x >= 160 & x <= 170, type = "h", xlab = "Estatura Hombres", ylab = "Densidad", sub=paste("Media = ",round(media.estatura.m), " Desv. Std = ", round(desv.std.estatura.m,4)))
+```
+
+-   Calcular la probabilidad
+
+```{r}
+prob <- pnorm(q = 170, mean = media.estatura.m, sd = desv.std.estatura.m) - pnorm(q = 160, mean = media.estatura.m, sd = desv.std.estatura.m)
+paste("La probabilidad de encontrar a una persona masculino que tenga una estatura entre 160 y 170 centímeros de:", round(prob * 100,4), "%")
+```
+
+#### MAASCULINO estatura entre 190 y 195
+
+¿Cuál es la probabilidad de encontrar a una persona masculino que tenga una estatura entre 190 y 195 centímetros?
+
+-   Graficar la función en donde $P(190 \leq x \leq 195)$
+-   Gráfica de densidad
+
+```{r}
+plotDist("norm", mean = media.estatura.m, sd = desv.std.estatura.m, groups = x >= 190 & x <= 195, type = "h", xlab = "Estatura Hombres", ylab = "Densidad", sub=paste("Media = ",round(media.estatura.m), " Desv. Std = ", round(desv.std.estatura.m,4)) )
+```
+
+-   Calcular la probabilidad
+
+```{r}
+prob <- pnorm(q = 195, mean = media.estatura.m, sd = desv.std.estatura.m) - pnorm(q = 190, mean = media.estatura.m, sd = desv.std.estatura.m)
+paste("La probabilidad de encontrar a una persona masculino que tenga una estatura entre 190 y 195 centímeros es de:", round(prob * 100,4), "%")
+```
+
+#### FEMENINO estatura mayor o igual a 180 cms.
+
+¿Cuál es la probabilidad de encontrar a una persona femenino que tenga una estatura mayor o igual de 180 centímetros?
+
+-   Graficar la función en donde $P(x >= 180)$
+-   Gráfica de densidad
+
+```{r}
+plotDist("norm", mean = media.estatura.f, sd = desv.std.estatura.f, groups = x >= 180, type = "h", xlab = "Estatura Mujeres", ylab = "Densidad", sub=paste("Media = ",round(media.estatura.f), " Desv. Std = ", round(desv.std.estatura.f,4)) )
+```
+
+-   Calcular la probabilidad
+
+```{r}
+prob <- pnorm(q = 180, mean = media.estatura.f, sd = desv.std.estatura.f, lower.tail = FALSE)
+paste("La probabilidad de encontrar a una persona femenino que tenga una estatura mayor o igual de 180 de:", round(prob * 100,4), "%")
+```
+
+#### FEMENINO estatura mayor o igual 190 cms.
+
+¿Cuál es la probabilidad de encontrar a una persona femenino que tenga una estatura mayor o igual de 190 centímetros?
+
+-   Graficar la función en donde $P(x >= 190)$
+-   Gráfica de densidad
+
+```{r}
+plotDist("norm", mean = media.estatura.f, sd = desv.std.estatura.f, groups = x >= 190, type = "h", xlab = "Estatura Mujeres", ylab = "Densidad", sub=paste("Media = ",round(media.estatura.f), " Desv. Std = ", round(desv.std.estatura.f,4)) )
+```
+
+-   Calcular la probabilidad
+
+```{r}
+prob <- pnorm(q = 190, mean = media.estatura.f, sd = desv.std.estatura.f, lower.tail = FALSE)
+paste("La probabilidad de encontrar a una persona femenino que tenga una estatura mayor o igual de 190 de:", round(prob * 100,4), "%")
+```
+
+#### FEMENINO estatura entre 160 y 170 cms
+
+¿Cuál es la probabilidad de encontrar a una persona femenino que tenga una estatura entre 160 y 170 centímetros?
+
+-   Graficar la función en donde $P(160 \leq x \leq 170)$
+-   Gráfica de densidad
+
+```{r}
+plotDist("norm", mean = media.estatura.f, sd = desv.std.estatura.f, groups = x >= 160 & x <= 170, type = "h", xlab = "Estatura Mujeres", ylab = "Densidad", sub=paste("Media = ",round(media.estatura.f), " Desv. Std = ", round(desv.std.estatura.f,4)) )
+```
+
+-   Calcular la probabilidad
+
+```{r}
+prob <- pnorm(q = 170, mean = media.estatura.f, sd = desv.std.estatura.f) - pnorm(q = 160, mean = media.estatura.f, sd = desv.std.estatura.f)
+paste("La probabilidad de encontrar a una persona femenino que tenga una estatura entre 160 y 170 centímeros de:", round(prob * 100,4), "%")
+```
+
+#### FEMENINO estatura entre 190 y 195 cms
+
+¿Cuál es la probabilidad de encontrar a una persona femenino que tenga una estatura entre 190 y 195 centímetros?
+
+-   Graficar la función en donde $P(190 \leq x \leq 195)$
+-   Gráfica de densidad
+
+```{r}
+plotDist("norm", mean = media.estatura.f, sd = desv.std.estatura.f, groups = x >= 190 & x <= 195, type = "h", xlab = "Estatura Mujeres", ylab = "Densidad", sub=paste("Media = ",round(media.estatura.f), " Desv. Std = ", round(desv.std.estatura.f,4)) )
+```
+
+-   Calcular la probabilidad
+
+```{r}
+prob <- pnorm(q = 195, mean = media.estatura.f, sd = desv.std.estatura.f) - pnorm(q = 190, mean = media.estatura.f, sd = desv.std.estatura.f)
+paste("La probabilidad de encontrar a una persona femenino que tenga una estatura entre 190 y 195 centímeros es de:", round(prob * 100,4), "%")
+```
+
+#### MASCULINO o FEMENINO estatura entre 160 y 170 cms
+
+¿Cuál es la probabilidad de encontrar a una persona masculino o femenino que tenga una estatura entre 160 y 170 centímetros?
+
+-   Graficar la función en donde $P(160 \leq x \leq 170)$
+-   Gráfica de densidad
+
+```{r}
+plotDist("norm", mean = mean(datos$estatura), sd = sd(datos$estatura), groups = x >= 160 & x <= 170, type = "h", xlab = "Estatura Hombres y Mujeres", ylab = "Densidad", sub=paste("Media = ",round(mean(datos$estatura)), " Desv. Std = ", round(sd(datos$estatura),4)) )
+```
+
+-   Calcular la probabilidad
+
+```{r}
+prob <- pnorm(q = 170, mean = mean(datos$estatura), sd = sd(datos$estatura)) - pnorm(q = 160, mean = mean(datos$estatura), sd = sd(datos$estatura))
+paste("La probabilidad de encontrar a una persona masculino o femenino que tenga una estatura entre 160 y 170 centímetros? es de:", round(prob * 100,4), "%")
+```
+
+### Interpretación
+
+Pendiente ...
+
+## Fábrica de bombillas
+
+Una empresa de material eléctrico fabrica bombillas (focos) de luz que tienen una duración, antes de quemarse (fundirse), que se distribuye **normalmente** con media igual a **800** horas y una desviación estándar de **40** horas. Encuentre la probabilidad de que una bombilla se queme entre 778 y 834 horas. @walpole_probabilidad_2012].
+
+### Inicializar valores
+
+$$\mu = 800$$ $$ \sigma=40$$
+
+-   Se busca:
+
+$$P(778 \leq x \leq 834)$$
+
+```{r}
+media <- 800
+desv.stadandar <- 40
+```
+
+### La gráfica de la distribución normal
+
+```{r}
+plotDist("norm", mean = media, sd = desv.stadandar, groups = x >= 778 & x <= 834, type = "h", xlab = "Distribución de la duración bombillas (focos)", ylab = "Densidad" )
+```
+
+### Cálculo de la probabilidad
+
+-   La probabilidad de que una bombilla se queme entre 778 y 834 horas.
+
+```{r}
+prob <- pnorm(q = 834, mean = media, sd = desv.stadandar) - pnorm(q = 778, mean = media, sd = desv.stadandar)
+paste("La probabilidad de que una bombilla se queme entre 778 y 834 horas es:", round(prob * 100, 4), "%")
+```
+
+### Interpretación
+
+Dado que la probabilidad de el área bajo la curva de una distribución normal es del 100% y solicitan la probabilidad en el intervalo entre 778 y 834, entonces se resta la probabilidad de 834 menos la probabilidad de 778 para encontrar el área bajo la curva de este intervalo de esa variable aleatoria. En la gráfica el color rosa es el área bajo la curva del intervalo.
+
+La probabilidad de que un foco se funda en un rango entre 778 horas y 834 horas es de `r round(prob * 100, 4)` %
+
+## Sueldos mensuales
+
+Los sueldos mensuales en una empresa siguen una distribución **normal** con media de **1200** soles, y desviación estándar de **200** soles.
+
+¿Qué porcentaje de trabajadores ganan entre 1000 y 1550 soles?[@matemovil].
+
+### Inicializar valores
+
+$$\mu = 1200$$ $$ \sigma=200$$
+
+-   Se busca:
+
+$$1000 \leq x \leq 1550$$
+
+```{r}
+media <- 1200
+desv.stadandar <- 200
+```
+
+### La gráfica de la distribución normal
+
+```{r}
+plotDist("norm", mean = media, sd = desv.stadandar, groups = x >= 1000 & x <= 1550, type = "h", xlab = "Ganancias de trabajadores en soles", ylab = "Densidad" )
+```
+
+### Cálculo de la probabilidad
+
+-   ¿Qué porcentaje de trabajadores ganan entre 1000 y 1550 soles?
+
+```{r}
+prob <- pnorm(q = 1550, mean = media, sd = desv.stadandar) - pnorm(q = 1000, mean = media, sd = desv.stadandar)
+paste("La probabilidad de que una persoan gane entre 1000 y 1550 soles es de:", round(prob * 100, 4), "%")
+```
+
+### Interpretación
+
+La probabilidad de que una persona gane entre 1000 y 1550 soles es de:", `r round(prob * 100, 4)`,"%" que es el porcentaje de trabajadores que ganan en ese intérvalo.
+
+## Ejercicio de contexto indistinto
+
+En una distribución normal $N ( \mu=5, \sigma=2 )$ calcula las siguientes probabilidades:
+
+Inicializar valores de media y desviación [anónimo]
+
+```{r}
+media <- 5
+desv <- 2
+```
+
+### P ( X ≤ 3.25)
+
+#### Densidad
+
+```{r}
+plotDist("norm", mean = media, sd = desv, groups = x <= 3.25, type = "h", xlab = "Contexto indistinto", ylab = "Densidad" )
+```
+
+#### Solución
+
+```{r}
+x = 3.25
+pnorm(q = x, mean = media, sd= desv)
+```
+
+### P [ X \> 4.5 ]
+
+#### Densidad
+
+```{r}
+plotDist("norm", mean = media, sd = desv, groups = x > 4.5, type = "h", xlab = "Contexto indistinto", ylab = "Densidad" )
+```
+
+#### Solución
+
+```{r}
+x <- 4.5
+pnorm(q = x, mean = media, sd= desv, lower.tail = FALSE)
+```
+
+### P [X ≤ 7.2]
+
+#### Densidad
+
+```{r}
+plotDist("norm", mean = media, sd = desv, groups = x <= 7.2, type = "h", xlab = "Contexto indistinto", ylab = "Densidad" )
+```
+
+#### Solución
+
+```{r}
+x <- 7.2
+pnorm(q = x, mean = media, sd= desv)
+```
+
+### P [ 3 \< X ≤ 6]
+
+#### Densidad
+
+```{r}
+plotDist("norm", mean = media, sd = desv, groups = x > 3 & x<= 6 , type = "h", xlab = "Contexto indistinto", ylab = "Densidad" )
+```
+
+#### Solución
+
+```{r}
+x1 <- 6
+x2 <- 3
+pnorm(q = x1, mean = media, sd = desv) - pnorm(q = x2, mean = media, sd = desv)
+```
+
+### Pendiente
+
+Interpretación
+
+## Carne empaquetada
+
+Es difícil etiquetar la carne empaquetada con su peso correcto debido a los efectos de pérdida de líquido (definido como porcentaje del peso original de la carne). Supongamos que la pérdida de líquido en un paquete de pechuga de pollo se distribuye como normal con media $4 %$ y desviación típica $1 %$. [@uc3m].
+
+### Inicializar valores de media y desviación
+
+```{r}
+media <- 0.04
+desv <- 0.01
+```
+
+¿Cuál es la probabilidad de que de que esté entre 3 y 5 porciento.
+
+### Gráfica de densidad
+
+```{r}
+plotDist("norm", mean = media, sd = desv, groups = x >= 0.03 & x <= 0.05, type = "h", xlab = "Carne empaquetada", ylab = "Densidad" )
+```
+
+### Cálculo de probabilidad
+
+$P(3 \leq x \leq 5$
+
+```{r}
+pnorm(q = 0.05, mean = media, sd = desv) - pnorm(q = 0.03, mean = media, sd = desv)
+```
+
+# Interpretación
+
+Pendiente
+
+# Referencias bibliográficas
