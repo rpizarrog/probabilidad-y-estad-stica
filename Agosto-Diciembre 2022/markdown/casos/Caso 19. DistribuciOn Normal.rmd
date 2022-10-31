@@ -164,7 +164,9 @@ options(scipen=999) # Notación normal
 
 ## Caso de mediciones del cuerpo humano (Peso y Estatura)
 
-### Cargar los datos
+![](images/pesos%20y%20estaturas.png){width="400"}
+
+## Cargar los datos
 
 ```{r}
 #datos <- read.table("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/datos/body.dat.txt", quote="\"", comment.char="")
@@ -213,14 +215,14 @@ ggplot(datos, aes(x = 1:nrow(datos), y = estatura)) +
 
 ```{r}
 ggplot(datos) +
-  geom_histogram(aes(x = peso))
+  geom_histogram(aes(x = peso), bins = 30)
 ```
 
 -   Histograma de la estatura
 
 ```{r}
 ggplot(datos) +
-  geom_histogram(aes(x = estatura))
+  geom_histogram(aes(x = estatura), , bins = 30)
 ```
 
 ### Medias aritméticas y desviaciones
@@ -535,6 +537,8 @@ Pendiente ...
 
 ## Fábrica de bombillas
 
+![](images/bombillas%20o%20focos.jpg){width="400"}
+
 Una empresa de material eléctrico fabrica bombillas (focos) de luz que tienen una duración, antes de quemarse (fundirse), que se distribuye **normalmente** con media igual a **800** horas y una desviación estándar de **40** horas. Encuentre la probabilidad de que una bombilla se queme entre 778 y 834 horas. @walpole_probabilidad_2012].
 
 ### Inicializar valores
@@ -573,6 +577,8 @@ La probabilidad de que un foco se funda en un rango entre 778 horas y 834 horas 
 
 ## Sueldos mensuales
 
+![](images/sueldos%20mensuales.jpg){width="400"}
+
 Los sueldos mensuales en una empresa siguen una distribución **normal** con media de **1200** soles, y desviación estándar de **200** soles.
 
 ¿Qué porcentaje de trabajadores ganan entre 1000 y 1550 soles?[@matemovil].
@@ -609,7 +615,9 @@ paste("La probabilidad de que una persoan gane entre 1000 y 1550 soles es de:", 
 
 La probabilidad de que una persona gane entre 1000 y 1550 soles es de:", `r round(prob * 100, 4)`,"%" que es el porcentaje de trabajadores que ganan en ese intérvalo.
 
-## Ejercicio de contexto indistinto
+## Ejercicio de contexto en lo general
+
+![](images/datos%20en%20lo%20general.jfif)
 
 En una distribución normal $N ( \mu=5, \sigma=2 )$ calcula las siguientes probabilidades:
 
@@ -687,7 +695,9 @@ Interpretación
 
 ## Carne empaquetada
 
-Es difícil etiquetar la carne empaquetada con su peso correcto debido a los efectos de pérdida de líquido (definido como porcentaje del peso original de la carne). Supongamos que la pérdida de líquido en un paquete de pechuga de pollo se distribuye como normal con media $4 %$ y desviación típica $1 %$. [@uc3m].
+![](images/pechuga%20empaquetada.jpg){width="400"}
+
+Es difícil etiquetar la carne empaquetada con su peso correcto debido a los efectos de pérdida de líquido (definido como porcentaje del peso original de la carne). Supongamos que la pérdida de líquido en un paquete de pechuga de pollo se distribuye como normal con media $4 %$ y desviación típica $1 %$. [@uc3m_introduccion_nodate].
 
 ### Inicializar valores de media y desviación
 
