@@ -14,7 +14,7 @@ bibliography: references.bib
 
 # Objetivo
 
-Determinar la función de densidad, calculando probabilidades bajo ala curva de densidad de una distribución normal
+Calcular probabilidades, determinado la función de densidad y la visualización gráfica de una distribución normal.
 
 # Descripción
 
@@ -46,8 +46,8 @@ Valor de $x=18$; $media=20$; $desv=2$;$e=2.71828$;$pi=3.14159$
 
 Se utiliza la función *f.normal.dens()* que se encuentra previamente programada y devuelve precisamente la probabilidad para un valor específico de x.
 
-```{r}
-source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Enero%20Junio%202022/funciones/funciones.para.distribuciones.r")
+```{r message=FALSE, warning=FALSE}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R")
 ```
 
 Se utilizan también las funciones de la distribución normal de los paquete base de R.
