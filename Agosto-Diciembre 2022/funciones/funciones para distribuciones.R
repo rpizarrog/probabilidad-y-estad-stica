@@ -557,6 +557,98 @@ f.normal.dens <- function(desv, x, media) {
   # Es lo mismo que dnorm(x = x, mean = media, sd = desv)
 }
 
+
+
+# 02 Noviembre 2022
+# Función para devolver probabilidades de una distribución normal
+# Recibe media, desviación 
+# Recibe x1 y x2 que son los valores de la variable discreta x
+#  y representan el intervalo par calcular la probabilidad
+
+f.normal.all <- function(media=0, desv.std=1, x1, x2=x1, tipo=1 ) {
+
+  prob <- NULL
+  # Cola izquierda
+  if (tipo == 1) {
+    prob = "(Cola izquierda. Prob ="
+    prob <- paste(prob, round(pnorm(q = x1, mean = media, sd = desv.std), 6), ")")
+  }
+  # Cola derecha
+  if (tipo == 2) {
+    prob = "(Cola derecha. Prob = "
+    prob <- paste(prob, round(pnorm(q = x1, mean = media, sd = desv.std, lower.tail = FALSE), 6), ")")
+  }
+  if (tipo == 3) {
+    prob <- "Intervalo. Prob = "
+    if (is.null(x1) | is.null(x2)) {
+      prob <- "No se puede calcular, no se capturó intervalo x2 y x1"
+    } else {
+      prob <- paste(prob, round(pnorm(q = x2, mean = media, sd = desv.std) -
+        pnorm(q = x1, mean = media, sd = desv.std), 6), ")")
+    }
+    
+  }
+ #prob
+  
+
+  
+  # Se construye un conjunto de datos aleatorios
+  #  generados con caracerísticas de distribución normal
+  set.seed(2022)
+  x <- sort(rnorm(n = 1000, mean = media, sd = desv.std))
+  datos <- data.frame(x=x, 
+                      f.x = dnorm(x = x, mean = media, sd = desv.std))
+  
+  titulo <- "Distribución normal"
+  subtitulo <- paste("Media = ", media, "; Desviación Std.=", desv.std, 
+                     "; valores de x de ", round(min(datos$x), 2), " hasta ",
+                     round(max(datos$x), 2))
+  
+  #  ggplot
+  g.gauss.gg <- ggplot(data = datos, aes(x, f.x) ) +
+    geom_point(colour = "red") +
+    geom_line(colour = 'blue') +
+    geom_vline(xintercept = media, col='red') +
+    ggtitle(label = titulo, 
+            subtitle = subtitulo)
+  
+ #  g.gauss.gg
+  
+  
+  g.plotDist <- plotDist(dist = "norm", mean = media, sd = desv.std, 
+                         groups = x >= x1 & x <= x2, 
+                         type = "h", 
+                         xlab ="x's", 
+                         ylab = "Densidad f(x)", 
+                         main=titulo,
+                         sub = paste(subtitulo,".", prob ))
+  #g.plotDist
+  
+  # Plotly
+  g.gauss.plotly <- plot_ly( 
+              x = datos$x, y = datos$f.x,
+              type = "scatter" ,
+              mode = "lines") %>%
+              layout(title = titulo, 
+              xaxis = list(title = "x's"), 
+              yaxis = list(title = "Densidad f(x)"))
+  
+  
+ 
+    
+  distribucion <- list(prob = prob, 
+                       g.gauss.gg = g.gauss.gg,
+                       g.plotDist = g.plotDist,
+                       g.gauss.plotly = g.gauss.plotly)
+  
+  
+  
+  
+  return(distribucion)
+  
+}
+
+
 # Función para devolver el valor de z
 f.devolver.z <- function(x, media, desv) {
   z <- (x - media) / desv
