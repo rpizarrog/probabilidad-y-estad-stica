@@ -615,6 +615,7 @@ f.normal.all <- function(media, desv.std, x1, x2, tipo) {
   subtitulo <- paste("Media = ", media, "; Desviación Std.=", desv.std, 
                      "; valores de x de ", round(min(datos$x), 2), " hasta ",
                      round(max(datos$x), 2))
+
   
   #  ggplot()
   g.gauss.gg <- ggplot(data = datos, aes(x, f.x) ) +
@@ -642,8 +643,8 @@ f.normal.all <- function(media, desv.std, x1, x2, tipo) {
                            groups = x >= x12, type = "h", 
                            xlab ="x's", 
                            ylab = "Densidad f(x)", 
-                           main=titulo,
-                           sub = paste(subtitulo,".", prob.str ))
+                           main = titulo,
+                           sub = prob.str)
     
     
   }
