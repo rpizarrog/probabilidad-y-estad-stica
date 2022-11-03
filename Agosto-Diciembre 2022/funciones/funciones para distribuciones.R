@@ -633,7 +633,7 @@ f.normal.all <- function(media, desv.std, x1, x2, tipo) {
                            xlab ="x's", 
                            ylab = "Densidad f(x)", 
                            main=titulo,
-                           sub = paste(subtitulo,".", prob.str ))
+                           sub = prob.str)
     
     
   }
@@ -656,7 +656,7 @@ f.normal.all <- function(media, desv.std, x1, x2, tipo) {
                            xlab ="x's", 
                            ylab = "Densidad f(x)", 
                            main=titulo,
-                           sub = paste(subtitulo,".", prob.str ))
+                           sub = prob.str)
     
     
   }
