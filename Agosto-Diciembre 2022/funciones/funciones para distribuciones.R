@@ -577,15 +577,15 @@ f.normal.all <- function(media, desv.std, x1, x2, tipo) {
 
   prob <- NULL
   prob.str <- NULL
-  # Cola izquierda
+  # Cola izquierda se utiliza x1
   if (tipo == 1) {
     prob <- round(pnorm(q = x1, mean = media, sd = desv.std), 6)
     prob.str <- "(Cola izquierda. Prob ="
     prob.str <- paste(prob.str, prob, ")")
   }
-  # Cola derecha
+  # Cola derecha se utiliza x2
   if (tipo == 2) {
-    prob <- round(pnorm(q = x1, mean = media, sd = desv.std, lower.tail = FALSE), 6)
+    prob <- round(pnorm(q = x2, mean = media, sd = desv.std, lower.tail = FALSE), 6)
     prob.str <- "(Cola derecha. Prob = "
     prob.str <- paste(prob.str, prob, ")")
   }
@@ -626,13 +626,39 @@ f.normal.all <- function(media, desv.std, x1, x2, tipo) {
   
 
   # plotDist()
-  g.plotDist <- plotDist(dist = "norm", mean = media, sd = desv.std, 
-                         groups = x >= x11 & x <= x12, type = "h", 
-                         xlab ="x's", 
-                         ylab = "Densidad f(x)", 
-                         main=titulo,
-                         sub = paste(subtitulo,".", prob.str ))
-
+  if (tipo == 1) {
+    g.plotDist <- plotDist(dist = "norm", mean = media, sd = desv.std, 
+                           groups = x <= x11, type = "h", 
+                           xlab ="x's", 
+                           ylab = "Densidad f(x)", 
+                           main=titulo,
+                           sub = paste(subtitulo,".", prob.str ))
+    
+    
+  }
+  
+  if (tipo == 2) {
+    g.plotDist <- plotDist(dist = "norm", mean = media, sd = desv.std, 
+                           groups = x >= x12, type = "h", 
+                           xlab ="x's", 
+                           ylab = "Densidad f(x)", 
+                           main=titulo,
+                           sub = paste(subtitulo,".", prob.str ))
+    
+    
+  }
+  
+  
+  if (tipo == 3) {
+    g.plotDist <- plotDist(dist = "norm", mean = media, sd = desv.std, 
+                           groups = x >= x11 & x <= x12, type = "h", 
+                           xlab ="x's", 
+                           ylab = "Densidad f(x)", 
+                           main=titulo,
+                           sub = paste(subtitulo,".", prob.str ))
+    
+    
+  }
   # Plot_ly()
   g.gauss.plotly <- plot_ly( 
               x = datos$x, y = datos$f.x,
