@@ -32,11 +32,15 @@ En a imagen anterior se identifican dos valores que se requieren para suponer un
 
 ## Fórmula de la función de densidad
 
-![](images/formula%20densidad%20distribuciOn%20normal.jpg "Distribución Normal"){width="300"}
+![](images/distribucion-normal-funcion-densidad-probabilidad.jpg "Distribución Normal"){width="500"}
 
--   $$
-    f(x)=\frac{1}{\sqrt{2\cdot\pi\cdot\sigma}}\cdot e^{(-\frac{(x-\mu)^2}{2 \cdot \sigma^2})}
-    $$
+o
+
+![](images/formula%20densidad%20distribuciOn%20normal-02.jpg){width="500"}
+
+$$
+f(x) =\frac{1}{\sigma \cdot \sqrt{2 \cdot \pi}}\cdot e ^{\frac{-1}{2}\cdot ( \frac {x - \mu}{\sigma}) ^2} 
+$$
 
 -   En donde: $\pi = 3.14159$ y $e = 2.71828$
 
