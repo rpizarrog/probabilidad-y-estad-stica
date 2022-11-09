@@ -1,0 +1,279 @@
+---
+title: "Ejercicio Distribución Normal Z"
+author: "Rubén Pizarro Gurrola"
+format: revealjs
+editor: visual
+date: "`r Sys.Date()`"
+chalkboard: true
+---
+
+# Objetivo
+
+Transformar distribución normal a normal estándar y calcular probabilidades.
+
+# Marco Teórico
+
+La distribución normal estándar o distribución normal tipificada es una distribución normal singular cuya denominación es media igual a cero y desviación igual a 1.
+
+# Normal Z
+
+![](images/distribucion-normal-estandar.jpg)
+
+Z que representa el producto de una transformación o cambio de variable de la variable aleatoria continua X que sigue una distribución normal.
+
+# Fórmula para calcular Z
+
+$$
+z = \frac{x - \mu}{\sigma}
+$$
+
+$$
+x \text{ es el valor de una variable aleatoria continua de una distribución  normal} \\
+\sigma \text{ desviación estándar de población} \\ 
+\mu \text{ media de la población}
+$$
+
+# Cargar librerías
+
+```{r warning=FALSE, message=FALSE, echo=TRUE}
+library(cowplot) # Gráficos
+library(ggplot2) # Gráfico
+library(mosaic)
+library(dplyr)  # Para proesar filtrar ordenar con arrange
+```
+
+# Cargar función
+
+```{r warning=FALSE, message=FALSE, echo=TRUE}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R")
+```
+
+# Ejercicio Promedio Alumnos
+
+![](images/promedio%20importa.jpg){width="400"}
+
+# Ejercicio Promedio Alumnos
+
+Se tiene una distribución normal de promedio de alumnos de segundo semestre de carrera de Sistemas
+
+```{r echo = TRUE}
+media <- 86.5
+desv.std <- 4.5
+x <- 80
+
+```
+
+# Transforma el valor de X a Z
+
+```{r echo = TRUE}
+z <- f.devolver.z(x = x, media = media, desv = desv.std)
+paste ("Valor de z = ", z)
+```
+
+# Calcular probabilidades
+
+$$
+P(x \geq 80)
+$$
+
+```{r echo = TRUE}
+prob <- pnorm(q = x, mean = media, sd = desv.std, lower.tail = FALSE)
+paste("La probabilidad es : ", prob)
+
+```
+
+# Calcular la probabilidad con z
+
+```{r echo = TRUE}
+prob <- pnorm(q = z, mean = 0, sd = 1, lower.tail = FALSE)
+paste("La probabilidad es : ", prob)
+```
+
+# Visualización de gauss con respecto a x
+
+```{r echo=TRUE}
+resultado <- f.normal.all(media = media, desv.std = desv.std, x1 = x, x2 = x, tipo = 2)
+
+resultado$g.plotDist
+```
+
+# Visualización de gauss con respecto a z
+
+```{r echo=TRUE}
+resultado <- f.normal.all(media = 0, desv.std = 1, x1 = z, x2 = z, tipo = 2)
+
+resultado$g.plotDist
+```
+
+# ¿Cuál es la probabilidad del intervalo con respecto a x?
+
+$$
+P(84 \leq x \leq 88)
+$$
+
+```{r echo = TRUE}
+resultado <- f.normal.all(media = media, desv.std = desv.std, x1 = 84, x2 = 88, tipo = 3)
+resultado$prob
+```
+
+# Visualización con respecto a x
+
+```{r echo=TRUE}
+resultado$g.plotDist
+```
+
+# Convertir a z los valores de x
+
+```{r echo = TRUE}
+z1 <- f.devolver.z(x = 84, media = media, desv = desv.std)
+
+z2 <- f.devolver.z(x = 88, media = media, desv = desv.std)
+
+print("Los valores de z's con respecto a x's")
+z1 ; z2
+
+```
+
+# ¿Cuál es la probabilidad del intervalo con respecto a z?
+
+$$
+P(-0.555555 \leq z \leq 0.3333333)
+$$
+
+```{r echo= TRUE}
+resultado <- f.normal.all(media = 0, desv.std = 1, x1 = z1, x2 = z2, tipo = 3)
+print ("La probabilidad es: ")
+resultado$prob
+```
+
+# Visualización con respecto a z
+
+```{r echo=TRUE}
+resultado$g.plotDist
+```
+
+# Pesos de bebes al nacer
+
+![](images/peso%20bebe.webp){width="400"}
+
+# Peso bebés
+
+En la Ciudad de Durango, Dgo. México se tiene en un hospital el registro de los pesos de bebés al nacer.
+
+Estos pesos son los siguientes:
+
+```{r echo = TRUE}
+pesos.bebes <- c(0.7191, 1.1752, 3.7498, 4.1266, 2.6995, 2.9125, 4.9543, 5.1601, 1.8297, 3.3075, 2.7863, 3.4958, 5.7309, 3.638, 2.5122, 2.6462, 4.1832, 3.3559, 5.0557, 0.8281, 2.5784, 2.7254, 2.2134, 3.3573, 4.208, 3.4141, 4.3605, 2.5206, 2.1347, 3.1684, 5.1748, 1.2855, 3.6806, 4.7674, 2.24, 3.4289, 3.5194, 3.3325, 4.1718, 2.6791, 1.3243, 2.6535, 1.9107, 2.8553, 3.0037, 4.0826, 3.2736, 1.1654, 2.5926, 2.8362, 4.0827, 2.692, 4.0496, 1.9093, 2.7167, 4.1255, 1.628, 1.2753, 4.2513, 3.5807, 5.2501, 1.5644, 3.5126, 2.5005, 1.3048, 4.7342, 4.4907, 1.6773, 3.2652, 4.1313, 1.6327, 3.006, 3.3251, 2.2534, 2.3458, 2.2868, 3.4207, 1.1163, 1.7885, 1.3021, 3.0418, 0.3372, 1.9722, 2.3763, 3.9547, 3.1974, 3.7741, 2.4655, 2.5678, 2.6905, 3.7281, 4.4928, 2.5225, 3.3029, 4.606, 4.2158, 2.123, 3.3323, 1.9899, 1.1445)
+```
+
+# media y la desviación estándar del peso de bebés
+
+```{r echo = TRUE}
+media <- mean(pesos.bebes)
+desv.std <- sd(pesos.bebes)
+media; desv.std
+```
+
+$$
+\mu = 2.985804 \\
+\sigma = 1.158491
+$$
+
+# Peso bajo
+
+Se considera que son de peso bajo aquellos bebés que están igual o por debajo de $1.5$ kgs.
+
+# Peso alto
+
+Se considera que son de peso alto aquellos bebés que están igual o superior a $3.8$ kgs.
+
+# Calcular probabilidades... ...
+
+# ¿Cuál es la probabilidad de que nazca un bebé con peso bajo?
+
+$$
+P(x \leq 1.5)
+$$
+
+```{r echo=TRUE}
+x <- 1.5
+resultado <- f.normal.all(media = media, desv.std = desv.std, x1 = x, x2 = x, tipo = 1)
+paste("La probabilidad aproximada es: ", round(resultado$prob, 4) * 100, "%")
+```
+
+# Visualizar probabilidad variable x
+
+```{r echo=TRUE}
+resultado$g.plotDist
+```
+
+# ¿probabilidad de que nazca un bebé con peso alto ?
+
+$$
+P(x \geq 3.8)
+$$
+
+```{r echo=TRUE}
+x <- 3.8
+resultado <- f.normal.all(media = media, desv.std = desv.std, x1 = x, x2 = x, tipo = 2)
+paste("La probabilidad aproximada es: ", round(resultado$prob, 4) * 100, "%")
+```
+
+En este contexto, es mas probable que nazcan bebés con **sobre peso** que bebés con **bajo peso.**
+
+# Visualizar probabilidad variable x
+
+```{r echo=TRUE}
+resultado$g.plotDist
+```
+
+# Valores de z
+
+```{r}
+z1 <- f.devolver.z(x = 1.5, media = media, desv = desv.std)
+z2 <- f.devolver.z(x = 3.8, media = media, desv = desv.std)
+
+paste("Valores de x de 1.5 y 3.8 convertidos y transformados a z son: ", round(z1, 4), " y ", round(z2, 4), "respectivamente ")
+```
+
+# ¿probabilidad con respecto a Z. Peso bajo?
+
+$$
+P( \leq -1.2825 )
+$$
+
+```{r echo= TRUE}
+resultado <- f.normal.all(x1 = z1, x2 = z1, media = 0, desv.std = 1, tipo = 1)
+paste("La probabilidad aproximada es: ", round(resultado$prob, 4) * 100, "%")
+```
+
+# Visualizar probabilidad variable z
+
+```{r echo = TRUE}
+resultado$g.plotDist
+```
+
+# ¿probabilidad con respecto a Z. Peso alto?
+
+```{r echo=TRUE}
+resultado <- f.normal.all(x1 = z2, x2 = z2, media = 0, desv.std = 1, tipo = 2)
+paste("La probabilidad aproximada es: ", round(resultado$prob, 4) * 100, "%")
+```
+
+# Visualizar probabilidad variable z
+
+```{r echo = TRUE}
+resultado$g.plotDist
+```
+
+# ¿Probabilidad que nazcan entre 1.5 y 3.8?
+
+$$
+P(1.5 \leq x \leq 3.8)
+$$
+
+o bien:
+
+$$
+P(-1.2825 \leq z \leq  0.7028)
+$$

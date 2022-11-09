@@ -1,0 +1,311 @@
+---
+title: "Distribución Hipergeométrica ejercicios"
+author: "Rubén Pizarro Gurrola"
+date: "`r Sys.Date()`"
+format: pptx
+editor: visual
+bibliography: references.bib
+---
+
+## Distribución hipergeométrica
+
+La distribución de probabilidad hipergeométrica está estrechamente relacionada con la distribución binomial.
+
+Difieren en dos puntos: en la distribución hipergeométrica, los ensayos no son independientes y la probabilidad de éxito varía de ensayo a ensayo [@anderson2008].
+
+# Distribución hipergeométrica
+
+La distribución de probabilidad de la variable aleatoria hipergeométrica $x$, el número de éxitos en una muestra aleatoria de tamaño $n$ que se selecciona de una población $N$, en los que $r$ se denomina éxito y $N - r$ se le llama fracaso [@camachoavila2019].
+
+# Fórmula Densidad
+
+$$f(x) =  \frac{\binom{r}{x} \cdot \binom{N-r}{n-x}}{\binom{N}{n}} = \text{es decir:} \frac{\text{casos favorables}} {\text{casos posibles}}  $$
+
+Dónde:
+
+-   $f(x)$ es la probabilidad de $x$ o la función de distribución
+
+-   $n$ número de ensayos o longitud de la muestra casos que se extraen
+
+-   $N$ número de elementos de la población
+
+-   $r \text{ o }k$ número de elementos o exitosos en relación a la población
+
+-   $x$ Valor de la variable aleatoria discreta $0,1,2,3, ... ...,n.muestra$ hasta el valor de la muestra [@anderson_estadistica_2008].
+
+# Fórmula Densidad (cont...)
+
+-   ${\binom{r}{x}}$ Parte izquierda del numerador, representan el número de formas (combinaciones) en que se toman $x$ éxitos de un total de $r$ éxitos que hay en la población,
+
+-   $\binom{N-r}{n-x}$ parte derecha del numerador representa el número de maneras en que se puede tomar $n - x$ fracasos de un total de $N - r$ elementos que hay en la población.
+
+-   $\binom{N}{n}$ como denominador representan el número de maneras (cantidad de combinaciones) en que es posible tomar una muestra de tamaño $n$ de una población de tamaño $N$; .
+
+# Fórmula de Combinaciones
+
+La fórmula para determinar el número de combinaciones en grupos de $n$ elementos de una población total de $N$ está dada por:\
+$$C_{n}^{N} = \binom{N}{n} = \frac{N!}{n!\cdot(N-n)!}$$
+
+Con la fórmula de combinaciones la función de probabilidad hipergeométrica queda de la siguiente manera:
+
+$$
+f(x) = \frac{\binom{r}{x} \cdot \binom{N-r}{n-x}}{\binom{N}{n}} = \frac{ (\frac{r!}{x!\cdot(r-x)!})\cdot(\frac{(N-r)!}{(n-x)!\cdot((N-r) - (n-x))!})}{\frac{N!}{n!\cdot(N-n)!}}
+$$
+
+# Variables requeridas
+
+-   $N$ es el tamaño de población,
+
+-   $n$ es el tamaño de la muestra extraída,
+
+-   ${r}$ es el número de elementos en la población original que pertenecen a la categoría deseada (exitosos) y
+
+-   $x$ es la variable aleatoria o el número de elementos en la muestra que pertenecen a dicha categoría.
+
+# La función acumulada es:
+
+$$
+F(x) = 
+\sum_{0}^{n}f.x_i
+$$
+
+# El valor esperado está dado por:
+
+$$
+E(x) = \mu = n  \cdot\left(\frac{r}{N}\right)
+$$
+
+# La varianza y la desviación estándar se determinan mediante:
+
+$$
+Var(x) = \sigma^{2} = n  \cdot\left(\frac{r}{N}\right)\cdot\left(1 - \frac{r}{N}\right)\cdot\left( \frac{N-n}{N-1}\right)
+$$
+
+y
+
+$$
+\sigma = \sqrt{\sigma^{2}}
+$$
+
+# Librerías
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(mosaic) # Gráficos de distribuciones
+library(cowplot) #Imágenes en el mismo renglón
+
+library(plotly)
+options(scipen=999) # Notación normal
+# options(scipen=1) # Notación científica
+```
+
+# Funciones de R para hipergeométrica
+
+| función                                 | descripción            |
+|-----------------------------------------|------------------------|
+| *dhyper(x, m, n, k)*                    | Determina densidad     |
+| *phyper(q, m, n, k, lower.tail = TRUE)* | Probabilidad Acumulada |
+| *qhyper(p, m, n, k, lower.tail = TRUE)* | Devuelve valor de x    |
+| rhyper(nn, m, n, k)                     | Números aleatorios     |
+
+# Cargando Funciones
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R")
+```
+
+# Ejercicio 1. Chocolates
+
+![](images/chocolates%20negros%20y%20blancos.jpg){width="300"}
+
+Un plato contiene $30$ envolturas blancas con chocolate y $20$ envolturas rojas también con chocolate. En total hay $50$ chocolates.
+
+Se eligen $10$ caramelos al azar.
+
+¿Cuál es la probabilidad de que $5$ de los $10$ seleccionados, sean chocolates con envoltura blanca?
+
+Los dos grupos son chocolates envoltura blanca y chocolates envoltura roja.
+
+
+-   $N=50 \text { Población o total de chocolates}$
+
+-   $n=10 \text { Muestra}$
+
+-   $r=30 \text {Chocolates con envoltura blanca}$
+
+-   $x = {1, 2, 3…n}$
+
+
+# Inicializando valores
+
+```{r echo=TRUE}
+N <- 50 # Población
+n <- 10 # Muestra
+r <- 30 # Casos exitosos = envolturas blancas
+x <- 1:n # se prueba con 5
+```
+
+# Llamando la función
+
+```{r echo=TRUE}
+resultado <- f.hiper.all(poblacion = N, muestra = n, exitosos = r)
+
+```
+
+# Tabla de distribución
+
+```{r echo=TRUE}
+resultado$tabla
+```
+
+# Histograma
+
+```{r echo=TRUE}
+resultado$g.hist
+```
+
+# Densidad
+
+```{r echo=TRUE}
+resultado$g.dens
+```
+
+# ¿Probabilidad de sacar cinco chocolates blancos?
+
+$f(x=5)$
+
+```{r}
+dhyper(x = 5, m = r, n = N - r, k = n)
+```
+
+# Matemáticamente
+
+$$
+f(x) = \frac{\binom{r}{x} \cdot \binom{N-r}{n-x}}{\binom{N}{n}} = \frac{ (\frac{r!}{x!\cdot(r-x)!})\cdot(\frac{(N-r)!}{(n-x)!\cdot((N-r) - (n-x))!})}{\frac{N!}{n!\cdot(N-n)!}}
+$$
+
+$$
+f(x=5) = \frac{\binom{30}{5} \cdot \binom{50-30}{10-5}}{\binom{50}{10}} = \frac{ (\frac{30!}{5!\cdot(30-5)!})\cdot(\frac{(50-30)!}{(10-5)!\cdot((50-30) - (10-5))!})}{\frac{50!}{10!\cdot(50-10)!}}
+$$
+
+$$
+f(x=5) = \frac{2209413024}{10272278170} = 0.215085
+$$
+
+# Ejercicio 2. Piezas defectuosas
+
+![](images/piezas%20defectuosas.webp){width="300"}
+
+De cada $20$ piezas fabricadas por una máquina, hay 2 que son defectuosas. Para realizar un control de calidad, se observan $15$ elementos y se rechaza el lote si hay alguna que sea defectuoso.
+
+# Calcular la probabilidad de que el lote sea rechazado.
+
+-   $N=20$
+
+-   $n=15$
+
+-   $r=2$
+
+-   $x = {1, 2, 3, 4, 5 ... n}$
+
+# Inicializando valores
+
+```{r echo=TRUE}
+N <- 20
+n <- 15
+r <- 2
+```
+
+# Llamando la función
+
+```{r echo=TRUE}
+resultado <- f.hiper.all(poblacion = N, muestra = n, exitosos = r)
+
+```
+
+# Tabla de distribución
+
+```{r echo=TRUE}
+resultado$tabla
+```
+
+# Probabilidad de f(x=0). Matemáticamente
+
+$$
+f(x) = \frac{\binom{r}{x} \cdot \binom{N-r}{n-x}}{\binom{N}{n}} = \frac{ (\frac{r!}{x!\cdot(r-x)!})\cdot(\frac{(N-r)!}{(n-x)!\cdot((N-r) - (n-x))!})}{\frac{N!}{n!\cdot(N-n)!}}
+$$
+
+$$
+f(x=0) = \frac{\binom{2}{0} \cdot \binom{20-2}{15-0}}{\binom{20}{15}} = \frac{ (\frac{2!}{0!\cdot(2-0)!})\cdot(\frac{(20-2)!}{(15-0)!\cdot((20-2) - (15-0))!})}{\frac{20!}{15!\cdot(20-15)!}}
+$$
+
+$$
+f(x=0) = \frac{816}{15504} = 0.05263158
+$$
+
+# Probabilidad de al menos 1
+
+$$
+f(x \geq 0) = f(x=1) + f(x=2) + ... ... + f(x=n) 
+$$ $$\therefore$$ $$
+f(x \geq 0) = 1 - F(x=0)
+$$
+
+Probabilidad de $f(x=0)$ usando la función *dhyper(...)* de densidad
+
+```{r echo = TRUE}
+dhyper(x = 0, m = r, n = N - r, k = n)
+```
+
+# Probabilidad de más de una pieza defectuosa
+
+$f(x>0)$
+
+```{r echo=TRUE}
+prob <- 1 - phyper(q = 0, m = r, n = N - r, k = n)
+
+paste("Existe un ", round(prob) * 100, "%", " de que haya uno o mas artículos defectusoso")
+```
+
+# o bien
+
+```{r echo=TRUE}
+prob <- phyper(q = 0, m = r, n = N - r, k = n, lower.tail = FALSE)
+
+paste("Existe un ", round(prob) * 100, "%", " de que haya uno o mas artículos defectusoso")
+
+```
+
+# Valor Esperado
+
+```{r echo=TRUE}
+resultado$VE
+```
+
+# Varianza y Desviación estándar
+
+```{r echo=TRUE}
+resultado$varianza
+resultado$desv.std
+```
+
+# Densidad
+
+```{r echo=TRUE}
+resultado$g.dens
+```
+
+# Histograma
+
+```{r echo=TRUE}
+resultado$g.hist
+```
+
+# Acumulado
+
+```{r echo=TRUE}
+resultado$g_all$acum
+```
+
+# Bibliografía

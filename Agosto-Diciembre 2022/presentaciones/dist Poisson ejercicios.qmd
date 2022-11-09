@@ -1,0 +1,152 @@
+---
+title: "Distribución Poisson"
+format: pptx
+editor: visual
+bibliography: references.bib
+---
+
+# Objetivo
+
+Determinar los valores de la función de probabilidad bajo la fórmula de distribución de Poisson.
+
+Realizar distribuciones de probabilidad conforme a la distribución de probabilidad de *Poisson* a partir del valor medio dado en ejercicios.
+
+# Fundamento teórico
+
+Otra variable aleatoria discreta que tiene numerosas aplicaciones prácticas es la variable aleatoria de *Poisson*.
+
+Su distribución de probabilidad da un buen modelo para datos que representa el número de sucesos de un evento especificado en una unidad determinada de tiempo o espacio [@mendenhall_introduccion_2006]
+
+# Fundamento teórico (cont.)
+
+Los experimentos que dan valores numéricos de una variable aleatoria $x$, el número de resultados que ocurren durante un intervalo dado o en una región específica, se llaman experimentos de Poisson.[@walpole_probabilidad_2012]
+
+# Fundamento teórico (cont.)
+
+Suele usarse para estimar el número de veces que sucede un hecho determinado (ocurrencias) en un intervalo de tiempo o de espacio
+
+# En dónde se puede aplicar?Ejemplos:
+
+-   el número promedio de automóviles que llegan (llegadas) a un lavado de coches en una hora o
+
+-   el número medio de reparaciones necesarias en 10 kms. de una autopista o,
+
+-   el número promedio de fugas de agua en tubería en un lapso 3 meses.
+
+-   el número de focos promedio que fallan en una cantidad de lote de 1000 focos.
+
+-   el número medio de fugas en 100 kms.de tubería, entre otros [@anderson_estadistica_2008]
+
+# Fórmula Densidad
+
+$$
+f(x) = \frac{{e^{ - \mu }\cdot \mu ^x }}{{x!}}
+$$
+
+-   $f(x)$ es la función de densidad para valores de $x=0,1,2,3..,n$.
+
+-   $\mu$ es el valor medio esperado en cierto lapso de tiempo. Algunas veces expresado como $\lambda$ lambda.
+
+-   $x$ es la variable aleatoria. Es una variable aleatoria discreta $(x = 0, 1,. 2, . . . )$
+
+-   $e$ valor constante, es la base de los logaritmos naturales $2.71728$.
+
+# Probabilidad Acumulada
+
+$$
+F(x) = \sum_{0}^{n}f.x_i
+$$
+
+# Valor Esperado
+
+$$
+E(X) = \lambda = \mu
+$$
+
+# Varianza y desviación estándar
+
+$$
+Var(X) = \sigma^{2} = \lambda = \mu
+$$
+
+y
+
+$$
+\sigma = \sqrt{Var(x)} = \sqrt{\sigma^{2}}
+$$
+
+# Funciones para Distribución Poisson en R
+
+![](images/funciones%20probabilidad%20en%20R.%20Poisson.png)
+
+# Librerías
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(mosaic) # Gráficos de distribuciones
+library(cowplot) #Imágenes en el mismo renglón
+
+library(plotly)
+options(scipen=999) # Notación normal
+# options(scipen=1) # Notación científica
+```
+
+# Funciones personalizadas para Poisson
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R")
+```
+
+# Llegadas a un cajero
+
+![](images/cajero%20automatico-01.jfif){width="300"}
+
+# ¿Cuál es la probabilidad de que lleguen exactamente 5 personas a un cajero?
+
+Calcular probabilidades de personas que llegan a un cajero, dado que se tienen la media en un lapso de $15$ $minutos$
+
+El número promedio de personas que llegan en un lapso de $15$ minutos es igual a $10$; $\therefore$ $\mu=10$ .
+
+# Inicializar variables
+
+```{r echo=TRUE}
+media <- 10 # Media o lambda en la función de densidad
+x <- 5    # Valores de la variable discreta
+n = 20 # Estimado final de la variable aleatoria x , pero puede variar
+```
+
+# Usando la densidad
+
+```{r echo=TRUE}
+dens <- dpois(x = x, lambda = media)
+paste("La probabilida de que sean exactamente 5 es ", round(dens, 4))
+```
+
+# Tabla de Distribución Poisson
+
+```{r echo=TRUE}
+resultado <- f.poisson.all(media = media)
+tabla <- resultado$tabla
+tabla
+```
+
+# Visualización de probabilidades Histograma
+
+```{r echo=TRUE}
+resultado$g.hist
+```
+
+# Visualización de probabilidades Densidad
+
+```{r echo=TRUE}
+resultado$g.dens
+```
+
+# Visualización de probabilidades Acumulada
+
+```{r echo=TRUE}
+resultado$g_all$acum
+```
+
+# Bibliografía

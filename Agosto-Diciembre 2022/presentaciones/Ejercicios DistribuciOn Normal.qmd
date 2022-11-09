@@ -1,0 +1,298 @@
+---
+title: "Distribución Normal Ejercicios"
+format: revealjs
+editor: visual
+chalkboard: true
+---
+
+# Objetivo
+
+Visualizar y calcular probabilidades de acuerdo a la distribución normal.
+
+# Descripción
+
+Se cargan las librerías necesarias
+
+Se carga la función que calcula y visualiza distribución normal conforme a los argumentos recibidos y parámetros enviados que se relacionan con de ejercicios de probabilidad
+
+Se inicializan valores de la media, la desviación estándar, el valor del intervalos entre $x1$ y $x2$ y el tipo de gráfica de gauss con la representación de los valores de la función de densidad; si es cola a la izquierda, cola a la derecha o intervalo.
+
+# Fórmula de densidad
+
+$$
+f(x) =\frac{1}{\sigma \cdot \sqrt{2 \cdot \pi}}\cdot e ^{\frac{-1}{2}\cdot ( \frac {x - \mu}{\sigma}) ^2}
+$$
+
+$$
+\therefore
+$$
+
+$$
+\pi = 3.14159;   e = 2.71828
+$$
+
+# Cargar librerías
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(mosaic)
+library(readr)
+library(ggplot2)  # Para gráficos
+library(knitr)    # Para formateo de datos
+library(cowplot) #Imágenes en el mismo renglón
+options(scipen=999) # Notación normal
+```
+
+# Cargar funciones para distribución
+
+Se cargan funciones previamente codificadas y preparadas especialmente para distribuciones. Aquí la función a utilizar es *f.normal.all()*.
+
+```{r echo =TRUE,  message=FALSE, warning=FALSE}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R")
+```
+
+# Ejercicio 1. Temperatura en ciudad
+
+![](images/temperatura%20en%20ciudad-01.jpg){width="400"}
+
+# Ejercicio 1. Temperaturas
+
+En una ciudad se estima que la temperatura máxima en el mes de Junio [sigue una distribución normal]{.underline}, con media $23$ grados y desviación típica $5$ grados .
+
+Calcular el número de días del mes en los que se espera alcanzar máximas *entre* $21$ *y* $27$.
+
+Primero encontrar la probabilidad entre $21$ y $27$ de la distribución normal. $p(21 \leq x \leq 27)$
+
+Segundo multiplicar esa probabilidad por los 30 das que tiene el mes de Junio. $p \times 30$.
+
+# Inicializar variables
+
+```{r echo=TRUE}
+media <- 23
+desv.std <- 5
+x1 <- 21
+x2 <- 27
+tipo <- 3 # intervalo entre dos valores
+```
+
+# Ejecutar función
+
+Dejar en variable *resultado.* Los nombres de los argumentos y los nombres las las variables iniciales que identifican a los parámetros se llaman igual.
+
+```{r echo=TRUE}
+resultado <- f.normal.all(media = media, desv.std = desv.std, x1 = x1, x2 = x2, tipo = tipo)
+```
+
+```{r echo=TRUE}
+resultado$prob
+
+resultado$prob.str
+
+
+
+```
+
+# Densidad con ggplot()
+
+```{r echo=TRUE}
+resultado$g.gauss.gg
+```
+
+# Densidad y probabilidad con plotDist()
+
+```{r echo=TRUE}
+resultado$g.plotDist
+```
+
+# Densidad con plot_ly()
+
+```{r echo=TRUE}
+resultado$g.gauss.plotly
+```
+
+# Test cultura general
+
+![](images/test-de-cultura-general.jpg){width="400"}
+
+## Test cultura general
+
+Tras un test de cultura general se observa que las puntuaciones obtenidas siguen una distribución una distribución $N(65, 18)$. Los valores so entre $0 \text{ y } 100$. Se desea clasificar a los examinados en tres grupos (de baja cultura general, de cultura general aceptable, de excelente cultura general) de modo que:
+
+-   el primero los que tengan puntuación de $30$ hacia abajo;
+
+-   el segundo grupo entre $31 \text{ y } 70$; $p(31 \leq x \leq 70)$ y
+
+-   el tercer grupo mayores a $70$; $p(x \geq 70)$
+
+¿Cuáles han de ser las probabilidades que marca cada grupo?
+
+```{r echo=TRUE}
+media <- 65
+desv.std <- 18
+x1 <- 30  # cola izquierda
+x2 <- 70  # Entre 30 y 70 . Restarle
+
+tipo <- 1:3 # [1] col izquierda; [2] cola derecha y [3] intervalo entre dos valores x2 y x1
+```
+
+# Ejecutar función
+
+Se ejecuta la función dependiendo del grupo
+
+# Primer Grupo
+
+Dejar en variable *resultado.* Cola izquierda $p(x\leq 30)$. El valor de $tipo[1] =1$ es para calcular la probabilidad de extremo izquierdo de la gráfica ("cola izquierda")
+
+```{r echo=TRUE}
+resultado <- f.normal.all(media = media, desv.std = desv.std, x1 = x1, x2 = x2, tipo = tipo[1])
+```
+
+```{r echo=TRUE}
+resultado$prob
+
+resultado$prob.str
+
+```
+
+# Densidad. Primer grupo
+
+```{r echo=TRUE}
+resultado$g.gauss.gg
+
+```
+
+# Probabilidad. Primer grupo
+
+```{r echo=TRUE}
+resultado$g.plotDist
+g1 <- resultado$g.plotDist
+```
+
+# Densidad. Primer grupo
+
+```{r echo=TRUE}
+resultado$g.gauss.plotly
+```
+
+# Segundo Grupo
+
+Dejar en variable *resultado.* Intervalo $p(30 \leq x \leq 70)$
+
+El valor de $tipo[3] =3$ es para calcular la probabilidad de un intervalo de la función f.normal.all()
+
+```{r echo=TRUE}
+resultado <- f.normal.all(media = media, desv.std = desv.std, x1 = x1, x2 = x2, tipo = tipo[3])
+```
+
+```{r echo=TRUE}
+resultado$prob
+
+resultado$prob.str
+
+```
+
+# Densidad. Segundo grupo
+
+```{r echo=TRUE}
+resultado$g.gauss.gg
+
+```
+
+# Probabilidad. Segundo grupo
+
+```{r echo=TRUE}
+resultado$g.plotDist
+g2 <- resultado$g.plotDist
+```
+
+# Densidad. Segundo grupo
+
+```{r echo=TRUE}
+resultado$g.gauss.plotly
+```
+
+# Tercer Grupo
+
+Dejar en variable *resultado.* Cola derecha $p(x \geq 30)$
+
+El valor de $tipo[2] =2$ es para calcular la probabilidad de extremo derecho de la gráfica ("cola derecha")
+
+```{r echo=TRUE}
+resultado <- f.normal.all(media = media, desv.std = desv.std, x1 = x1, x2 = x2, tipo = tipo[2])
+```
+
+```{r echo=TRUE}
+resultado$prob
+
+resultado$prob.str
+
+```
+
+# Densidad. Tercer grupo
+
+```{r echo=TRUE}
+resultado$g.gauss.gg
+
+```
+
+# Probabilidad. Tercer grupo
+
+```{r echo=TRUE}
+resultado$g.plotDist
+g3 <- resultado$g.plotDist
+```
+
+# Densidad. Tercer grupo
+
+```{r echo=TRUE}
+resultado$g.gauss.plotly
+```
+
+# Probabilidad, tres grupos
+
+```{r}
+plot_grid(g1, g2, g3)
+```
+
+# Acciones
+
+![](images/acciones%20dinero.jpg){width="400"}
+
+# Acciones
+
+Los precios de las acciones de cierta industria se distribuyen en forma normal con media de **\$20** y desviación estándar de **\$3**. ¿Cuál es la probabilidad de que el precio de las acciones de una empresa se encuentre entre **\$18 y \$20**?
+
+$$
+\mu =20 \\
+\sigma = 3 \\
+p(18 \leq x \leq20) \text { intervalo x1 y x2}
+$$
+
+# Clínica
+
+![](images/colesterol0320.jpg){width="400"}
+
+# Clínica
+
+Una clínica realiza un análisis de colesterol en hombres mayores de **50 años**, y luego de varios años de investigación, concluye que la distribución de lecturas del colesterol sigue una distribución normal, con media de **210 mg/dl** (mg de colesterol por decilitro dl de sangre) y una desviación estándar de **15 mg/dl.**
+
+$$
+\mu =210 \\
+\sigma = 15 \\
+$$
+
+# a)
+
+¿Qué porcentaje de esta población tiene lecturas mayores a **250 mg/dl** de colesterol? **Rpta: 0.38%**
+
+$$
+p(x \geq 250) \text { cola derecha}
+$$
+
+# b)
+
+¿Qué porcentaje tiene lecturas inferiores a **190.05 mg/dl**? **Rpta: 9.18%**
+
+$$
+p(x \leq 190.05) \text { cola izquierda}
+$$

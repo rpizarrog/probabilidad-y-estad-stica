@@ -1,0 +1,258 @@
+---
+title: "Distribución Binomial. Ejercicios"
+format: pptx
+prefer-html: true
+editor: visual
+bibliography: references.bib
+---
+
+# Distribución binomial
+
+-   El experimento consiste en $n$ intentos idénticos.
+
+-   Cada intento resulta en uno de dos resultados, el resultado uno se llama éxito, 'S', y el otro se llama fracaso, 'F'.
+
+-   La probabilidad de éxito en un solo intento es igual a $p$ y es igual de un intento a otro. La probabilidad de fracaso es igual a $q= (1 - p)$.
+
+-   Los intentos son independientes.
+
+-   El interés es el valor de $x$, o sea, el número de éxitos observado durante los $n$ intentos, para $x = 0, 1, 2, …, n.$
+
+# Fórmula Densidad:
+
+$$
+f(x) = prob(x=k) = \binom{n}{k} \cdot p^{k} \cdot q^{(n-k)} 
+$$
+
+Para $x = 0,1,2,3...n$
+
+y recordando las combinaciones cuantos éxitos $k$ en $n$ ensayos. Interpretar que $x = k$ para la fórmula. $$
+f(x) = \binom{n}{k} = \frac{n!}{k!\cdot(n-k)!}
+$$
+
+# La función acumulada es:
+
+$$
+F(x) = 
+\sum_{0}^{n}f.x_i
+$$
+
+# El valor esperado está dado por:
+
+$$
+\mu = n \cdot p
+$$
+
+# La varianza y la desviación estándar se determinan mediante:
+
+$$
+\sigma^{2} = n \cdot p \cdot(1-p)
+$$
+
+y
+
+$$
+\sigma = \sqrt{\sigma^{2}}
+$$
+
+# Funciones binomial en R
+
+![](images/funciones%20binomial%20en%20R.jpg)
+
+# Cargar librerías
+
+```{r echo =TRUE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(mosaic) # Gráficos de distribuciones
+library(cowplot) # Para varios gráficos
+library(plotly) # Gráficos interactivos
+library(knitr) # Tablas amigables
+library(webshot)
+
+options(scipen=999) # Notación normal
+# options(scipen=1) # Notación científica
+```
+
+# Noticias Falsas
+
+Las noticias falsas o *fake news* (FN) se definen como todas aquellas "informaciones publicadas deliberadamente en medios digitales que no han sido comprobadas ni verificadas, que carecen de fuentes identificadas, confiables y que no cuentan con la supervisión de un editor.
+
+En otras palabras, son los artículos informativos redactados con el propósito de confundir o engañar a los lectores, cuyo contenido puede comprobarse que es intencionalmente falso.
+
+# Ejercicio
+
+Un estudio reciente del Instituto Tecnológico de *Massachusetts* evidenció que las FN poseen 70% de posibilidades de ser tuiteadas.
+
+# Datos iniciales
+
+Se recaban $10$ noticias falsas en redes *tweeter sobre algún tema, se sabe que el* $70\%$ *tiene la probabilidad de ser replicada o reenviarse* de nuevo.
+
+# ¿Cuál es la probabilidad de que una noticia sea replicada?
+
+$f(x=1)$
+
+$$
+f(x) = \binom{n}{x} = \frac{n!}{x!\cdot(n-x)!}\cdot p^{x} \cdot q^{(n-x)}
+$$
+
+```{r echo=TRUE}
+n <- 10; x = 1; exito = 0.70; fracaso = 1 - exito
+```
+
+```{r echo=TRUE}
+factorial(n) / (factorial(x) * factorial(n - x)) * (exito^x) * (fracaso^(n-x))
+```
+
+```{r echo=TRUE}
+dbinom(x = 1, size = 10, prob = 0.70)
+```
+
+# ¿Cuál es la probabilidad de que cinco noticiaas sean replicadas?
+
+$f(x=5)$
+
+$$
+f(x) = \binom{n}{x} = \frac{n!}{x!\cdot(n-x)!}\cdot p^{x} \cdot q^{(n-x)}
+$$
+
+```{r echo=TRUE}
+n <- 10; x = 5; exito = 0.70; fracaso = 1 - exito
+```
+
+```{r echo=TRUE}
+factorial(n) / (factorial(x) * factorial(n - x)) * (exito^x) * (fracaso^(n-x))
+```
+
+```{r echo=TRUE}
+dbinom(x = 5, size = 10, prob = 0.70)
+```
+
+# Función personalizada
+
+```{r echo=TRUE, message=FALSE, comment=FALSE}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R")
+```
+
+# ¿Cuál es la probabilidad de que cuatro noticias sean replicadas?
+
+$f(x=4)$
+
+```{r echo=TRUE}
+x <- 4; n <- 10; exito <- 0.70
+```
+
+Los argumentos se llaman igual que los parámetros usando la función *f.prob.binom()*.
+
+```{r echo=TRUE}
+f.prob.binom(x = 4, n = n, exito = exito)
+```
+
+Comprobando con función *dbinom()*
+
+```{r echo=TRUE}
+dbinom(x = x, size = n, prob = exito)
+```
+
+# Probabilidad Acumulada F(x)
+
+¿Cuál es la probabilidad de que sean de 0 a 4 noticias replicadas, es decir, menores o iguales a cuatro?
+
+$F(x=4) = f(x=0) + f(x=1) + f(x=2) + f(x=3) + f(x=4)$
+
+```{r echo=TRUE}
+x <- 4; n <- 10; exito <- 0.70
+
+pbinom(q = 4, size = n, prob = exito)
+```
+
+# Usando función personalizada y *cumsum()* para acumulado
+
+¿Cuál es la probabilidad de que sean de 0 a 4 noticias replicadas, es decir, menores o iguales a cuatro?
+
+$F(x=4) = f(x=0) + f(x=1) + f(x=2) + f(x=3) + f(x=4)$
+
+```{r echo=TRUE}
+x <- 4; n <- 10; exito <- 0.70
+
+f.prob.binom(x = 0:4, n = n, exito = exito)
+
+cumsum(f.prob.binom(x = 0:4, n = n, exito = exito))
+```
+
+# Creando tabla de distribución
+
+Se manda llamar la función *f.binom.all(...) y se deja en resultado.* Con esta variable visualizar tabla construída en código encapsulado.
+
+```{r echo=TRUE}
+x <- 4; n <- 10; exito <- 0.70
+
+resultado <- f.binom.all(n = n, exito = exito)
+
+tabla <- resultado$tabla
+kable(tabla, caption = "Tabla de distribución")
+```
+
+# Estadísticos valor esperado, varianza y desviación estándar
+
+$$
+VE = \mu = n \cdot p
+$$
+
+$$
+varianza = \sigma^{2} = n \cdot p \cdot(1-p)
+$$
+
+$$
+\text{desv.std.} = \sigma = \sqrt{\sigma^{2}}
+$$
+
+Reutilizando la variable resultado previamente asignada
+
+```{r echo=TRUE}
+resultado$VE
+
+resultado$varianza
+
+resultado$desv.std
+```
+
+¿Que significan estos estadísticos?
+
+# y la cereza del pastel
+
+![](images/cereza%20en%20el%20pastel.jfif){fig-align="center"}
+
+# Visualización. Histograma y Densidad
+
+```{r}
+plot_grid(resultado$g.hist, resultado$g.dens)
+
+```
+
+# Visualización. Histograma y Acumulada
+
+```{r}
+plot_grid(resultado$g.text, resultado$g_all$acum)
+
+```
+
+# Visualización interactiva
+
+```{r echo =TRUE, warning=FALSE}
+resultado$g.hist.plotly
+
+
+```
+
+# Visualización Interactiva
+
+```{r echo=TRUE, warning=FALSE}
+# resultado$g.acum.plotly
+```
+
+# Interpretación
+
+# Preguntas
+
+![](images/preguntas.webp){fig-align="center"}
