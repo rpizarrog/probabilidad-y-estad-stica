@@ -1,0 +1,379 @@
+---
+title: "Caso 23. Covarianza y Correlación"
+author: "Rubén Pizarro Gurrola"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+Calcular covarianza y correlación así como visualizar la dispersión entre dos variables para su adecuada y correcta interpretración.
+
+# Descripción
+
+Se cargan o se construyen datos y se determinan covarianza, correlación y diagrama de dispersión
+
+Se presentan ejercicios relacionados con datos de llamadas y ventas, daos de jugadores de FIFA, calificaciones de matemática e inglés y datos de *ranking* de universidades.
+
+De estos conjuntos de datos se construye la covarianza y la correlación así como la gráfica de dispersión de las variables numéricas de interés.
+
+Se hace la interpretación de cada ejercicio.
+
+# Marco teórico
+
+Se necesitan datos para calcular la covarianza, la correlación y mostrar el diagrama de dispersión.
+
+## Covarianza
+
+La covarianza se establece como una medida descriptiva de la asociación entre dos variables $x$ e $y$. [@anderson2008].
+
+$$
+S_{xy} = \frac{\sum(x_i - \bar{x}) \cdot (y_i - \bar{y})}{n - 1}
+$$
+
+Se necesitan dos variable de interés:
+
+-   Se requiere la media de la variable $x$
+
+-   Se requiere la media de la variable $y$
+
+-   Se necesita el número de observaciones del conjunto de datos. $n$
+
+## Correlación de *Pearson*
+
+La covarianza muestral dividida entre el producto de las desviaciones estándar de cada variable de interés identifica la correlación entre dos variables
+
+$$
+r = \frac{S_{xy}}{S_x \cdot S_y}
+$$
+
+El coeficiente de correlación del producto--momento de Pearson para datos muestrales (llamado coeficiente de correlación muestral) se calcula dividiendo la **covarianza muestral** entre el producto de la desviación estándar muestral de $x$ por la desviación estándar muestral de $y$.
+
+De acuerdo a Hernández Sampiere [@hernándezsampieri2014][@hernándezsampieri2014], los valores del coeficiente de correlación de Pearson se interpreta de la siguiente manera:
+
+-   -0.90 = Correlación negativa muy fuerte.
+-   -0.75 = Correlación negativa considerable.
+-   -0.50 = Correlación negativa media.
+-   -0.25 = Correlación negativa débil.
+-   -0.10 = Correlación negativa muy débil.
+-   0.00 = No existe correlación alguna entre las variables.
+-   +0.10 = Correlación positiva muy débil.
+-   +0.25 = Correlación positiva débil.
+-   +0.50 = Correlación positiva media.
+-   +0.75 = Correlación positiva considerable.
+-   +0.90 = Correlación positiva muy fuerte.
+-   +1.00 = Correlación positiva perfecta ("A mayor X, mayor Y" o "a menor X, menor Y", de manera proporcional. Cada vez que X aumenta, Y aumenta siempre una cantidad constante).
+
+El coeficiente de correlación va desde -1 hasta +1. Los valores cercanos a -1 o a +1 corresponden a una relación lineal fuerte. Entre más cercano a cero sea el valor de la correlación, más débil es la relación lineal[@anderson_estadistica_2008].
+
+# Desarrollo
+
+## Cargar librerías
+
+Se requiere *install.packages()* para cada librería a utilizar
+
+```{r message=FALSE, warning=FALSE}
+library(ggplot2)
+library(readr)
+library(dplyr)
+library(knitr)
+library(DT)
+library(mosaic)
+library(PerformanceAnalytics) # Para coorelaciones gráficas
+```
+
+## Cargar funciones preparadas
+
+```{r message=FALSE, warning=FALSE}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20dispersion%20correlacion%20regresion.R", encoding = "UTF-8")
+```
+
+### llamadas y ventas
+
+![](images/llamadas%20y%20ventas-01.jfif)
+
+#### Los datos
+
+Se tienen unos datos de interés de una tienda que tiene vendedores y hacen ventas; los vendedores hacen llamadas a prospectos y clientes y en razón de ello tal vez realizan cierta cantidad de ventas de cada uno de ellos.
+
+Las variables de interés son llamadas que hacen los vendedores y la cantidad de ventas.
+
+```{r}
+vendedores <- paste("V",1:15, sep="")
+llamadas <- c(96, 40, 104, 128, 164, 76, 72, 80 , 36, 84, 180, 132, 120, 44, 84) 
+ventas <- c(41, 41, 51, 60, 61, 29, 39, 50, 28, 43, 70, 56, 45, 31, 30)
+datos <- data.frame(vendedores, llamadas, ventas)
+datos
+```
+
+#### Calcular la covarianza
+
+$$
+S_{xy} = \frac{\sum(x_i - \bar{x}) \cdot (y_i - \bar{y})}{n - 1}
+$$
+
+#### Construyendo una tabla
+
+Se construye una tabla para determinar la covarianza manualmente.
+
+```{r}
+tabla <- data.frame(x = llamadas, y = ventas, x.med = mean(llamadas), y.med=mean(ventas))
+tabla <- cbind(tabla, xi.menos.x.med = tabla$x-mean(tabla$x))
+tabla <- cbind(tabla, yi.menos.y.med = tabla$y-mean(tabla$y))
+tabla <- cbind(tabla, prod = tabla$xi.menos.x.med * tabla$yi.menos.y.med)
+tabla <- rbind(tabla, apply(tabla, 2, sum))
+tabla[nrow(tabla), c(1:6)] <- '*'
+kable(tabla)
+```
+
+$$
+S_{xy} = \frac{\sum(x_i - \bar{x}) \cdot (y_i - \bar{y})}{n - 1} \therefore \\
+covarianza = S_{xy} =  \frac{6672}{n-1} = \frac{6672}{14} = 476.5714
+$$
+
+```{r}
+n <- nrow(datos)
+numerador <- sum((datos$llamadas - mean(datos$llamadas))  * (datos$ventas - mean(datos$ventas)))
+# numerador ; sum(tabla$prod)
+denominador <- n - 1
+covarianza <- numerador / denominador
+covarianza
+```
+
+#### Diagrama de dispersión
+
+El diagrama de dispersión es una gráfica que identifica la relación entre dos variables con respectos a sus medias.
+
+Se observa el diagrama de dispersión de llamadas y ventas
+
+```{r}
+f_diag.dispersion(datos = datos[,c(2,3)])
+```
+
+#### Correlación de Pearson
+
+$$
+correlación = r = \frac{covarianza}{S_x \cdot S_y} = \frac{476.5714}{42.7618\cdot12.88964}=\frac{476.5714}{551.1843}=0.8646318
+$$
+
+$$
+S_{xy}\text{ es la covarianza muestral previamente calculada} \\
+S_x \text{ es la desviación std. de la variable x} \\
+S_y \text{ es la desviación std. de la variable y} \\
+S_x\cdot S_y \text { es el producto de ambas desviaciones}
+$$
+
+```{r}
+prod.dispersion = sd(datos$llamadas) * sd(datos$ventas)
+prod.dispersion
+r <- covarianza / prod.dispersion
+r
+```
+
+#### Covarianza y correlación con cov() y cor()
+
+Se determina la covarianza y la correlación con funciones de los paquete base de *R y R Studio*. La función *cov()* determina la covarianza de un conjunto de datos de dos variables numéricas y *cor()* calcula la correlación; de manera natural la correlación que se genera con la función de *cor()* es la de Pearson.
+
+Las variables *cov* y *r* identifican a la covarianza y la correlación de Pearson respectivamente y deben ser los mismos valores que aquellos que se calcularon manualemnte arriba.
+
+```{r}
+covarianza <- cov(x = datos$llamadas, y = datos$ventas, )
+r <- cor(x = datos$llamadas, y = datos$ventas)
+         
+covarianza; r
+```
+
+#### Correlación con chart.Correlation
+
+Se visualiza la correlación entre dos variables de interés usando **chart.Correlation** de la librería **PerformanceAnalytics**.
+
+```{r warning=FALSE, message=FALSE}
+chart.Correlation(datos[,2:3], histogram = TRUE)
+```
+
+### Datos de FIFA
+
+![](images/jugadores%20FIFA-01.jfif)
+
+Se cargan datos de la dirección de internet [registro de Jugadores de FIFA](registro%20de%20Jugadores%20de%20FIFA)
+
+#### Cargar datos
+
+```{r}
+datos.bruto <- read.csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/datos/players_20.csv", stringsAsFactors = TRUE, encoding = "UTF-8")
+str(datos.bruto)
+
+```
+
+Son 18278 observaciones o registros y 104 variables.
+
+#### Seleccionar las variables de interés
+
+Se seleccionan dos variables numéricas de interés, *height_cm* y *weight_kg*; se modifican los nombres de variables o columnas en el conjunto de **datos** y se muestran los primeros 10 y últimos 10 registros.
+
+```{r}
+datos <- datos.bruto %>%
+    select(height_cm, weight_kg)
+colnames(datos) <- c("altura", "peso")
+head(datos, 10)
+tail(datos, 10)
+```
+
+Se muestran los estadísticos descriptivos principales de datos
+
+```{r}
+summary(datos)
+```
+
+#### Dispersión de los datos
+
+```{r}
+f_diag.dispersion(datos)
+```
+
+#### Correlación de los datos
+
+```{r}
+chart.Correlation(datos, histogram = TRUE)
+```
+
+```{r}
+r <- cor(x = datos$altura, y = datos$peso)
+r
+```
+
+La correlación de las variables peso y estatura o estatura y peso es de `r round(r, 4)` y se interpreta como *positiva considerable*.
+
+### Otros datos de ejemplo
+
+Se describen otros ejercicios con datos de ejemplo que se identifican en el caso 22 y se utilizan para determinar la covarianza y la correlación entre dos variables.
+
+### Calificaciones de alumnos
+
+![](images/ingles%20y%20matematicas.png)
+
+Se construye un conjunto de datos de 100 alumnos con calificaciones de asignaturas de matemáticas e inglés y se hace diagrama de dispersión
+
+```{r}
+matematicas <- sort(rnorm(n = 100, mean = 80, 5))
+ingles <- sort(rnorm(n = 100, mean = 80, sd = 8))
+
+datos <- data.frame(matematicas, ingles)
+
+datatable(datos, caption = "Calificaciones")
+```
+
+#### Variables de interés
+
+Las variables de interés son calificaciones de matemáticas e inglés
+
+#### Descripción de los datos con summary()
+
+```{r}
+summary(datos)
+```
+
+#### Diagrama de dispersión
+
+```{r}
+f_diag.dispersion(datos)
+```
+
+#### Covarianza con cov()
+
+```{r}
+cov(datos$matematicas, datos$ingles)
+```
+
+#### Correlación con cor()
+
+```{r}
+cor(datos)
+```
+
+#### Correlación con chart.Correlation()
+
+```{r warning=FALSE, message=FALSE}
+chart.Correlation(datos, histogram = TRUE )
+```
+
+Existe una correlación muy muy fuerte entre calificaciones de matemáticas e inglés.
+
+### Ranking de Universidades
+
+![](images/mejores-universidades-2022_97-01.webp){width="300"}
+
+#### Cargar los datos
+
+```{r}
+datos <- read.csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/datos/world%20ranking%20universities.csv", encoding = "UTF-8", stringsAsFactors = TRUE)
+```
+
+#### Diagramas de dispersión
+
+Se presentan los dos diagramas de dispersión de la relación de variables pares: entre *publications y acceptance_num ;* luego *publications y rank.*
+
+Se construyen dos gráficas *g1* y *g2* y se presentan en el mismo renglón.
+
+```{r}
+g1 <- f_diag.dispersion(select(datos, publications, acceptance_num))
+
+g2 <- f_diag.dispersion(select(datos, publications, rank))
+```
+
+```{r}
+plot_grid(g1, g2)
+```
+
+Como se analizó en el caso 22 no observa visualmente una relación importante entre las variables *pubications* y *acceptance_num* pero si una relación negativa entre *pubications* y *rank* en el conjunto de datos de *ranking* de universidades.
+
+#### Covarianza con cov()
+
+*publications y acceptance_num*, quintando los valores NA
+
+```{r}
+cov(x = datos$publications, y = datos$acceptance_num, use="complete.obs")
+```
+
+*publications y rank* quitando los registros con NA
+
+```{r}
+cov(x = datos$publications, y = datos$rank, use="complete.obs")
+
+
+```
+
+#### Correlación con cor()
+
+```{r}
+cor(x = datos$publications, y = datos$acceptance_num, use="complete.obs")
+```
+
+```{r}
+cor(x = datos$publications, y = datos$rank, use="complete.obs")
+```
+
+#### Correlación con chart.Correlation()
+
+```{r warning=FALSE, message=FALSE}
+chart.Correlation(datos[,c('publications','acceptance_num', 'rank')], histogram = TRUE )
+```
+
+# Interpretación
+
+¿Que significa una covarianza?
+
+¿Cómo se interpreta una una correlación?
+
+¿Que relación existe entre un diagrama de dispersión y la correlación de Pearson?
+
+¿Cuáles fueron las correlaciones en los diferentes ejercicios, fueron positivas o negativas y que significado tienen?
+
+# Bibliografía
