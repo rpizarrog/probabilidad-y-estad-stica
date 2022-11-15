@@ -56,7 +56,7 @@ $$
 
 El coeficiente de correlación del producto--momento de Pearson para datos muestrales (llamado coeficiente de correlación muestral) se calcula dividiendo la **covarianza muestral** entre el producto de la desviación estándar muestral de $x$ por la desviación estándar muestral de $y$.
 
-De acuerdo a Hernández Sampiere [@hernándezsampieri2014], los valores del coeficiente de correlación de Pearson se interpreta de la siguiente manera:
+De acuerdo a Hernández Sampiere [@hernándezsampieri2014][@hernándezsampieri2014], los valores del coeficiente de correlación de Pearson se interpreta de la siguiente manera:
 
 -   -0.90 = Correlación negativa muy fuerte.
 -   -0.75 = Correlación negativa considerable.
@@ -85,6 +85,7 @@ library(readr)
 library(dplyr)
 library(knitr)
 library(DT)
+library(mosaic)
 library(PerformanceAnalytics) # Para coorelaciones gráficas
 ```
 
@@ -285,22 +286,84 @@ summary(datos)
 f_diag.dispersion(datos)
 ```
 
-### Covarianza con cov()
+#### Covarianza con cov()
 
 ```{r}
 cov(datos$matematicas, datos$ingles)
 ```
 
-### Correlación con cor()
+#### Correlación con cor()
 
 ```{r}
 cor(datos)
 ```
 
-### Correlación con chart.Correlation()
+#### Correlación con chart.Correlation()
 
 ```{r warning=FALSE, message=FALSE}
 chart.Correlation(datos, histogram = TRUE )
+```
+
+Existe una correlación muy muy fuerte entre calificaciones de matemáticas e inglés.
+
+### Ranking de Universidades
+
+![](images/mejores-universidades-2022_97-01.webp){width="300"}
+
+#### Cargar los datos
+
+```{r}
+datos <- read.csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/datos/world%20ranking%20universities.csv", encoding = "UTF-8", stringsAsFactors = TRUE)
+```
+
+#### Diagramas de dispersión
+
+Se presentan los dos diagramas de dispersión de la relación de variables pares: entre *publications y acceptance_num ;* luego *publications y rank.*
+
+Se construyen dos gráficas *g1* y *g2* y se presentan en el mismo renglón.
+
+```{r}
+g1 <- f_diag.dispersion(select(datos, publications, acceptance_num))
+
+g2 <- f_diag.dispersion(select(datos, publications, rank))
+```
+
+```{r}
+plot_grid(g1, g2)
+```
+
+Como se analizó en el caso 22 no observa visualmente una relación importante entre las variables *pubications* y *acceptance_num* pero si una relación negativa entre *pubications* y *rank* en el conjunto de datos de *ranking* de universidades.
+
+#### Covarianza con cov()
+
+*publications y acceptance_num*, quintando los valores NA
+
+```{r}
+cov(x = datos$publications, y = datos$acceptance_num, use="complete.obs")
+```
+
+*publications y rank* quitando los registros con NA
+
+```{r}
+cov(x = datos$publications, y = datos$rank, use="complete.obs")
+
+
+```
+
+#### Correlación con cor()
+
+```{r}
+cor(x = datos$publications, y = datos$acceptance_num, use="complete.obs")
+```
+
+```{r}
+cor(x = datos$publications, y = datos$rank, use="complete.obs")
+```
+
+#### Correlación con chart.Correlation()
+
+```{r warning=FALSE, message=FALSE}
+chart.Correlation(datos[,c('publications','acceptance_num', 'rank')], histogram = TRUE )
 ```
 
 # Interpretación

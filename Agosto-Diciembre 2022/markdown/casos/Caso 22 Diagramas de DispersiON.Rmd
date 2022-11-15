@@ -187,13 +187,6 @@ datos_a_visualizar <- datos %>%
     select(publications, acceptance_num)
 ```
 
-#### Quitar valores NA
-
-```{r}
-datos_a_visualizar <- datos_a_visualizar[!is.na(datos$publications),]
-datos_a_visualizar <- datos_a_visualizar[!is.na(datos$acceptance_num),]
-
-```
 
 #### Diagrama de dispersión
 
@@ -212,13 +205,6 @@ datos_a_visualizar <- datos %>%
     select(publications, rank)
 ```
 
-#### Quitar valores NA
-
-```{r}
-datos_a_visualizar <- datos_a_visualizar[!is.na(datos$publications),]
-datos_a_visualizar <- datos_a_visualizar[!is.na(datos$rank),]
-
-```
 
 #### Diagrama de dispersión
 
