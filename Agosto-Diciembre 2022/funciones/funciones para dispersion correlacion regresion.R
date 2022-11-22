@@ -57,5 +57,36 @@ f.diag.prueba.signif.corr <- function (t, t.signif,  n, confianza) {
 }
 
 
+f_reg_lineal_simple <- function (datos) {
+  
+  tabla <- datos
+  media_x <- mean(datos[, 1])
+  media_y <- mean(datos[, 2])
+  n <- nrow(datos)
+  
+  
+  tabla <- cbind(tabla , media_x, media_y)
+  tabla <- cbind(tabla, Xi_menos_media.x = tabla[,1] - media_x, 
+                 Yi_menos_media.y = tabla[, 2] - media_y)
+  tabla <- cbind(tabla, Xi_menos_media.x_cuad = tabla$Xi_menos_media.x^2, 
+                 Yi_menos_media.y_cuad = tabla$Yi_menos_media.y^2)
+  tabla <- cbind(tabla, Xi_menos_media.x_POR_Yi_menos_media.y = tabla$Xi_menos_media.x * tabla$Yi_menos_media.y)
+  tabla <- rbind(tabla, round(apply(tabla, MARGIN = 2, sum), 4))
+  
+  row.names(tabla) <- c(1:(nrow(tabla) - 1), 'Sumatorias')
+  columnas <- colnames(datos)
+  columnas <- c(columnas, c("$\\bar{x}$", "$\\bar{y}$", "$x_i - \\bar{x}$", "$y_i - \\bar{y}$", "$(x_i - \\bar{x})^2$", "$(y_i - \\bar{y})^2$", "$(x_i - \\bar{x})^2\\cdot(y_i - \\bar{y})^2$"))
+  columnas
+  
+  colnames(tabla) <- columnas
+  
+  regresion <- list(tabla = tabla, 
+                    n = n, 
+                    dispersion = f_diag.dispersion(datos[,c(1,2)]))
+  
+  return (regresion)
+}
+
+
 
 
