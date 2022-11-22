@@ -80,9 +80,20 @@ f_reg_lineal_simple <- function (datos) {
   
   colnames(tabla) <- columnas
   
+  desv.std_x <-sqrt(tabla[nrow(tabla), 7] / (n- 1))
+  desv_std_y <-sqrt(tabla[nrow(tabla), 8] / (n- 1)) 
+  covarianza <- tabla[nrow(tabla), 9] / (n- 1)
+  r <- covarianza / (desv.std_x * desv_std_y)
+  
+  estadisticos <- data.frame(desv.std_x, desv_std_y, 
+                         covarianza, r)
+  colnames(estadisticos) <- c("desv.std.x", "desv.std.x", 
+                              "Covarianza", "Correlación")
+  
   regresion <- list(tabla = tabla, 
                     n = n, 
-                    dispersion = f_diag.dispersion(datos[,c(1,2)]))
+                    dispersion = f_diag.dispersion(datos[,c(1,2)]),
+                    estadisticos = estadisticos)
   
   return (regresion)
 }
