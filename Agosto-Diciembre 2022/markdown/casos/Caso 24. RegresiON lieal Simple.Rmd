@@ -78,14 +78,18 @@ En donde:
 
 ##### Fórmulas par obtener coeficientes a y b en el método de mínimos cuadrados
 
-$$b = r \cdot(\frac{
-s_{y}}{s_x}) = \frac{\sum(x_i - \bar{x})\cdot(y_i - \bar{y})}{\sum(x_i-\bar{x})^2}$$ En donde:
+$$
+b = r \cdot(\frac{
+s_{y}}{s_x}) = r \cdot \frac{\sqrt{ \frac{\sum_{i=1}^n(x_i- \bar{x})^2}{n-1}}} {\sqrt{ \frac{\sum_{i=1}^n(y_i- \bar{y})^2}{n-1}}}
+$$
+
+En donde:
 
 -   $r$ es el coeficiente de correlación.
 
--   $S_y$ es la desviación estándar de $y$.
+-   $S_y$ es la desviación estándar de $y$. $\text {es el denominador}$
 
--   $S_x$ es la desviación estándar de la variable $x$.
+-   $S_x$ es la desviación estándar de la variable $x$. $\text{es el numerador}$
 
 Y para determinar a:
 
@@ -115,6 +119,8 @@ library(knitr)    # Para formateo de datos
 ```
 
 ## Ejercicio llamadas y ventas
+
+![](images/llamadas%20y%20ventas-02.jfif)
 
 ### Cargar los datos
 
@@ -146,7 +152,7 @@ ggplot(data = datos, aes(x = llamadas, y = ventas)) +
 
 ### Generar el modelo regresión lineal $Y = a + bx$
 
--   Determinar los coeficientes a y b por medio de la función lineal lm()
+-   Determinar los coeficientes a y b por medio de la función lineal *lm()*
 -   El caracter '\~' en la fórmula de la función *l*m() de regresión se interpreta como que la variable 'y' está en función de la variable 'x'.
 
 ```{r}
@@ -215,7 +221,7 @@ y
 
 ## Ejercicio ventas en función de comerciales
 
-![](images/comerciales%20marketing%20ventas.png){width="400"}
+![](images/comerciales%20marketing%20ventas.png){width="300"}
 
 ### Cargar o generar los datos
 
@@ -247,8 +253,8 @@ ggplot(data = datos, aes(x = comerciales, y = ventas)) +
 
 ### Generar el modelo regresión lineal $Y = a + bx$
 
--   Determinar los coeficientes a y b por medio de la función lineal lm()
--   El caracter '\~' en la fórmula de la función lm() de regresión se interpreta como que la variable 'y' está en función de la variable 'x'.
+-   Determinar los coeficientes a y b por medio de la función lineal *lm()*
+-   El caracter '\~' en la fórmula de la función *lm()* de regresión se interpreta como que la variable 'y' está en función de la variable 'x'.
 
 ```{r}
 modelo <- lm(data = datos, formula = ventas~comerciales)
@@ -309,14 +315,14 @@ y
 
 ### Interpretar el ejercicio
 
--   Se utilizó la función lm() para crear el modelo de regresión lineal y determinar los coeficientes de a y b.
--   Se utilizó la función predict() para predecir nuevos valores de x o comerciales.
+-   Se utilizó la función *lm()* para crear el modelo de regresión lineal y determinar los coeficientes de a y b.
+-   Se utilizó la función *predict()* para predecir nuevos valores de x o comerciales.
 -   Se comprobó las predicciones
 -   Por ejemplo para un valor de 4 en comerciales la predicción de ventas es de 55.99.
 
 ## Ejercicio. Medidas de los sólidos contaminantes y la demanda de oxígeno bioquímico.
 
-![](images/solido%20contaminante%20oxigeno%20bioqu%C3%ADmico.jpg){width="400"}
+![](images/solido%20contaminante%20oxigeno%20bioqu%C3%ADmico.jpg){width="300"}
 
 Uno de los problemas más desafiantes que se enfrentan en el área del control de la contaminación del agua lo representa la industria de la peletería (dedicada a la elaboración de indumentaria, cuero y piel animal).
 
@@ -352,8 +358,8 @@ ggplot(data = datos, aes(x = solido, y = oxigeno)) +
 
 ### Generar el modelo regresión lineal $Y = a + bx$
 
--   Determinar los coeficientes a y b por medio de la función lineal lm()
--   El caracter '\~' en la fórmula de la función lm() de regresión se interpreta como que la variable 'y' está en función de la variable 'x'.
+-   Determinar los coeficientes a y b por medio de la función lineal *lm()*
+-   El caracter '\~' en la fórmula de la función *lm()* de regresión se interpreta como que la variable 'y' está en función de la variable 'x'.
 
 ```{r}
 modelo <- lm(data = datos, formula = oxigeno~solido)
@@ -416,7 +422,7 @@ Pendiente..
 
 ## Ejercicio Caso de mediciones del cuerpo humano (Peso y Estatura)
 
-![](images/pesos%20personas.jpg){width="400"}
+![](images/pesos%20personas.jpg){width="300"}
 
 Mediciones del cuerpo humano en donde se buscar identificar el coeficiente de correlación $r$, el coeficiente de determinación $r^2$ y el modelo de regresión lineal para predecir peso en relación a la estatura de una persona.
 
@@ -470,8 +476,8 @@ ggplot(data = datos, aes(x = estatura, y = peso)) +
 
 ### Generar el modelo regresión lineal $Y = a + bx$
 
--   Determinar los coeficientes a y b por medio de la función lineal lm()
--   El caracter '\~' en la fórmula de la función lm() de regresión se interpreta como que la variable 'y' está en función de la variable 'x'.
+-   Determinar los coeficientes a y b por medio de la función lineal *lm()*
+-   El caracter '\~' en la fórmula de la función *lm()* de regresión se interpreta como que la variable 'y' está en función de la variable 'x'.
 
 ```{r}
 modelo <- lm(data = datos, formula = peso~estatura)
@@ -544,7 +550,7 @@ Para una persona que mide `r x[5]` centímetros la predicción de peso es de `r 
 
 ## Ejercicio extra con los datos del caso 22 y 23
 
-![](images/extra.jpg){width="400"}
+![](images/extra%20extra.png){width="300"}
 
 ### Cargar o construir los datos
 
