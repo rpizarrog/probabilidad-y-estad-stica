@@ -88,9 +88,10 @@ f_reg_lineal_simple <- function (datos) {
   covarianza <- tabla[nrow(tabla), 9] / (n- 1)
   r <- covarianza / (desv.std_x * desv_std_y)
   
-  estadisticos <- data.frame(desv.std_x, desv_std_y, 
+  estadisticos <- data.frame(media_x = media_x, media_y = media_y,
+                             desv.std_x, desv_std_y, 
                          covarianza, r)
-  colnames(estadisticos) <- c("desv.std.x", "desv.std.y", 
+  colnames(estadisticos) <- c("media_x", "media.y", "desv.std.x", "desv.std.y", 
                               "Covarianza", "Correlación")
   
   regresion <- list(tabla = tabla, 
