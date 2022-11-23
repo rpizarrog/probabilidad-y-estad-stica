@@ -80,7 +80,7 @@ En donde:
 
 $$
 b = r \cdot(\frac{
-s_{y}}{s_x}) = r \cdot \frac{\sqrt{ \frac{\sum_{i=1}^n(x_i- \bar{x})^2}{n-1}}} {\sqrt{ \frac{\sum_{i=1}^n(y_i- \bar{y})^2}{n-1}}}
+s_{y}}{s_x}) = r \cdot \frac{\sqrt{ \frac{\sum_{i=1}^n(y_i- \bar{y})^2}{n-1}}} {\sqrt{ \frac{\sum_{i=1}^n(x_i- \bar{x})^2}{n-1}}}
 $$
 
 En donde:
@@ -542,9 +542,9 @@ El valor de la correlación entre las variables estatura y peso es de `r r` que 
 
 El valor del coeficiente determinación $r^{2}$ significa que el valor de la estatura de una persona representa el `r round(r^2* 100, 2)` % del peso de la misma.
 
-Por cada unidad de estatura en una persona el peso varía en funcíón de `r b`
+Por cada unidad de estatura en una persona el peso varía en función de `r b`
 
-Para una persona que mide `r x[3]` centímetros la prediccón de peso es de `r a + b * x[3]`
+Para una persona que mide `r x[3]` centímetros la predicción de peso es de `r a + b * x[3]`
 
 Para una persona que mide `r x[5]` centímetros la predicción de peso es de `r a + b * x[5]`
 
