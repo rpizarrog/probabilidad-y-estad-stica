@@ -56,7 +56,9 @@ f.diag.prueba.signif.corr <- function (t, t.signif,  n, confianza) {
   
 }
 
-
+# 22-11-2022
+# Genera gráfica dispersión tabla y estadísticos como 
+# la medias de x e y, desviación std., covarianza, correlación
 f_reg_lineal_simple <- function (datos) {
   
   tabla <- datos
@@ -100,6 +102,18 @@ f_reg_lineal_simple <- function (datos) {
                     estadisticos = estadisticos)
   
   return (regresion)
+}
+
+# 22-11-2022
+# Genera la linea de tendencia lineal, recibe los datos y un modelo construído
+f_linea_tendencia_reg_lineal <- function(datos, modelo) {
+  ggplot(data = datos) + 
+    geom_point(aes(x = datos[,1], y = datos[,2]), colour='blue') +
+    geom_point(aes(x= mean(datos[,1]), y = mean(datos[,2])), col = 'green') +
+    geom_line(aes( x = datos[,1], y = predict(modelo, datos)), color = "red") +
+    xlab(colnames(datos[1])) + 
+    ylab(colnames(datos[2])) + 
+    ggtitle("Linea de tendencia sobre Conjunto de Datos")
 }
 
 
