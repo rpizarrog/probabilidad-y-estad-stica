@@ -74,11 +74,14 @@ f_reg_lineal_simple <- function (datos) {
   tabla <- rbind(tabla, round(apply(tabla, MARGIN = 2, sum), 4))
   
   row.names(tabla) <- c(1:(nrow(tabla) - 1), 'Sumatorias')
- # columnas <- colnames(datos)
-#  columnas <- c(columnas, c("$\\bar{x}$", "$\\bar{y}$", "$x_i - \\bar{x}$", "$y_i - \\bar{y}$", "$(x_i - \\bar{x})^2$", "$(y_i - \\bar{y})^2$", "$(x_i - \\bar{x})^2\\cdot(y_i - \\bar{y})^2$"))
+  columnas <- colnames(datos)
+  columnas <- c(columnas, c("media.x", "media.y", 
+                            "x_menos_media.x", "y_menos_media.y",
+                            "x_menos_media.x_cuad", "y_menos_media.y_cuad",
+                            "x_menos_media.x_cuad_POR_y_menos_media.y_cuad"))
  # columnas
   
-#  colnames(tabla) <- columnas
+  colnames(tabla) <- columnas
   
   desv.std_x <-sqrt(tabla[nrow(tabla), 7] / (n- 1))
   desv_std_y <-sqrt(tabla[nrow(tabla), 8] / (n- 1)) 
@@ -87,7 +90,7 @@ f_reg_lineal_simple <- function (datos) {
   
   estadisticos <- data.frame(desv.std_x, desv_std_y, 
                          covarianza, r)
-  colnames(estadisticos) <- c("desv.std.x", "desv.std.x", 
+  colnames(estadisticos) <- c("desv.std.x", "desv.std.y", 
                               "Covarianza", "Correlación")
   
   regresion <- list(tabla = tabla, 
