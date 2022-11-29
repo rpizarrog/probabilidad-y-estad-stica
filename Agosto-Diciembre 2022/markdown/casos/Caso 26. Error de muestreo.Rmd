@@ -77,7 +77,7 @@ Se simula una población de trabajadores por medio de la creación de un vector 
 
 $$
 poblacion = \text{ {x | x es un trabajador de una Institución educativa;  }} \therefore \\ 
-x_1, x_2, x_3, ... ,x_{N=6500}
+x_1, x_2, x_3, ... ,x_{N=650}
 $$
 
 ```{r}
@@ -113,7 +113,9 @@ El trabajador DE LA POBLACION menos gana tiene un sueldo de `r minimo.p`, el que
 
 ## Muestra
 
-Se determina una muestra de 100 trabajadores sin reemplazo que significa que no se puede repetir el trabajador el el valor de $x$. $$
+Se determina una muestra de 100 trabajadores sin reemplazo que significa que no se puede repetir el trabajador el el valor de $x$. 
+
+$$
 muestra = \text{ {x | x es un trabajador de la población;  }} \therefore \\ 
 x_1, x_2, x_3, ... ,x_{n=100}
 $$
@@ -173,7 +175,7 @@ desv.p; desv.m
 dif.media <- media.p - media.m
 dif.desv <- desv.p - desv.m
 paste("El error muestral con respecto a la media es de: ", dif.media)
-paste("El error muestral con respecto a la desviación es de: ", dif.desv)
+paste("El error muestral con respecto a la desviación es de: ", round(dif.desv),4)
 ```
 
 ## Histograma de población y muestra
