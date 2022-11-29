@@ -112,7 +112,7 @@ kable(tail(alumnos, 10), caption = "Las útimos diez registros de alumnos")
 ### Sembrar una semilla
 
 ```{r}
-set.seed(2021)
+set.seed(2022)
 ```
 
 ### Simular muestreos
@@ -120,12 +120,12 @@ set.seed(2021)
 #### Muestreo aleatorio simple
 
 -   Hay que encuestar a diez personas de 100 para hacerles alguna entrevista, ¿a quienes?
--   Con el conjunto de datos seleccionar 10 personas aleatoriamente con la función ***sample()***
+-   Con el conjunto de datos seleccionar 10 personas aleatoriamente con la función *sample()**.*** Con el argumento *replace=FALSE* significa que no se repita el elemento seleccionado en la muestra.
 
 ```{r}
 N <- nrow(personas)
 n <- 10
-muestra <- sample(personas$nombres, n)
+muestra <- sample(x = personas$nombres, size = n, replace = FALSE)
 kable(muestra, caption = "La muestra de personas")
   
 ```
@@ -135,7 +135,7 @@ kable(muestra, caption = "La muestra de personas")
 ```{r}
 N <- nrow(alumnos)
 n <- 100
-registros <- sample(N, n) # Genera los números
+registros <- sample(x = 1:N, size = n, replace = FALSE) # Genera los números
 muestra <- alumnos[registros, ]
 kable(muestra, caption = "La muestra de alumnos")
   
@@ -189,7 +189,7 @@ muestraMas <- sample(masculinos, n * frmas)
 kable(muestraMas, caption = "La muestra de personas Masculino")
 ```
 
--   Simular muestreo estratificado por carreras de alumnos determinando las frecuencias relativas por medio de la función **fdt_cat()**
+-   Simular muestreo estratificado por carreras de alumnos determinando las frecuencias relativas por medio de la función *fdt_cat()*
 
 ```{r}
 N <- nrow(alumnos)
@@ -212,46 +212,21 @@ frcivil <- nrow(civil) / N
 frsistemas
 frcivil 
 muestrasistemas <- sample(sistemas, round(n * frsistemas, 0))
-kable(muestrasistemas, caption = "La muestra de alumnos de Sistemas")
+kable(muestrasistemas, caption = "La muestra de alumnos de Sistemas.")
 muestracivil <- sample(civil, round(n * frcivil, 0))
 kable(muestracivil, caption = "La muestra de alumnos de Civil")
 ```
 
 #### Muestreo por conglomerados
 
--   En un proceso de simulación, al conjunto de datos alumnos agregar tres columnas: la localidad, latitud y longitud
--   Primero cargar datos de localidades de Durango
+Mostrar los primeros diez y últimos diez alumnos verificando las tres columnas de localidad, latitud y longitud.
 
 ```{r}
-N <- nrow(alumnos)
-n <- 100
-locdurangomx <- read.csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Enero%20Junio%202022/datos/locdurangomx.csv", encoding = "UTF-8")
+kable(head(alumnos[, c('Alumno', 'localidad', 'latitud', 'longitud')], 10), caption = "Los primeros diez registros de alumnos")
+kable(tail(alumnos[, c('Alumno', 'localidad', 'latitud', 'longitud')], 10), caption = "Las útimos diez registros de alumnos")
 ```
 
-Segundo por medio de función **sample()** generar cinco registros aleatorios de localidades y agregar un sexto registro de Victoria de Durango.
-
-Las localidades será un domicilio para simular el lugar en donde geográficamente viven los alumnos.
-
-```{r}
-set.seed(2021)
-localidades6 <- locdurangomx[sample(nrow(locdurangomx), 5), ]
-localidades6 <- rbind(localidades6, locdurangomx[1,])
-localidades6
-```
-
--   Tercero agregar las columnas: nombre de localidad, latitud y longitud al conjunto de datos alumnos con una probabilidad de que sean de Victoria de Durango del 60%.
--   Mostrar los primeros diez y últimos diez alumnos verificando las tres nuevas columnas.
-
-```{r}
-registros <- locdurangomx[sample(localidades6$X, N, replace = TRUE, prob = c(.10, 0.12, 0.05, 0.07, 0.06, 0.60)),c("Nom_Loc", "Lat_Decimal", "Lon_Decimal")]
-alumnos$localidad <- registros$Nom_Loc
-alumnos$latitud <- registros$Lat_Decimal
-alumnos$longitud <- registros$Lon_Decimal
-kable(head(alumnos, 10), caption = "Los primeros diez registros de alumnos")
-kable(tail(alumnos, 10), caption = "Las útimos diez registros de alumnos")
-```
-
--   Cuarto encontrar frecuencias por localidad
+Determinar la frecuencias por localidad
 
 ```{r}
 N <- nrow(alumnos)
@@ -261,11 +236,16 @@ tabla_frec$muestra <-  round(tabla_frec$rf * n, 0)
 kable(tabla_frec, caption = "Tabla de frecuencia de alumnos por localidad")
 ```
 
--   Quinto Determinar el porcentaje que le corresponde a cada conglomerado conforme a la frecuencia relativa.
+Determinar el porcentaje que le corresponde a cada conglomerado conforme a la frecuencia relativa.
 
--   ¿Cuáles alumnos?, de acuerdo al conglomerado o la localidad
+¿Cuáles alumnos?, de acuerdo al conglomerado o la localidad
 
--   Simular por las seis localidades
+Simular por las seis localidades
+
+```{r}
+localidades <- tabla_frec$Category
+localidades
+```
 
 ```{r}
 N <- nrow(alumnos)
@@ -285,7 +265,7 @@ frloc4 <- nrow(loc4) / N
 frloc5 <- nrow(loc5) / N
 frloc6 <- nrow(loc6) / N
 # Crear muestras
-muestraloc1 <- sample(loc1, round(n * frloc1, 0))
+muestraloc1 <- sample(x = loc1, size = round(n * frloc1, 0), replace = FALSE)
 kable(muestraloc1, caption = paste("La muestra de alumnos de Localidad ",tabla_frec$Category[1] ))
 muestraloc2 <- sample(loc2, round(n * frloc2, 0))
 kable(muestraloc2, caption = paste("La muestra de alumnos de Localidad ",tabla_frec$Category[2] ))
@@ -307,11 +287,17 @@ kable(muestraloc6, caption = paste("La muestra de alumnos de Localidad ",tabla_f
 ```{r}
 map<-leaflet() %>%
   addTiles() %>%
-  addMarkers(lat=localidades6$Lat_Decimal[1],lng=localidades6$Lon_Decimal[1] ,popup = localidades6$Nom_Loc[1]) %>%
-   addMarkers(lat=localidades6$Lat_Decimal[2],lng=localidades6$Lon_Decimal[2] ,popup=localidades6$Nom_Loc[2]) %>%
-   addMarkers(lat=localidades6$Lat_Decimal[3],lng=localidades6$Lon_Decimal[3] ,popup=localidades6$Nom_Loc[4]) %>%
-   addMarkers  (lat=localidades6$Lat_Decimal[5],lng=localidades6$Lon_Decimal[5] ,popup=localidades6$Nom_Loc[5]) %>%
-   addMarkers  (lat=localidades6$Lat_Decimal[6],lng=localidades6$Lon_Decimal[6] ,popup=localidades6$Nom_Loc[6])
+  addMarkers(lat = unique(muestraloc1$latitud ), lng = unique(muestraloc1$longitud), popup = paste(unique(muestraloc1$localidad), "Muestra de:", nrow(muestraloc1), "alumnos"))  %>%
+  addMarkers(lat = unique(muestraloc2$latitud ), lng = unique(muestraloc2$longitud), popup = paste(unique(muestraloc2$localidad), "Muestra de:", nrow(muestraloc2), "alumnos")) %>%
+addMarkers(lat = unique(muestraloc3$latitud ), lng = unique(muestraloc3$longitud), popup = paste(unique(muestraloc3$localidad), "Muestra de:", nrow(muestraloc3), "alumnos")) %>% 
+    addMarkers(lat = unique(muestraloc4$latitud ), lng = unique(muestraloc4$longitud), popup = paste(unique(muestraloc4$localidad), "Muestra de:", nrow(muestraloc4), "alumnos")) %>%
+addMarkers(lat = unique(muestraloc5$latitud ), lng = unique(muestraloc5$longitud), popup = paste(unique(muestraloc5$localidad), "Muestra de:", nrow(muestraloc5), "alumnos")) %>%
+  addMarkers(lat = unique(muestraloc6$latitud ), lng = unique(muestraloc6$longitud), popup = paste(unique(muestraloc6$localidad), "Muestra de:", nrow(muestraloc6), "alumnos"))
+  
+  
+  
+  
+  
 # Mostrar el mapa 
 map
 ```
