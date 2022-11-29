@@ -1,0 +1,412 @@
+---
+title: "Caso 26. Error de muestreo"
+author: "Rubén Pizarro Gurrola"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 5
+    code_folding: hide
+    toc_float: yes
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+Determinar el error de muestreo.
+
+# Descripción
+
+Se simula población y muestra de sueldo de trabajadores de una Institución educativa.
+
+Se crean datos relacionados con la población y se determinan los parámetros descriptivos.
+
+Se crean datos relacionados con muestra y se determinas los estadísticos descriptivos.
+
+Se determina el error muestral de la media y de las desviaciones.
+
+Se visualiza el histograma y la densidad de los ejercicios.
+
+# Marco de referencia
+
+Las muestras se emplean para determinar características de la población. Por ejemplo, con la media de una muestra se calcula la media de la población; no obstante, como la muestra forma parte o es una porción representativa de la población, es poco probable que su media sea exactamente igual a la de la población. Asimismo, es poco factible que la desviación estándar de la muestra sea exactamente igual a la de la población; por lo tanto, se puede esperar una diferencia entre un estadístico de la muestra y el parámetro de la población correspondiente; la cual recibe el nombre de error de muestreo [@lind2015].
+
+ERROR DE MUESTREO es la diferencia entre el estadístico de una muestra y el parámetro de la población correspondiente [@lind2015].
+
+Por otra parte, se puede decir es la diferencia entre un valor poblacional (parámetro) y el estimado (estadístico), derivado de una muestra probabilística, que es debido al hecho de que sólo se observa una muestra de los valores, tan diferentes como una selección imperfecta, sesgos en las respuestas o su estimación, errores de observación y registro, entre otras cosas.
+
+# Desarrollo
+
+## Configuraciones iniciales
+
+### Librerías
+
+```{r warning=FALSE, message=FALSE}
+library(cowplot)
+library(ggplot2)
+```
+
+### Notación normal
+
+Para que no aparezca notación científica
+
+```{r}
+options(scipen=999)
+```
+
+### Semilla
+
+```{r}
+set.seed(2022)
+```
+
+### Variables iniciales
+
+```{r}
+N <- 650 # Cantidad de datos de población
+rango <- 5000:35000 # Rango 
+n = 100  # Cantidad de datos de muestra
+```
+
+## Crear datos
+
+Se simula una población de trabajadores por medio de la creación de un vector con valores que contienen sueldos mensuales en pesos mexicanos de una población de 650 trabajadores que laboran en una Institución educativa. El rango está entre \$5000 y \$35000 pesos mensuales.
+
+### Población
+
+$$
+poblacion = \text{ {x | x es un trabajador de una Institución educativa;  }} \therefore \\ 
+x_1, x_2, x_3, ... ,x_{N=6500}
+$$
+
+```{r}
+poblacion <- data.frame(x = 1:N, sueldo=sample(x = rango, size =  N, replace = TRUE))
+```
+
+### Primeros treinta observaciones de Población
+
+```{r}
+head(poblacion, 30)
+```
+
+### Últimos treinta observaciones de Población
+
+```{r}
+tail(poblacion, 30)
+```
+
+### Parámetros poblacionales
+
+```{r}
+summary(poblacion$sueldo)
+```
+
+```{r}
+minimo.p <- min(poblacion$sueldo)
+maximo.p <- max(poblacion$sueldo)
+media.p <- round(mean(poblacion$sueldo),2)
+desv.p <- round(sd(poblacion$sueldo),2)
+```
+
+El trabajador DE LA POBLACION menos gana tiene un sueldo de `r minimo.p`, el que más gana recibe `r maximo.p`, con una desviación estándar de `r desv.p` y una media aritmética de `r media.p`.
+
+## Muestra
+
+Se determina una muestra de 100 trabajadores sin reemplazo que significa que no se puede repetir el trabajador el el valor de $x$. $$
+muestra = \text{ {x | x es un trabajador de la población;  }} \therefore \\ 
+x_1, x_2, x_3, ... ,x_{n=100}
+$$
+
+La variables **xs** como parte de la muestra puede ser cualquier trabajador de la población que representa a la población.
+
+```{r}
+xs <- sample(x = 1:n, size =  n, replace = FALSE)
+muestra <- poblacion[xs,]
+```
+
+### Primeros treinta
+
+```{r}
+head(muestra, 30)
+```
+
+### Últimos treinta
+
+```{r}
+tail(muestra, 20)
+```
+
+### Descripción de los datos
+
+```{r}
+summary(muestra)
+```
+
+### Estadísticos muestrales
+
+```{r}
+summary(muestra$sueldo)
+```
+
+```{r}
+minimo.m <- min(muestra$sueldo)
+maximo.m <- max(muestra$sueldo)
+media.m <- round(mean(muestra$sueldo),2)
+desv.m <- round(sd(muestra$sueldo),2)
+```
+
+El trabajador DE LA MUESTRA menos gana tiene un sueldo de `r minimo.m`, el que más gana recibe `r maximo.m`, con una desviación estándar de `r desv.m` y una media aritmética de `r media.m`.
+
+## Error muestral
+
+El error muestral aparece porque los valores estadísticos de la muestra son diferentes (cercanos pero diferentes) con respecto a los valores de los parámetros de la población.
+
+```{r}
+media.p; media.m
+desv.p; desv.m
+```
+
+### Diferencias muestrales
+
+```{r}
+dif.media <- media.p - media.m
+dif.desv <- desv.p - desv.m
+paste("El error muestral con respecto a la media es de: ", dif.media)
+paste("El error muestral con respecto a la desviación es de: ", dif.desv)
+```
+
+## Histograma de población y muestra
+
+```{r message=FALSE, warning=FALSE}
+# Histograma con densidad
+g1 <- ggplot(poblacion, aes(x = sueldo)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "blue") +
+  labs(title = "Población",
+      subtitle = paste("ME=", media.p, "; ds=", desv.p,  "; Err muest. media=",dif.media),
+              caption = "Fuente propia") +  
+  
+  geom_vline(xintercept = media.m, col='red') +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g1 <- g1 + theme(
+  plot.title = element_text(color = "black", size = 12, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+g2 <- ggplot(muestra, aes(x = sueldo)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "green") +
+    geom_vline(xintercept = media.m, col='red') +
+  labs(title = "Muestra",
+      subtitle = paste("me=", media.m, "; ds.=", desv.m,  "; Err. muestral de sd.=",dif.desv),
+              caption = "Fuente propia") +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g2 <- g2 + theme(
+  plot.title = element_text(color = "black", size = 12, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+plot_grid(g1, g2, nrow = 1, ncol = 2)
+```
+
+Se observa que **no son distribuciones normales**, ni los datos de población ni los datos de la muestra se comportan como distribución normal.
+
+## Población normal
+
+Se simula una población de datos normales de un variable que contiene edades en jóvenes. Se genera una población de 650 personas y la variable aleatoria es continua con media igual a 24 y desviación estándar de 3.
+
+```{r}
+N <- 650
+poblacion <- round(rnorm(n = N, mean = 24, sd = 3), 0)
+poblacion
+```
+
+### Parámetros de la población
+
+```{r}
+summary(poblacion)
+```
+
+### Media de la población
+
+Se obtiene el parámetro de la media poblacional
+
+```{r}
+media.p <- round(mean(poblacion), 2)
+media.p
+```
+
+### Desviación estándar de la población
+
+Se obtiene el parámetro de la desviación estándar de la población
+
+```{r}
+desv.std.p <- round(sd(poblacion), 2)
+desv.std.p
+```
+
+## Muestreo
+
+Determinar tres muestras llamadas m1, m2 y m3 cada una con el 20% de la población.
+
+### Semilla
+
+Se siembra una semilla para generar las mismas muestras cada vez que se construye el archivo markdown.
+
+### m1; m2 y m3
+
+```{r}
+porcentaje = 0.20
+n <- round(N * porcentaje)
+m1 <- sample(x = poblacion, size = n, replace = FALSE)
+m2 <- sample(x = poblacion, size = n, replace = FALSE)
+m3 <- sample(x = poblacion, size = n, replace = FALSE)
+             
+            
+```
+
+Se visualizan las muestras
+
+```{r}
+m1; m2; m3
+```
+
+### Medias de las muestras
+
+```{r}
+media.m1 <- round(mean(m1), 2)
+media.m2 <- round(mean(m2), 2)
+media.m3 <- round(mean(m3), 2)
+media.m1; media.m2; media.m3
+```
+
+### Desviaciones estándar de las muestras
+
+```{r}
+desv.std.m1 <- round(sd(m1), 2)
+desv.std.m2 <- round(sd(m2), 2)
+desv.std.m3 <- round(sd(m3), 2)
+desv.std.m1; desv.std.m2; desv.std.m3
+```
+
+### Errores de muestreo conforme a las medias
+
+```{r}
+error.m1 <- round(media.p - media.m1, 2)
+error.m2 <- round(media.p - media.m2, 2)
+error.m3 <- round(media.p - media.m3, 2)
+error.m1; error.m2; error.m3
+```
+
+### Errores de muestreo conforme a las desviaciones estándar
+
+```{r}
+error.dsm1 <- round(desv.std.p - desv.std.m1, 4)
+error.dsm2 <- round(desv.std.p - desv.std.m2, 4)
+error.dsm3 <- round(desv.std.p - desv.std.m3, 4)
+error.dsm1; error.dsm2; error.dsm3
+```
+
+### Histogramas de la población y de las muestras
+
+Se visualiza el histograma de la población y de las tres muestras en dos reglones y dos columnas.
+
+#### Convertir los datos de la población y de las muestras a data.frame
+
+Se transforma *data.frame()* los valores de la población y de las muestras para facilitar la visualización de datos con *ggplot()* con variable llamada edades.
+
+```{r}
+poblacion <- data.frame(edades = poblacion)
+muestra1 <- data.frame(edades = m1)
+muestra2 <- data.frame(edades = m2)
+muestra3 <- data.frame(edades = m3)
+```
+
+```{r}
+# Histograma con densidad. Población
+gp <- ggplot(poblacion, aes(x = edades)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "blue", bins = 30) +
+  labs(title = "Población",
+      subtitle = paste("ME=", media.p, "; ds=", desv.std.p),
+              caption = "Fuente propia") +  
+  
+  geom_vline(xintercept = media.p, col='red') +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+gp <- gp + theme(
+  plot.title = element_text(color = "black", size = 12, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+# Muestra 1
+gm1 <- ggplot(muestra1, aes(x = edades)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "green", bins = 30) +
+    geom_vline(xintercept = media.m1, col='red') +
+  labs(title = "Muestra 1",
+      subtitle = paste("me=", media.m1, "; ds.=", desv.std.m1,  "; Err. muestral de media.=",error.m1),
+              caption = "Fuente propia") +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+gm1 <- gm1 + theme(
+  plot.title = element_text(color = "black", size = 12, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+# Muestra 2
+gm2 <- ggplot(muestra2, aes(x = edades)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "brown", bins = 30) +
+    geom_vline(xintercept = media.m2, col='red') +
+  labs(title = "Muestra 2",
+      subtitle = paste("me=", media.m2, "; ds.=", desv.std.m2,  "; Err. muestral de media.=",error.m2),
+              caption = "Fuente propia") +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+gm2 <- gm2 + theme(
+  plot.title = element_text(color = "black", size = 12, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+# Muestra 3
+gm3 <- ggplot(muestra3, aes(x = edades)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "orange", bins = 30) +
+    geom_vline(xintercept = media.m3, col='red') +
+  labs(title = "Muestra 3",
+      subtitle = paste("me=", media.m3, "; ds.=", desv.std.m3,  "; Err. muestral de media.=",error.m3),
+              caption = "Fuente propia") +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+gm3 <- gm3 + theme(
+  plot.title = element_text(color = "black", size = 12, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+plot_grid(gp, gm1, gm2, gm3, nrow = 2, ncol = 2)
+```
+
+# Interpretación
+
+Una muestras que es extraída de distribuciones que no so del tipo normal es decir, no pertenecen a una distribución normal (gráfica de gauss), la muestra también no tienen características de ser distribución normal.
+
+Las muestras que son extraídas de distribuciones normales su comportamiento es ser una distribución normal o por lo menos se acerca mucho a ser distribución  normal.
+
+El error de muestreo es la diferencia que existe entre los valores de parámetros y estadísticos.
+
+La diferencia que existe entre las medias aritméticas de una población (parámetro) con respecto al valor de la media aritmética (estadísticos) se le conoce como error muestral de la media. En el ejemplo de las edades de los estudiantes, los errores muestrales de las medias aritméticas con respecto a la población fueron: `r error.m1`, `r error.m3`, `r error.m3`.
+
+La diferencia que existe entre las desviaciones estándar de una población (parámetro) con respecto al valor de la desviación estándar (estadísticos) se le conoce como error muestral de la desviación. En el ejemplo de las edades de los estudiantes, los errores muestrales de las desviaciones con respecto a la población fueron: `r error.dsm1`, `r error.dsm2`, `r error.dsm3`.
+
+
+# Bibliografía

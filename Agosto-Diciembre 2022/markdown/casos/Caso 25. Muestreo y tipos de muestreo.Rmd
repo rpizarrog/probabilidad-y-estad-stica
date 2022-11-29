@@ -1,6 +1,7 @@
 ---
 title: "Caso 25. Muestreo y tipos de muestreo"
 author: "Rubén Pizarro Gurrola"
+date: "`r Sys.Date()`"
 output: 
   html_document: 
     toc: yes
