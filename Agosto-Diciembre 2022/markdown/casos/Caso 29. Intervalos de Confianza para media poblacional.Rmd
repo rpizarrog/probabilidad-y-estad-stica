@@ -1,8 +1,14 @@
 ---
 title: "Caso 29. Intervalos de Confianza para media poblacional"
 author: "Rubén Pizarro Gurrola"
-date: "2022-11-30"
-output: html_document
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 5
+    code_folding: hide
+    toc_float: yes
+    number_sections: yes
+bibliography: references.bib
 ---
 
 # Objetivo
