@@ -32,15 +32,63 @@ Aspectos generales del caso.
 
 ![](images/Area-de-aceptacion-y-rechazo-igual.jpg){width="450"}
 
-Se debe determinar un valor de prueba (*z.test o t.test*) dependiendo de la distribución si es normal estandarizada ***z*** o ***t student***.
+## ¿Qué es una hipótesis?
 
-**¿De qué depende utilizar z o t?**
+Una hipótesis estadística es una afirmación sobre el valor de un solo parámetro que representa una característica de una población o característica de una distribución de probabilidad, o una afirmación sobre los valores de varios parámetros o sobre la forma de una distribución de probabilidad completa [@devore2016].
 
-Si **SI** **se conoce** la desviación estándar de la población $\sigma$ utilizar z
+En cualquier problema de prueba de hipótesis hay dos hipótesis contradictorias en consideración. Por ejemplo una hipótesis es suponer que la media de la edad de una población de personas podría ser $\mu = 32$ años, y la otra $\mu \ne 32$ años.
+
+Otra podría ser pretender un valor para otros parámetros como la desviación estándar de la población $\sigma$ o la proporción $p$, entre otros.
+
+La finalidad de las propuestas de hipótesis es decidir, con base en información muestral, cuál de las dos hipótesis es la correcta. [@devore2016].
+
+Cuando se hace una prueba de hipótesis se empieza por hacer una suposición tentativa acerca del parámetro poblacional. A esta suposición tentativa se le llama hipótesis nula y se denota por $h_0$. Después se define otra hipótesis, llamada hipótesis alternativa, que dice lo contrario de lo que establece la hipótesis nula. La hipótesis alternativa se denota $h_a$.[@anderson2008].
+
+## Errores tipo I y II
+
+Las hipótesis nula $h_0$ y alternativa $h_a$ son afirmaciones opuestas acerca de la población. Una de las dos, ya sea la hipótesis nula o la alternativa es verdadera, pero no ambas. Lo que se busca en la prueba de hipótesis es que se lleve a la aceptación de $h_0$ cuando $h_0$ sea verdadera y al rechazo de $h_a$ cuando $H_a$ sea verdadera. [@anderson2008].
+
+Es posible que en la prueba de hipótesis se cometan errores , esto debido a que la prueba se basa en una información muestral.
+
+Se pueden cometer dos tipos de errores, la tabla siguente identifica ambos:
+
+|                  |                         |                         |
+|:----------------:|:-----------------------:|:-----------------------:|
+|                  |     $h_0$ verdadera     |     $h_a$ verdadera     |
+| Se acepta $h_0$  | **Conclusión correcta** |    **Error Tipo II**    |
+| Se rechaza $h_0$ |    **Error tipo I**     | **Conclusión Correcta** |
+
+: [@anderson2008]
+
+-   Cuando se acepta $ho$ y esta es verdades **entonces la conclusión es correcta**.
+
+-   Cuando se acepta $h_0$ y ésta es falsa entonces se comete el **error de tipo II**.
+
+-   Si se rechaza $h_0$ y esta es verdadera entonces se comete el **error de tipo I**.
+
+-   Si se rechaza $h_0$ y esta es falsa entonces **la conclusión es correcta.**
+
+## Nivel de significancia
+
+El nivel de significancia es el valor que denota la probabilidad de cometer un error tipo I cuado la hipótesis nula es verdadera como igualdad.
+
+Se usa la letra griega $\alpha$ (*alfa*) para identificar el valor del nivel de significancia. Los valores que pueden usarse son $0.10$, $0.05$ y tal vez $0.01$, es decir al $90\%$, $95\%$ y $99\%$.
+
+El elegir alfa depende el control que se desee de la probabilidad de cometer error de tipo. Si el costo de cometer error de tipo I es elevado, entonces se debe utilizar mayores valores de alfa, es decir depende del campo de estudio y de su importancia se debe decidir el valor de alfa adecuado. [@anderson2008].
+
+Si los datos muestrales son consistentes con la hipótesis nula $h_0$, se recomienda interpretar que "no se rechaza$h_0$; se prefiere esta conclusión a la conclusión"se acepta $h_0$" porque con la conclusión de aceptar $h_0$ se corre el riesgo de cometer un error tipo II. [@anderson2008].
+
+## ¿Cuál distribución utilizar?
+
+En cuanto a la formulación de hipótesis en relación a la media poblacional, se debe determinar un valor de prueba (*z.test o t.test*) dependiendo de la distribución si es normal estandarizada ***z*** o ***t student***.
+
+¿De qué depende utilizar z o t?
+
+Si **SI** **se conoce** la desviación estándar de la población $\sigma$ utilizar $z$.
 
 Si **NO se conoce** la desviación estándar de la población $\sigma$ entonces utilizar **t**.
 
-**¿Cómo obtener el valor de prueba z o t?**
+¿Cómo obtener el valor de prueba z o t?
 
 ## Fórmula para z
 
@@ -85,6 +133,8 @@ $$
 \alpha = (1 - confianza) \text{;  una cola}
 $$
 
+Aquí un ejemplo de código en R para encontrar valores de alfa, valores de z críticos de acuerdo a niveles de confianza usando distribución $z$.
+
 ```{r}
 library(knitr)
 
@@ -115,6 +165,8 @@ $$
 \alpha = (1 - confianza) \text{;  una cola}
 $$
 
+Aquí un ejemplo de código en R para encontrar valores de alfa, t críticos de acuerdo a niveles de confianza usando distribución $t$.
+
 ```{r}
 
 confianza = c(0.90, 0.95, 0.99)
@@ -144,57 +196,55 @@ Normalmente se tiene una pregunta de investigación que hay que comprobar o cont
 
 La pregunta de investigación será la hipótesis alternativa $H_a$
 
-La negación de esta hipótesis alternativa será la hipótesis nula $H_0$. La hipótesis nula se asocia con la igualdad
+La negación de esta hipótesis alternativa será la hipótesis nula $H_0$. La hipótesis nula se asocia con la igualdad.
 
-+--------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| Dos colas                | Una cola izquierda                                          | Una cola                                                                                               |
-|                          |                                                             |                                                                                                        |
-|                          |                                                             | derecha                                                                                                |
-+==========================+:===========================================================:+========================================================================================================+
-| $$                       | $$             H_0: \mu \ge \mu_0                     $$    | $$                                          H_0: \mu \le \mu_0                                      $$ |
-|      H_0: \mu = \mu_0    |                                                             |                                                                                                        |
-|     $$                   |                                                             |                                                                                                        |
-+--------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| $$                       | $$                  H_a: \mu < \mu_0                     $$ | $$                                        H_a: \mu > \mu_0                                         $$  |
-|      H_a: \mu \neq \mu_0 |                                                             |                                                                                                        |
-|     $$                   |                                                             |                                                                                                        |
-+--------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+|          Dos colas          |                     Una cola izquierda                      |                  Una cola derecha                   |
+|:--------------------:|:------------------------:|:-----------------------:|
+|        $$                   
+       H_0: \mu = \mu_0       
+              $$              |  $$             H_0: \mu \ge \mu_0                     $$   |                          $$                         
+                                                                                                     H_0: \mu \le \mu_0                $$         |
+|        $$                   
+         H_a: \mu \neq \mu_0  
+                     $$       | $$                  H_a: \mu < \mu_0                     $$ |                          $$                         
+                                                                                             H_a: \mu > \mu_0                                 $$  |
 
-Ejemplo: Dos colas: la hipótesis es: ¡la media de población es 50!, la pregunta de investigación: ¿la media es diferente de 50?.
+### Prueba de hipótesis dos colas
 
-+-----------------------------------------------------------------------+
-| $$                                                                    |
-|         H_0: \mu = 50                                                 |
-|         $$                                                            |
-+-----------------------------------------------------------------------+
-| $$                                                                    |
-|         H_a: \mu \neq 50                                              |
-|         $$                                                            |
-+-----------------------------------------------------------------------+
+Ejemplo: hipótesis de dos colas: la hipótesis es: ¡la media de población es 50!, la pregunta de investigación: ¿la media es diferente de 50?.
+
+|                             |
+|-----------------------------|
+| $$                          
+          H_0: \mu = 50       
+          $$                  |
+| $$                          
+          H_a: \mu \neq 50    
+          $$                  |
+
+### Prueba de hipótesis cola izquierda
 
 Ejemplo: cola izquierda: ¡la media de población es mayor o igual a 50!, la pregunta de investigación es: ¿la media es menor de 50?.
 
-+-----------------------------------------------------------------------+
-| $$                                                                    |
-|    H_0: \mu \ge 50                                                    |
-|    $$                                                                 |
-+=======================================================================+
-| $$                                                                    |
-|    H_a: < 50                                                          |
-|    $$                                                                 |
-+-----------------------------------------------------------------------+
+| $$                    
+     H_0: \mu \ge 50    
+     $$                 |
+|-----------------------|
+| $$                    
+     H_a: < 50          
+     $$                 |
+
+### Prueba de hipótesis cola derecha
 
 Ejemplo: cola derecha: ¡la media de población es menor o igual a 50!, la pregunta de investigación es : ¿la media es mayor que 50?.
 
-+-----------------------------------------------------------------------+
-| $$                                                                    |
-|    H_0: \mu \le 50                                                    |
-|    $$                                                                 |
-+=======================================================================+
-| $$                                                                    |
-|    H_0: \mu > 50                                                      |
-|    $$                                                                 |
-+-----------------------------------------------------------------------+
+| $$                    
+     H_0: \mu \le 50    
+     $$                 |
+|-----------------------|
+| $$                    
+     H_0: \mu > 50      
+     $$                 |
 
 # Desarrollo
 
@@ -259,9 +309,19 @@ desv.m <- sd(muestra)
 media.m; desv.m
 ```
 
+Todo en un **data.frame**
+
+```{r}
+tabla <- data.frame(Nn = c(N, n), "medias" = c(media.p, media.m), "desv.std" = c(desv.p, desv.m))
+rownames(tabla) <- c("Población", "Muestra")
+tabla
+```
+
 ## Prueba de hipótesis con distribución z
 
 El ejercicio se simula que la muestra provienen de una población normal y en cuyo caso **SI SE CONOCE LA** desviación estándar de la población por lo que se usará la distribución **z** o normal estandarizada.
+
+Las pruebas de hipótesis siguientes se trata de postular en relación a las medias de la población.
 
 ### Prueba de hipótesis de dos colas
 
@@ -269,15 +329,13 @@ La pregunta: ¿es la media aritmética diferente de 35?
 
 La hipótesis: ¡la media es igual a 35 a un 95% de confianza!
 
-+-----------------------------------------------------------------------+
-| $$                                                                    |
-|    H_0: \mu = 35                                                      |
-|    $$                                                                 |
-+=======================================================================+
-| $$                                                                    |
-|    H_a: \mu \ne 35                                                    |
-|    $$                                                                 |
-+-----------------------------------------------------------------------+
+| $$                    
+     H_0: \mu = 35      
+     $$                 |
+|-----------------------|
+| $$                    
+     H_a: \mu \ne 35    
+     $$                 |
 
 #### Determinar valores de z prueba y z critico
 
@@ -339,15 +397,14 @@ La pregunta de investigación es: ¿la media es menor que 33.5?
 
 Se declara una hipótesis de una cola por la izquierda. ¡la media es mayor o igual que 33.5!
 
-+-----------------------------------------------------------------------+
-| $$                                                                    |
-|     H_0:\mu \ge 33.5                                                  |
-|     $$                                                                |
-+-----------------------------------------------------------------------+
-| $$                                                                    |
-|     H_a: \mu < 33.5                                                   |
-|     $$                                                                |
-+-----------------------------------------------------------------------+
+|                         |
+|-------------------------|
+| $$                      
+      H_0:\mu \ge 33.5    
+      $$                  |
+| $$                      
+      H_a: \mu < 33.5     
+      $$                  |
 
 #### Determinar valores de z prueba y z critico
 
