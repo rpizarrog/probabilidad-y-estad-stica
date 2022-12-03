@@ -32,22 +32,9 @@ Aspectos generales del caso.
 
 ![](images/Area-de-aceptacion-y-rechazo-igual.jpg){width="450"}
 
-## Cargar librerías
-
-```{r message=FALSE, warning=FALSE}
-library(visualize)
-library(knitr)
-```
-
-## Cargar funciones
-
-```{r message=FALSE, warning=FALSE}
-source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R")
-```
-
 Se debe determinar un valor de prueba (*z.test o t.test*) dependiendo de la distribución si es normal estandarizada ***z*** o ***t student***.
 
-**¿De qué depénde utilizar z o t?**
+**¿De qué depende utilizar z o t?**
 
 Si **SI** **se conoce** la desviación estándar de la población $\sigma$ utilizar z
 
@@ -99,6 +86,8 @@ $$
 $$
 
 ```{r}
+library(knitr)
+
 confianza = c(0.90, 0.95, 0.99)
 # Dos colas
 alfa <- (1 - confianza) / 2
@@ -127,6 +116,7 @@ $$
 $$
 
 ```{r}
+
 confianza = c(0.90, 0.95, 0.99)
 n <- 30
 # Dos colas
@@ -146,7 +136,7 @@ tabla.t <- data.frame(confianza = confianza, alfa = alfa, "t dos colas" = t.crit
 kable(tabla.t, caption = "Valores de t.critico a 90% 95% y 99%")
 ```
 
-### Declarar hipótesis
+## Declarar hipótesis
 
 Se debe declarar hipótesis nula y alternativa
 
@@ -156,49 +146,74 @@ La pregunta de investigación será la hipótesis alternativa $H_a$
 
 La negación de esta hipótesis alternativa será la hipótesis nula $H_0$. La hipótesis nula se asocia con la igualdad
 
-| Dos colas            |                     Una cola izquierda                      | Una cola derecha                                                                                       |
-|----------------|:-------------------:|------------------------------------|
-| $$                   
-  H_0: \mu = \mu_0     
- $$                    |  $$             H_0: \mu \ge \mu_0                     $$   | $$                                          H_0: \mu \le \mu_0                                      $$ |
-| $$                   
-  H_a: \mu \neq \mu_0  
- $$                    | $$                  H_a: \mu < \mu_0                     $$ | $$                                        H_a: \mu > \mu_0                                         $$  |
++--------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+| Dos colas                | Una cola izquierda                                          | Una cola                                                                                               |
+|                          |                                                             |                                                                                                        |
+|                          |                                                             | derecha                                                                                                |
++==========================+:===========================================================:+========================================================================================================+
+| $$                       | $$             H_0: \mu \ge \mu_0                     $$    | $$                                          H_0: \mu \le \mu_0                                      $$ |
+|      H_0: \mu = \mu_0    |                                                             |                                                                                                        |
+|     $$                   |                                                             |                                                                                                        |
++--------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+| $$                       | $$                  H_a: \mu < \mu_0                     $$ | $$                                        H_a: \mu > \mu_0                                         $$  |
+|      H_a: \mu \neq \mu_0 |                                                             |                                                                                                        |
+|     $$                   |                                                             |                                                                                                        |
++--------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
 
 Ejemplo: Dos colas: la hipótesis es: ¡la media de población es 50!, la pregunta de investigación: ¿la media es diferente de 50?.
 
-|                              |
-|------------------------------|
-| $$                           
-     H_0: \mu = 50             
-     $$                        |
-| $$                           
-     H_a: \mu \neq 50          
-     $$                        |
++-----------------------------------------------------------------------+
+| $$                                                                    |
+|         H_0: \mu = 50                                                 |
+|         $$                                                            |
++-----------------------------------------------------------------------+
+| $$                                                                    |
+|         H_a: \mu \neq 50                                              |
+|         $$                                                            |
++-----------------------------------------------------------------------+
 
-Ejemplo: una cola izquierda: ¡la media de población es mayor o igual a 50!, la pregunta de investigación es: ¿la media es menor de 50?.
+Ejemplo: cola izquierda: ¡la media de población es mayor o igual a 50!, la pregunta de investigación es: ¿la media es menor de 50?.
 
-|    $$                       
-          H_0: \mu \ge 50     
-                        $$    |
-|:---------------------------:|
-|    $$                       
-           H_a: \mu < 50      
-                        $$    |
++-----------------------------------------------------------------------+
+| $$                                                                    |
+|    H_0: \mu \ge 50                                                    |
+|    $$                                                                 |
++=======================================================================+
+| $$                                                                    |
+|    H_a: < 50                                                          |
+|    $$                                                                 |
++-----------------------------------------------------------------------+
 
-Ejemplo: una cola derecha: ¡la media de población es menor o igual a 50!, la pregunta de investigación es : ¿la media es mayor que 50?.
+Ejemplo: cola derecha: ¡la media de población es menor o igual a 50!, la pregunta de investigación es : ¿la media es mayor que 50?.
 
-|    $$                       
-          H_0: \mu \le 50     
-                        $$    |
-|:---------------------------:|
-|    $$                       
-           H_a: \mu > 50      
-                        $$    |
++-----------------------------------------------------------------------+
+| $$                                                                    |
+|    H_0: \mu \le 50                                                    |
+|    $$                                                                 |
++=======================================================================+
+| $$                                                                    |
+|    H_0: \mu > 50                                                      |
+|    $$                                                                 |
++-----------------------------------------------------------------------+
 
-### Ejemplo: Simular una población y una muestra
+# Desarrollo
 
-#### Datos de la población
+## Cargar librerías
+
+```{r message=FALSE, warning=FALSE}
+library(visualize)
+library(knitr)
+```
+
+## Cargar funciones
+
+```{r message=FALSE, warning=FALSE}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R")
+```
+
+Ejemplo: Simular una población y una muestra
+
+## Datos de la población
 
 Sembrar una semilla
 
@@ -214,7 +229,7 @@ poblacion <- rnorm(n = N, mean = 35, sd = 3)
 poblacion
 ```
 
-#### Parámetros de población
+### Parámetros de población
 
 Se determina los parámetros de población
 
@@ -224,7 +239,7 @@ desv.p <- sd(poblacion)
 media.p; desv.p
 ```
 
-#### Datos de la muestra
+## Datos de la muestra
 
 Se obtienen 30 elementos como muestra a partir de la población generada.
 
@@ -234,7 +249,7 @@ muestra <- sample(x = poblacion, size = 30, replace = FALSE)
 muestra
 ```
 
-##### Estadísticos de la muestra
+### Estadísticos de la muestra
 
 Se determina los estadísticos de la muestra
 
@@ -244,25 +259,37 @@ desv.m <- sd(muestra)
 media.m; desv.m
 ```
 
+## Prueba de hipótesis con distribución z
+
 El ejercicio se simula que la muestra provienen de una población normal y en cuyo caso **SI SE CONOCE LA** desviación estándar de la población por lo que se usará la distribución **z** o normal estandarizada.
 
-#### Declarar hipótesis del ejercicio
+### Prueba de hipótesis de dos colas
 
 La pregunta: ¿es la media aritmética diferente de 35?
 
-La hipótesis: ¡la media es igual a 35!
+La hipótesis: ¡la media es igual a 35 a un 95% de confianza!
 
-| $$                           
-     H_0: \mu = 35             
-     $$                        |
-|------------------------------|
-| $$                           
-     H_a: \mu \neq 35          
-     $$                        |
++-----------------------------------------------------------------------+
+| $$                                                                    |
+|    H_0: \mu = 35                                                      |
+|    $$                                                                 |
++=======================================================================+
+| $$                                                                    |
+|    H_a: \mu \ne 35                                                    |
+|    $$                                                                 |
++-----------------------------------------------------------------------+
 
 #### Determinar valores de z prueba y z critico
 
 ##### z.prueba
+
+Se le llama *z de prueba* a los valores que hay que contrastar con el valor de *z critico*, es decir cuando es de dos colas los valores de z será el valor que se compara contra los puntos críticos de la curva de acuerdo al nivel de confianza.
+
+$$
+z = \frac{\bar{x}-\mu} {\sigma / \sqrt{n}}
+$$
+
+La variable *media.a.comparar* es el valor que sirve para que la función *f_devolver_z()* regrese e valor de z a contrastar.
 
 ```{r}
 media.a.comparar <- 35
@@ -272,7 +299,7 @@ z
 
 ##### z.critico
 
-Se definen un nivel de confianza del 95%
+Se definen un nivel de confianza, para este ejemplo del 95%, *z critico* son los extremos de la curva de acuerdo al nivel de confianza.
 
 ```{r}
 confianza = 0.95
@@ -283,7 +310,7 @@ z.critico <- abs(z.critico)
 z.critico
 ```
 
-#### Visualizar z y z prueba
+##### Visualizar z y z prueba
 
 ```{r}
 visualize.norm(stat = c(-z.critico, z.critico), section = "tails") +
@@ -295,29 +322,32 @@ visualize.norm(stat = c(-z.critico, z.critico), section = "tails") +
 
 #### Contrastar o Concluir con hipótesis de dos colas para z
 
+Se observa que la linea punteada en rojo está dentro de la zona de confianza, es decir el valor de prueba`r z` está entre los valores críticos de z `r -z.critico` y `r z.critico` por lo que se acepta la hipótesis nula $h_0$
+
 ```{r}
-# Se contrasta por la izq y dercha. Dos colas
+# Se contrasta por la izq y derecha. Dos colas
 conclusion <- "Acepta Ho"
+h0 <- "¡la media es igual a 35 a un 95% de confianza!"
 if (z < -z.critico & z < z.critico)
     conclusion = "Se rechaza Ho"
-conclusion
+paste(conclusion, h0)
 ```
-
-# Desarrollo
 
 ### Prueba de hipótesis z de una cola izquierda
 
 La pregunta de investigación es: ¿la media es menor que 33.5?
 
-Se declara una hipótesis de una cola por la izquierda
+Se declara una hipótesis de una cola por la izquierda. ¡la media es mayor o igual que 33.5!
 
-|    $$                         
-          H_0: \mu \ge 33.5     
-                          $$    |
-|:-----------------------------:|
-|    $$                         
-           H_a: \mu < 33.5      
-                          $$    |
++-----------------------------------------------------------------------+
+| $$                                                                    |
+|     H_0:\mu \ge 33.5                                                  |
+|     $$                                                                |
++-----------------------------------------------------------------------+
+| $$                                                                    |
+|     H_a: \mu < 33.5                                                   |
+|     $$                                                                |
++-----------------------------------------------------------------------+
 
 #### Determinar valores de z prueba y z critico
 
@@ -341,7 +371,9 @@ z.critico.izq <- qnorm(p = alfa)
 z.critico.izq
 ```
 
-#### Visualizar z.critico izquierda y z prueba
+##### Visualizar z.critico izquierda y z prueba
+
+Se hace notar que el argumento *lower()* de la función *visualize.norm()* solo presenta la cola izquierda de la curva.
 
 ```{r}
 visualize.norm(stat = c(z.critico.izq), section = "lower") +
@@ -350,36 +382,39 @@ visualize.norm(stat = c(z.critico.izq), section = "lower") +
   abline(v = z, col='red', lwd = 1, lty= 4)
 ```
 
-### Contrastar o concluir con hipótesis z de una cola izquierda
+#### Contrastar o concluir con hipótesis z de una cola izquierda
+
+Si el valor de z a probar es mayor que el valor crítico entonces se acepta la hipótesis nula $h_0$. El valor de z a contrastar es `r z` muy por encima de *z_critico* `r z.critico.izq`.
 
 ```{r}
-# Se contrasta por la izquierda 
+# Se contrasta por la izquierda
+h0 <- "¡la media es mayor o igual que 33.5!"
 conclusion <- "Acepta Ho"
 if (z < z.critico.izq)
     conclusion = "Se rechaza Ho"
-conclusion
+paste(conclusion, h0)
 ```
 
 ### Prueba de hipótesis z de una cola derecha
 
-La pregunta de investigación es: la media es mayor que 33
+La pregunta de investigación es: ¿la media es mayor que 33.5?
 
-Se declara una hipótesis de una cola por la derecha
+Se declara una hipótesis de una cola por la derecha: ¡la media es menor o igual que 33.5!
 
-|    $$                       
-          H_0: \mu \le 33     
-                        $$    |
-|:---------------------------:|
-|    $$                       
-           H_a: \mu > 33      
-                        $$    |
+$$
+H_0: \mu \le 33.5      
+$$
+
+$$
+H_a:\mu > 33.5
+$$
 
 #### Determinar valores de z prueba y z critico
 
 ##### z.prueba
 
 ```{r}
-media.a.comparar <- 33
+media.a.comparar <- 33.5
 z <- f.devolver.z.prueba(media.m = media.m, media.p = media.a.comparar, desv.p = desv.p, n = n)
 z
 ```
@@ -396,7 +431,9 @@ z.critico.der <- qnorm(p = alfa, lower.tail = FALSE)
 z.critico.der
 ```
 
-#### Visualizar z.critico derecha y z prueba
+##### Visualizar z.critico derecha y z prueba
+
+El argumento *upper* establece e inidica la cola por la derecha en la curva de la función *visualize.norm().*
 
 ```{r}
 visualize.norm(stat = c(z.critico.der), section = "upper") +
@@ -405,27 +442,28 @@ visualize.norm(stat = c(z.critico.der), section = "upper") +
   abline(v = z, col='red', lwd = 1, lty= 4)
 ```
 
-### Contrastar o concluir con hipótesis de z de una cola derecha
+#### Contrastar o concluir con hipótesis de z de una cola derecha
+
+Si el valor de z a constrastar es menor que z critico entones se acepta la hipótesis nula $h_0$, por el contrario si z es mayor entonces se rechaza $h_0$
 
 ```{r}
 # Se contrasta por derecha
+h0 <- " ¡la media es menor o igual que 33.5!"
 conclusion <- "Acepta Ho"
 if (z > z.critico.der) {
     conclusion = "Se rechaza Ho"
 }
   
-conclusion
+paste(conclusion, h0)
 ```
 
-Efectivamente la media poblacional debe tener un valor por encima de 33
+Efectivamente la media poblacional debe tener un valor por encima de 33.5
 
-### Prueba de hipótesis de dos colas t
+## Prueba de hipótesis de dos colas t
 
-Pendiente
+¿Qué sucede **SI SE DESCONOCE** la desviación estándar de la población?, entonces se debe utilizar la *distribución t*.
 
-### Prueba de hipótesis de una cola con t
-
-Pendiente
+... PENDIENTE ...
 
 # Interpretación
 
