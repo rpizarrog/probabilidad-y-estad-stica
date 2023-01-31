@@ -1,1 +1,225 @@
+---
+title: "Caso 2. Datos Agrupados"
+author: "Rubén Pizarro Gurrola"
+date: "30/08/2022"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    number_sections: yes
+---
 
+# Objetivo
+
+Agrupar datos y describir datos visualmente de variables de edades y generos usando función *fdt* y *fdt_cat* de la librería *fdth*.
+
+# Descripción
+
+Se cargan librerías adecuadas de caso
+
+Se construyen y simulan datos con dos variables de interés edades y géneros de personas.
+
+Se determina las clase para construir tablas de frecuencias de los datos a partir de las variables de interés edades y géneros.
+
+Se visualizan frecuencias con histograma y gráfico de tallo y hoja para datos numéricos (edades) y gráfico de barra para datos categórico o tipo character (géneros).
+
+Se interpreta el caso
+
+# Fundamento teórico
+
+## Datos agrupados
+
+![](images/datos%20agrupados.jpg)
+
+Los datos agrupados y no agrupados se les llaman en estadística a la manera de representar y analizar la información que has reunido o que dispones.
+
+La idea de datos agrupados tiene que ver con definir un conjunto de clases que identifican de manera organizada un conjunto de datos.
+
+Los datos no agrupados es el conjunto de observaciones que se presentan en su forma original tal y como fueron recolectados, para obtener información directamente de ellos.
+
+Los datos no agrupados es un conjunto de información si ningún orden que no nos establece relación clara con lo que se pretende desarrollar a lo largo de un problema, esto se soluciona mediante una tabulación que conduce a una tabla de frecuencias.
+
+Los valores agrupados son datos que se dan en intervalos de clase, en un rango, como cuando se resumen para una distribución de frecuencias.
+
+## Frecuencia
+
+La frecuencia o la frecuencia absoluta es el número de veces que aparece un determinado valor en un estudio estadístico El número de repeticiones de un valor dentro de una muestra o población. Se cuenta el número de veces que aparece. La suma de las frecuencias absolutas es igual al número total de datos o sea **n**.
+
+## Frecuencia relativa
+
+La relación de la frecuencia con respeto al número de elementos **n**. Es el cociente entre la frecuencia absoluta de un determinado valor y el número total de datos. La suma de la frecuencia relativa es 1.
+
+## Frecuencia porcentual
+
+Es la representación porcentual de la frecuencia relativa con respecto al 100%, es decir multiplicar la frecuencia relativa por 100. La suma de la frecuencia porcentual (%) debe ser el 100%.
+
+## Frecuencia acumulada
+
+Define la sumatoria parcial y total de la frecuencia, puede ser la frecuencia absoluta, relativa o la porcentual.
+
+## Clases
+
+Las clases definen los valores únicos del conjunto de datos o un intervalo que define y agrupa cierto conjunto de datos. Las clases clasifican y agrupan el total de los datos.
+
+## Puntos medios y límites
+
+Los límites de clase son los valores mínimos y máximos de una clase, los intervalos de clase es la diferencia entre límite superior y límite inferior y los pintos medios es el valor medio entre cada rango de cada clase.
+
+## Fórmulas para determinar clases
+
+### Regla de Sturges
+
+La regla de *Sturges* es un criterio utilizado para determinar el número de clases o intervalos que son necesarios para representar gráficamente un conjunto de datos estadísticos.
+
+La fórmula para calcular el número de clases de acuerdo a *Sturges* es:
+
+$$
+k=1+3.322\cdot log10(N)
+$$
+
+-   k es el número de clases.
+
+-   N es el número total de observaciones de la muestra.
+
+-   Log es el logaritmo común de base 10.
+
+El rango de clase de acuerdo a Sturges está dada por: $$
+h=\frac{max(datos) - min(datos)}{k}
+$$
+
+### Regla de Scott
+
+$$
+k=3.5\cdot S \cdot n^{-1/3}
+$$ \* S es la desviación estándar \* n el total de elementos
+
+### Regla de Freedman & Diaconis (FD)
+
+$$
+k = 2 \cdot IQ \cdot n ^ {-\frac{1}{3}}
+$$
+
+-   IQ es el el rango intercuartílico
+-   n es el total de los datos
+
+# Desarrollo
+
+## Cargar librerías
+
+```{r message=FALSE, warning=FALSE}
+library(fdth)     # Tablas de frecuencia
+library(ggplot2)  # Visualizar datos
+```
+
+## Crear datos
+
+Sembrar semilla
+
+```{r}
+set.seed(202208)
+
+```
+
+```{r}
+n = 300
+edades <- sample(x = 18:28, size = n, replace = TRUE)
+generos <- sample(x = c('FEMENINO', 'MASCULINO'), size = n, replace = TRUE)
+datos <- data.frame(edades, generos)
+
+```
+
+## Mostrar los primeros diez
+
+La función *head()* y describe o muestra la cantidad de observaciones de los que se especifica, los primeros registros.
+
+```{r}
+head(datos, 10)
+```
+
+## Mostrar los últimos diez
+
+La función *tail()* muestra los últimos registros que se especifican.
+
+```{r}
+tail(datos, 10)
+```
+
+## Crear tabla de frecuencias y visualizar datos
+
+### Variable edades
+
+Se utiliza la variable de interés edades del conjunto de datos
+
+```{r}
+tabla.frec.edades1 <- fdt(x = datos$edades, breaks = "Sturges")
+tabla.frec.edades1
+
+```
+
+```{r}
+tabla.frec.edades2 <- fdt(x = datos$edades, start = min(datos$edades)-1, end = max(datos$edades)+1, h = 1)
+tabla.frec.edades2
+```
+
+### Histograma
+
+Un histograma es un representación gráfica organizada que describe frecuencias de clases de datos numéricos en forma de barra.
+
+```{r}
+ggplot(data = datos) +
+  geom_histogram(aes(x = edades), fill = "blue", binwidth = 0.5)
+```
+
+### Histograma usando hist()
+
+La función *hist()* no requiere librería y se puede utilizar directamente para representar un histograma y determina frecuencia. En este ejemplo con valores similares a la *tabla.frec.edades2.*
+
+```{r}
+hist(datos$edades, breaks = (min(edades)-1):(max(edades)+1), main = "Histograma edades de 18 a 28", xlab = "Edades", ylab = "Frecuencia")
+```
+
+### Diagrama de tallo y hoja
+
+La función stem() representa un digrama de tallo y hoja. El diagrama de tallo y hoja identifica frecuencias de clases en formato textual.
+
+```{r}
+stem(datos$edades)
+
+```
+
+### Gráfica de frecuencia acumulada
+
+Acumulado con tabla2
+
+```{r}
+# Pendiente
+ggplot() +
+  geom_line(aes(x = tabla.frec.edades2$table$`Class limits`, y = tabla.frec.edades2$table$cf))+
+  geom_point(aes(x = tabla.frec.edades2$table$`Class limits`, y = tabla.frec.edades2$table$cf)) 
+ 
+
+```
+
+### Variable generos
+
+Se utiliza la variable de interés *generos* del conjunto de datos
+
+```{r}
+tabla.frec.generos <- fdt_cat(datos$generos)
+tabla.frec.generos
+
+```
+
+### Diagrama o gráfica de barra
+
+```{r}
+ggplot(data = datos) +
+  geom_bar(aes(x = generos))
+
+```
+
+# Interpretación
+
+Pendiente
