@@ -1,0 +1,389 @@
+---
+title: "Caso 4. Medidas de dispersión"
+author: "Rubén Pizarro Gurrola"
+date: "2/11/2021"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+Determinar medidas de dispersión de datos como edades, sueldos y calificaciones.
+
+# Descripción
+
+-   Simular muestra de varios conjuntos de datos
+
+-   Se identifica media de los datos
+
+-   Se muestran tablas de frecuencias
+
+-   Se calculan medidas de dispersión, varianza y desviación estándar.
+
+-   Se visualiza la dispersión de los datos en relación a la media.
+
+-   Se calcula el coeficiente de variación y se compara con similares conjuntos de datos.
+
+# Marco teórico
+
+**¿Para que sirven las medidas de dispersión?**
+
+El reporte de una medida de centralización como la media, mediana y moda sólo da información parcial sobre un conjunto o distribución de datos. Diferentes muestras o poblaciones pueden tener medidas idénticas de centro y aun así diferir una de otra en otras importantes maneras. [@devore2016].
+
+La imagen siguiente muestra tres conjuntos de datos y los tres tienen media y mediana igual, sin embargo la dispersión es diferentes, es decir cual conjunto de datos se aleja mas de la media.
+
+La primera tiene la cantidad más grande de variabilidad, la tercera tiene la cantidad más pequeña y la segunda es intermedia respecto a las otras dos en este aspecto.
+
+![](images/muestras%20con%20dispersion%20diferente.jpg)
+
+## Varianza
+
+La varianza es una medida de variabilidad que utiliza todos los datos. La varianza está basada en la diferencia entre el valor de cada observación ($x_i$) y la media $\bar{x}$ [@anderson2008].
+
+### Fórmulas
+
+Se identifican las fórmulas para varianza poblacional y muestral, dependiendo de los datos a analizar, si es todas las observaciones de la población y solo una muestra de la misma.
+
+Para efectos de este ejercicio se utiliza mas específicamente la varianza y desviación muestral.
+
+#### Fórmula de varianza poblacional
+
+$$
+\sigma^2 = \frac{\sum_{i=1}^N(x_i- \mu)^2}{N}
+$$
+
+siendo $\mu$ la media poblacional y $N$ el total de los datos de la población.
+
+#### Fórmula de varianza muestral
+
+$$
+S^2 = \frac{\sum_{i=1}^n(x_i- \bar{x})^2}{n-1}
+$$
+
+siendo $\bar{x}$ la media muestral y $n$ el total de los datos de la muestra.
+
+Las unidades al cuadrado de la varianza dificultan la comprensión e interpretación intuitiva de los valores numéricos de la varianza.
+
+## Desviación estándar
+
+La desviación estándar se define como la raíz cuadrada positiva de la varianza.
+
+Continuando con la notación adoptada para la varianza muestral y para la varianza poblacional, se emplea $\varsigma$ para denotar la desviación estándar muestral y $\sigma$ para denotar la desviación estándar poblacional.
+
+**¿Qué se gana con convertir la varianza en la correspondiente desviación estándar?.**
+
+Como la desviación estándar es la raíz cuadrada de la varianza, las unidades de la varianza, son al cuadrado, posiblemente dificulta su interpretación, por tanto, la desviación estándar de se interpreta de mejor manera la variabilidad de los datos porque el valor resultante se mide en las mismas unidades que los datos originales. [@anderson2008].
+
+Una interpretación preliminar de la desviación estándar muestral es que es el tamaño de una desviación típica o representativa de la media muestral dentro de la muestra dada.[@devore2016]
+
+### Fórmula de desviación estándar poblacional
+
+$$
+\sigma = \sqrt{\sigma^2}
+$$
+
+### Fórmula de desviación estándar muestral
+
+$$
+S = \sqrt{S^2}
+$$
+
+## Coeficiente de variación (CV)
+
+En algunas ocasiones se requiere un estadístico descriptivo que indique cuán grande es la desviación estándar en relación con la media. Existe el coeficiente de variación y resuelve ese propósito.
+
+La fórmula del coeficiente de variación indica el grado de dispersión de un conjunto de datos con respecto a la media.
+
+$$
+CV = \left(\frac{\sigma}{\bar{x}} \times 100 \right) \text{%}
+$$
+
+# Desarrollo
+
+## Librerías
+
+Instalar librerías anticipadamente con *install.packages("fdth")*
+
+```{r message=FALSE, warning=FALSE}
+library(fdth)    # Para tablas de frecuencias
+library(ggplot2) # Para gráficos
+
+```
+
+## Datos edades
+
+Se establece valor de semilla para que se generen los mismos datos.
+
+```{r}
+set.seed(2021)
+
+```
+
+Se generan 200 edades en dos conjuntos de datos diferentes.
+
+edades1 se genera con función de aleatoriedad *sample()*
+
+edades2 se genera con la función de distribución normal *rnorm().*
+
+```{r}
+n <- 200
+
+edades1 <- sample(x = 18:60,size = n,replace = TRUE )
+
+
+```
+
+### edades1
+
+#### Mostrar los datos edades1
+
+Se identifican los datos *edades1*
+
+```{r}
+edades1
+
+```
+
+#### Tablas de frecuencias edades1
+
+Se muestran las tablas de frecuencias del conjunto de datos edades1.
+
+En las tablas de frecuencias se determina matemáticamente el número de clases, La opción matemáticamente más consistente es la conocida como regla de *Sturges*.
+
+La solución de esta ecuación proporciona una regla práctica para obtener el número de clases.
+
+$$
+k=1+3.322*log10(n)
+$$
+
+-   Siendo k el número de clases
+
+-   log es la función logarítmica de base 10, log10()
+
+-   y n el total de la muestra
+
+El rango de clase de acuerdo a *Sturges* está dada por $$
+h=\frac{max(datos) - min(datos)}{k}
+$$Siendo h el rango de cada clase y max(datos) - min(datos) el rango del total de los datos, es decir la diferencia entre límite superior menos límite inferior.
+
+Existen otras formas de determinar el número de clases a utilizar, algunas más complejas, otras más simples.
+
+Independientemente de la forma de cálculo seleccionada ya se *Sturges*, *Scott* o Freedman-Diaconis (FD), lo realmente importante es que la información mostrada en la tabla de frecuencia sea fácil de revisar, que no contenga un número excesivo de clases y que la información que en ella se refleja permita comprender cómo se presentan los datos en la población o de una muestra.
+
+El número de clase de acuerdo par $n=200$ de acuerdo a *Sturges* es:
+
+```{r}
+k  <- round(1+3.322 * log10(n))
+k
+
+```
+
+La amplitud h1 y h2 para cada conjunto de datos es igual a:
+
+```{r}
+h = diff(range(edades1)) / k
+h
+
+```
+
+```{r}
+tabla.edades1 <- fdt(x = edades1, breaks="Sturges")
+tabla.edades1
+```
+
+-   Class limits significa el rango de cada clase
+
+-   f significa la frecuencia, la suma de f debe ser el total de elementos.
+
+-   rf significa frecuencia relativa la suma de todas las rf debe ser el 1
+
+-   rf% significa el valor relativo pero en porcentaje, la suma de rf% debe ser el 100%
+
+-   cf significa frecuencia acumulada
+
+-   cf% significa frecuencia porcentual acumulada
+
+#### Histograma de edades1
+
+```{r}
+
+hist(edades1, breaks = "Sturges" ) 
+
+```
+
+#### Dispersión de edades1
+
+```{r}
+
+datos.edades1 <- data.frame(x = 1:length(edades1), edad= edades1)
+ggplot(datos.edades1, aes(x=x, y=edad))+
+  geom_point() +
+  geom_hline(yintercept = mean(edades1), col='red') +
+  ggtitle(label = "Dispersión de edades1", subtitle = paste("media = ", mean(edades1)))
+ 
+
+
+```
+
+### edades2
+
+#### Crear y mostrar los datos edades2
+
+```{r}
+edades2 <- round(rnorm(n = n, mean = 30, sd = 5))
+
+```
+
+Se identifican los datos edades2
+
+```{r}
+sort(edades2)
+
+```
+
+#### Tablas de frecuencias edades2
+
+Se muestran las tablas de frecuencias del conjunto de datos edades2.
+
+#### Histograma de edades2
+
+```{r}
+
+hist(edades2, breaks = "Sturges" ) 
+
+```
+
+#### Dispersión de edades2
+
+```{r}
+
+datos.edades2 <- data.frame(x = 1:length(edades2), edad= edades2)
+ggplot(datos.edades2, aes(x=x, y=edad))+
+  geom_point() +
+  geom_hline(yintercept = mean(edades2), col='red') +
+  ggtitle(label = "Dispersión de edades2", subtitle = paste("media = ", mean(edades2)))
+
+```
+
+## Medidas de dispersión
+
+Las medidas de dispersión varianza y desviación estándar miden el valor de dispersión de un conjunto de datos numéricos.
+
+La dispersión significa que tanto los datos están alejados de la media, el valor de la desviación se compara con la media y se interpreta que tanto los valores distan del valor de la media.
+
+### Medias aritméticas de edades
+
+```{r}
+media_edades1 <- mean(edades1)
+media_edades2 <- mean(edades2)
+
+media_edades1; media_edades2 
+
+```
+
+### Varianza y desviación estándar
+
+$$
+S^2 = \frac{\sum_{i=1}^n(x_i- \bar{x})^2}{n-1}
+$$
+
+$$
+S = \sqrt{S^{2}}
+$$
+
+```{r}
+tabla.varianza.edades1 <- data.frame(x = edades1,
+  x_media = media_edades1,
+  xi.menos.media = edades1 - media_edades1,
+  xi.menos.media.cuad = (edades1 - media_edades1)^2)
+
+tabla.varianza.edades1
+
+
+
+```
+
+Calculando la suma y determinando varianza
+
+```{r}
+n <- length(edades1)
+suma <- sum(tabla.varianza.edades1$xi.menos.media.cuad)
+
+suma
+
+varianza <- suma / (n -1)
+varianza
+
+```
+
+Con las funciones de *var()* y *sd()* se determinan la varianza y a desviación respectivamente y con *mean()* la media de la muestra.
+
+```{r}
+
+varianza_edades1 <- var(edades1)
+varianza_edades2 <- var(edades2)
+
+desv.std_edades1 <- sd(edades1)
+desv.std_edades2 <- sd(edades2)
+
+```
+
+Se muestran los valores generados, el punto y coma en R significa en una misma linea se ejecutan dos instrucciones o dos comandos, en este caso solo mostrar los valores.
+
+```{r}
+
+varianza_edades1; varianza_edades2
+
+desv.std_edades1; desv.std_edades2 
+
+```
+
+### Coeficiente de variación
+
+El coeficiente de variación (CV) es un estadístico que permite comparar entre dos o mas conjuntos de datos cuál es estos tiene una dispersión mayor o menor.
+
+Al identificar el CV de un conjunto de datos y compararlo con otro CV de otro conjunto de datos similares, se puede determinar cual de los datos tiene mayor o menor dispersión y se puede concluir en cual es estos está mas dispersos sus datos, es decir cuál de ellos se aleja mas o menos de la media, según sea el caso.
+
+Para determinar el coeficiente de variación se establece la división de la desviación estándar entre la media del conjunto de datos.
+
+$$
+CV = \frac{\sigma}{\bar{x}}
+$$
+
+```{r}
+CV_edades1 <- desv.std_edades1 / media_edades1
+CV_edades1
+
+CV_edades2 <- desv.std_edades2 / media_edades2
+CV_edades2
+```
+
+# Interpretación
+
+**¿Qué representan las tablas de frecuencias para los datos edades?**
+
+Las tablas de frecuencia representan las clases y la frecuencias de casos de cada una de las clases, permiten observar los valores relativos y porcentuales de las frecuencias.
+
+Con respecto a edades1 existe un 15.5% de valores que están en un rango o intervalo entre 36.83 y 41.59.
+
+En relación a edades2 existe una cantidad de valores entre 36.83 y 46.34 que representan el 14.5%.
+
+**¿Cuáles son los valores media y desviación de los conjuntos de datos edades?**
+
+Con respecto a los valores estadísticos del conjunto de datos edades1, el valor la media es de: `r media_edades1`, la desviación es de: `r desv.std_edades1`.
+
+Con respecto a los valores estadísticos del conjunto de datos edades2, el valor la media es de: `r  media_edades2`, la desviación es de: `r desv.std_edades2`.
+
+**¿Cuáles son los valores de coeficiente de variación para los conjuntos de datos edades y que representan?**
+
+El coeficiente de variación de edades1 es de: `r CV_edades1`y el CV de edades2 es de: `r CV_edades2`
+
+Existe mayor dispersión en los valores del conjunto de datos edades1 con respecto a edades2 por tener ligeramente mayor valor en su coeficiente de variación.
+
+# Bibliografía
