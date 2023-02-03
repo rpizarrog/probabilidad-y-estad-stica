@@ -1,0 +1,207 @@
+---
+title: "Población y Muestra. Edades"
+author: "Rubén Pizarro Gurrola"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    number_sections: yes
+---
+
+# Objetivo
+
+Simular datos de una población y de una muestra describiendo la media poblacional y la media muestral para su adecuada interpretación.
+
+# Descripción
+
+-   Construir una población de 650 números con valores entre 18 y 30. Representando edades de personas
+
+-   Determinar una muestra del 10% de la población de dichos edades
+
+-   Identificar la estructura de los datos
+
+-   Determinar el parámetro la media de la población
+
+-   Determinar el estadístico de la media de la muestra
+
+-   Mostrar el resumen de los datos de población y muestra
+
+-   Comparar valores de medias del parámetro poblacional contra el estadístico de la muestra.
+
+-   Se visualiza la dispersión de los datos con la función ggplot() de la librería "ggplot2". Se identifica la media poblacional y la media muestral
+
+-   Interpretar el caso
+
+# Marco teórico
+
+## Población y muestra
+
+![](images/poblacion%20y%20muestra.png){width="400"}
+
+La información que se utiliza para aplicar técnicas estadísticas se colecta en forma de muestras o conjuntos de observaciones. Las muestras se reúnen a partir de poblaciones, que son conjuntos de todos los individuos o elementos individuales de un tipo específico.
+
+En el lenguaje de la estadística, uno de los conceptos más elementales es el muestreo. En casi todos los problemas de estadística, un número especificado de mediciones o datos, es decir, una muestra, se toma de un cuerpo de mediciones más grande llamado población.
+
+## Parámetro y estadístico
+
+![](images/esadistico%20y%20par%C3%A1metros.webp){width="400"}
+
+Un parámetro es una medida usada para describir alguna característica de una población, tal como una media aritmética, una mediana, moda o una desviación estándar de una población.
+
+Un estadístico es una medida que describe características de una muestra. Normalmente cuando se habla de muestra los estadísticos son estimadores dado que se acercan a los parámetros de una población.
+
+# Desarrollo
+
+Cargar librerpias
+
+```{r}
+library(ggplot2)
+library(cowplot)
+```
+
+## Crear datos
+
+Genera los mismos números al ejecutar (run) de nuevo la función *sample().*
+
+```{r}
+set.seed(2023)
+```
+
+### Crear población
+
+Se genera o construye una población de 6500 edades con valores entre 18 y 60.
+
+```{r}
+poblacion <- sample(x = 18:69, 
+                    size = 6500, 
+                    replace = TRUE) 
+# Poblacion de un universo de numeros entre 18-60
+
+poblacion
+```
+
+### Determinar N
+
+La función *length()* determina la cantidad de elementos de un vector, de tal manera que N identifica el número de elementos de una población.
+
+```{r}
+N <- length(poblacion)
+N
+```
+
+### Crear muestra
+
+Se determina una muestra del 10% de la población de dichos números (edades), el 10%.
+
+```{r}
+n <- N * 0.10 
+muestra <- sample(x = poblacion, size = n, replace = FALSE)
+muestra
+```
+
+## Medias aritméticas de población y muestra
+
+### Media población
+
+Se determina en parámetro media poblacional.
+
+```{r}
+media_p <- mean(poblacion)
+media_p
+```
+
+### Media muestral
+
+Se determina el estadístico media de la muestra
+
+```{r}
+media_m <- mean(muestra)
+media_m
+```
+
+## Explorando los datos
+
+### Estructura de los datos
+
+```{r}
+str(poblacion)
+str(muestra)
+
+```
+
+## Resumen de los datos
+
+```{r}
+summary(poblacion)
+summary(muestra)
+```
+
+## Visualizar los datos
+
+### Vertical
+
+Se crea grafica1 para los datos e población; se crea gráfica2 para los datos de muestra. se visualizan las dispersiones de ambos diagramas con la librería *ggplot2* y la función *ggplot()*.
+
+```{r}
+g1 = ggplot()+
+  geom_point(aes(x = 1:N, y = poblacion), col= 'blue') + 
+  geom_hline(yintercept = media_p, col='red') +
+  ggtitle(label = "Población", subtitle = paste("Media poblacional = ", round(media_p, 2)))
+```
+
+```{r}
+g2 = ggplot()+
+  geom_point(aes(x = 1:n, y = muestra), col= 'green') + 
+  geom_hline(yintercept = media_m, col='red') +
+  ggtitle(label = "Población", subtitle = paste("Media muestral = ", round(media_m, 2)))
+```
+
+```{r}
+plot_grid(g1, g2)
+```
+
+
+### Horizontal
+
+Se crea grafica1 para los datos e población; se crea gráfica2 para los datos de muestra. se visualizan las dispersiones de ambos diagramas con la librería *ggplot2* y la función *ggplot()*.
+
+```{r}
+g1 = ggplot()+
+  geom_point(aes(x = poblacion, y = 1:N), col= 'blue') + 
+  geom_vline(xintercept = media_p, col='red') +
+  ggtitle(label = "Población", subtitle = paste("Media poblacional = ", round(media_p, 2)))
+```
+
+```{r}
+g2 = ggplot()+
+  geom_point(aes(x = muestra, y = 1:n), col= 'green') + 
+  geom_vline(xintercept = media_m, col='red') +
+  ggtitle(label = "Población", subtitle = paste("Media muestral = ", round(media_m, 2)))
+```
+
+```{r}
+plot_grid(g1, g2)
+```
+
+# Interpretación
+
+Describir de 120 a 150 palabras para interpretar el caso contestando las siguientes preguntas como sugerencia:
+
+¿Cuál es el contexto de los datos, es decir, ¿qué significan los datos?
+
+¿Cuántos datos tiene la población y la muestra respectivamente?,
+
+¿Qué porcentaje de la muestra es de la población?
+
+¿Cuál es el el valor de la media poblacional y la media muestral?
+
+¿Que relación tiene la media poblacional y la media muestral?
+
+¿Cómo se obtiene la media ?
+
+¿Como se obtiene la estructura de los datos (*str())* y qué valores arroja?
+
+¿Cómo se describen los datos? con *summary()* y qué valores arroja?
