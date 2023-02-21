@@ -43,25 +43,30 @@ f_primos <- function(nums) {
 }
 
 
-
 # Función para seleccionar con una comparación menor igual
 f_menor <- function(nums, valor) {
-  return (nums < valor)
+  return (nums[nums < valor])
 }
 
 # Función para seleccionar con una comparación menor
 f_menorigual <- function(nums, valor) {
-  return (nums <= valor)
+  return (nums[nums <= valor])
 }
 
 # Función para seleccionar con una comparación mayor igual
 f_mayor <- function(nums, valor) {
-  return (nums >= valor)
+  return (nums[nums > valor])
 }
 
 # Función para seleccionar con una comparación mayor
 f_mayorigual <- function(nums, valor) {
-  return (nums > valor)
+  return (nums[nums >= valor])
+}
+
+f_rango <- function (nums, ri, rs) {
+  if (rs < ri) 
+    return ("El límite superior debe ser mayor o igual que el limite inferior")
+  return (nums[nums >= ri & nums <= rs])
 }
 
 
