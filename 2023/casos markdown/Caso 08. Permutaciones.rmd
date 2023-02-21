@@ -1,0 +1,264 @@
+---
+title: "Caso 8. Permutaciones"
+author: "Rubén Pizarro Gurrola"
+date: "01/03/2022"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    number_sections: yes
+bibliography: references.bib
+---
+
+
+# Objetivo
+
+Construir *permutaciones* de conjuntos de datos de personas y de nombres de equipos deportivos
+
+# Descripción
+
+A partir de conjuntos datos (valores individuales) realizar permutaciones para conocer el número de las mismas y el acomodo de los valores para su interpretación en términos de probabilidad.
+
+La diferencias entre permutaciones y *combinaciones* tiene que ver con la cantidad o el número de eventos.
+
+Al hacer permutaciones, si importa el orden en que se acomodan los elementos, es decir en que columna aparecen, en la primera, segunda, tercera y y sucesivamente.
+
+Para identificar el orden, se puede decir que no es lo mismo "Oscar", "Paco" que "Paco", "Oscar", están a la inversa o el orden está invertido. Eso es una diferencia con las combinaciones, son los mismos elementos pero el orden en que se acomodan o en que aparecen los elementos está diferente.
+
+Se deben hacer las siguientes acciones:
+
+-   Cargar librerías
+
+-   Cargar los datos
+
+-   Identificar fórmula de factorial
+
+-   Identificar fórmula de permutaciones
+
+-   Determinar probabilidades a partir del espacio muestral de las combinaciones
+
+-   Encontrar probabilidad con base en frecuencia o contabilizar eventos específicos del espacio muestral
+
+-   Interpretar el caso
+
+## Cargar librerías
+
+Se van a utilizar funciones de la librería "*gtools*" por lo que se necesario instalarla previamente: *install.packages("gtools").*
+
+Esta librería permitirá hacer *combinaciones* y *permutaciones*.
+
+```{r warning=FALSE}
+# install.packages("gtools")
+library(gtools)
+```
+
+# Marco conceptual
+
+Para hacer permutaciones es necesario identificar la importancia del valor factorial de un número
+
+## Factorial
+
+El factorial de un número es el producto de $n$ por todos los naturales menores que el y se representa con el $!n$, entonces $n!=n\times(n-1)...\times 1$
+
+La función factorial es una fórmula matemática representada por el signo de exclamación $!$. En la fórmula Factorial se deben multiplicar todos los números enteros y positivos que hay entre el número que aparece en la fórmula y el número $1$.
+
+Ejemplo: hallar el factorial de 6 o se sea $6!=6\times5\times4\times3\times2\times1=720$
+
+## Permutaciones
+
+La regla de conteo de permutaciones permite calcular el número de resultados experimentales cuando se seleccionan cierto número objetos de un conjunto de $n$ objetos y el orden de selección es relevante.
+
+Los mismos $r$ objetos seleccionados en orden diferente se consideran un resultado experimental diferente.
+
+### Fórmula de permutaciones
+
+$$
+S=Pn\binom{n}{r} = \frac{n!}{(n-r)!}\\S \text{ es el espacio muestral y la cantidad de permutaciones} \\Pn \text{ es el número de permutaciones posibles}\\ \binom{n}{r} \text {es símbolo de permutar n elementos en grupos de r}\\ n \text{ es el total de elementos}\\ r \text{ es de cuantos en cuantos elementos se hacen grupos y permutaciones}
+$$
+
+## Ejemplo 1. Nombres de personas
+
+Se trata de hacer permutaciones con los nombres de cuatro personas: "Oscar", "Paco", "Paty", "Laura", "Rubén", "Luis", "Lucy", "Alberto", "Juan" en grupos de 2.
+
+Entonces $n=9$, porque hay cuatro nombres o elementos y $r=2$ porque se trata de agrupar o permutar de dos en dos.
+
+¿Cuántas permutaciones deberá haber?
+
+-   Oscar y Paco
+
+-   Paco y Oscar
+
+-   Oscar y Paty
+
+-   Paty y Oscar
+
+-   Oscar y Laura
+
+-   Laura y Oscar
+
+-   Paco y Paty
+
+-   Paty y Paco
+
+-   ... ...
+
+-   ... ...
+
+-   Paty y Laura
+
+-   Laura y Paty
+
+```{r}
+nombres <- c("Oscar", "Paco", "Paty", "Laura", "Rubén", "Luis", "Lucy", "Alberto", "Juan")
+n <- length(nombres)
+r <- 2 # ¿cómo agrupar o permutar?
+
+Pn <- factorial(n) / factorial(n-r)
+
+paste("Existen ", Pn , " posibles permutaciones del total de ", n , " nombres ", " en grupos de ", r ," en ", r)
+```
+
+## Ejemplo 2. Nombres de equipos de fútbol en México.
+
+Se trata de hacer combinaciones con los nombres de seis equipos de fútbol: "Atlas", "Guadalajara", "Monterrey", "América", "Cruz Azul", "Santos" en grupos de 5. Entonces $n=9$, porque hay seis equipos o elementos y $r=5$ porque se trata de agrupar de tres en tres.
+
+¿Cuántas permutaciones deberá haber?
+
+```{r}
+equipos <- c("Atlas", "Guadalajara", "Monterrey", "América", "Cruz Azul", "Santos", "Mazatlán", "Tijuana", "León")
+n <- length(equipos)
+r <- 5 # ¿cómo agrupar?
+
+Pn <- factorial(n) / factorial(n-r)
+
+paste("Existen ", Pn , " posibles permutaciones del total de ", n , " equipos ", " en grupos de ", r ," en ", r)
+```
+
+# Desarrollo
+
+Si bien la fórmula de permutaciones indica el número de permutaciones posibles de un conjunto de elementos pero lo que se desea conocer es ¿cómo se forman o cómo se verían los grupos?.
+
+Se utiliza la función *permutation*
+
+## Permutaciones
+
+Se utiliza la función *permutation()* y se requiere por lo menos tres atributos:
+
+-   La cantidad de elementos n
+
+-   Los grupos de cuanto en cuanto se forman r
+
+-   y los elementos, o sea en este caso el vector v
+
+### Nombres de personas
+
+Se muestran las posibles permutaciones de los nombres de personas. Las función *permutations()* ordena los valores alfabéticamente y luego construye las combinaciones.
+
+```{r}
+nombres
+
+Pern.nombres <- permutations(n = length(nombres), r = 2, v = nombres)
+Pern.nombres
+
+```
+
+### Nombres de equipos de fútbol
+
+Se muestran las posibles combinaciones de los nombres de equipos de fútbol.
+
+```{r}
+equipos
+Pern.equipos <- permutations(n = length(equipos), r = 5, v = equipos)
+
+
+```
+
+Se muestran solo los primeras diez y últimas diez permutaciones de equipos
+
+```{r}
+head(Pern.equipos)
+tail(Pern.equipos)
+
+```
+
+¿Para qué sirve encontrar el número de permutaciones y la forma en que se agrupan?
+
+Eso sería el espacio muestral que ya construído éste, permite hacer interpretaciones en términos probabilísticos.
+
+# Interpretación
+
+El resultado de las permutaciones permite construir un espacio muestral que ofrece la oportunidad de conocer en términos de probabilidad, la cantidad de ocasiones y lo que representa un evento conforme a todo el espacio muestral, es decir frecuencia y frecuencia porcentual.
+
+## Preguntas sobre espacio muestral nombres
+
+¿En cuántas ocasiones aparece el nombre de Laura en permutaciones de dos en dos?. Aparece **PENDIENTE(16)** ocasiones. ¿En cuántas ocasiones aparece el nombre de Oscar en las combinaciones de dos en dos?, Aparece **PENDIENTE(16)** ocasiones.
+
+En las permutaciones de nombres de dos en dos, ¿en cuántas ocasiones existe Laura y Oscar juntos o contiguos y en ese orden?. Se utiliza la función *subset()* para hacer filtros y responder a las preguntas.
+
+La nominación *[ , ]* significa acceder al valor de un *data frame* por la primer colmna y *[ ,2]* la segunda columna.
+
+```{r}
+filtro <- subset(Pern.nombres, Pern.nombres[,1] == "Laura" & Pern.nombres[,2] == "Oscar")
+filtro
+frecuencia <- nrow(filtro)
+
+paste("Existen ", frecuencia, " ocasiones en que se encuentran Laura y Oscar juntos en ese orden, de un total de ", nrow(Pern.nombres), " representan ", round(frecuencia / nrow(Pern.nombres) * 100, 2), "%")
+
+```
+
+En las permutaciones de nombres de dos en dos, ¿en cuántas ocasiones existe Oscar en la primer columna de todo el espacio muestral?
+
+```{r}
+filtro <- subset(Pern.nombres, Pern.nombres[,1] == "Oscar")
+filtro
+frecuencia <- nrow(filtro)
+
+paste("Existen ", frecuencia, " ocasiones en que se encuentran Oscar en la primer columna  , de un total de ", nrow(Pern.nombres), " representan ", round(frecuencia / nrow(Pern.nombres) * 100, 2), "%")
+```
+
+En cuántas ocasiones aparece en primera columna Oscar y Paco o Paty en segunda columna
+
+```{r}
+filtro <- subset(Pern.nombres, Pern.nombres[,1] == "Oscar" & (Pern.nombres[,2] == "Paco" | Pern.nombres[,2] == "Paty"))
+filtro
+frecuencia <- nrow(filtro)
+
+paste("Existen ", frecuencia, " ocasiones en que se encuentran aparece en primera columna Oscar y Paco o Paty en segunda columna, de un total de ", nrow(Pern.nombres), " representan ", round(frecuencia / nrow(Pern.nombres) * 100, 2), "%")
+```
+
+## Preguntas sobre espacio muestral equipos
+
+En cuántas ocasiones aparece de manera contigua y en este orden los equipos de América y Guadalajara en primera y segunda columna respectivamente.
+
+```{r}
+print("Pendiente")
+
+```
+
+En cuántas ocasiones aparece de manera contigua y en este orden los equipos de Atlas y Guadalajara en primera y segunda columna respectivamente.
+
+```{r}
+print("Pendiente")
+
+```
+
+¿En cuántas ocasiones aparece de manera contigua y en este orden los equipos de Guadalajara y Mazatlán en cualquier columna uno y dos, dos y tres, tres y cuatro o cuatro y cinco?
+
+```{r}
+filtro <- subset(Pern.equipos, (Pern.equipos[,1] == "Guadalajara" & Pern.equipos[,2] == "Mazatlán") 
+                 | (Pern.equipos[,2] == "Guadalajara" & Pern.equipos[,3] == "Mazatlán") 
+                 | 
+                   (Pern.equipos[,3] == "Guadalajara" & Pern.equipos[,4] == "Mazatlán") 
+                 | (Pern.equipos[,4] == "Guadalajara" & Pern.equipos[,5] == "Mazatlán"))
+filtro
+
+
+frecuencia <- nrow(filtro)
+
+paste("Existen ", frecuencia, " aparece de manera contigua y en este orden los equipos de Guadalajara y Mazatlán en cualquier columna , de un total de ", nrow(Pern.equipos), " representan ", round(frecuencia / nrow(Pern.equipos) * 100, 2), "%")
+
+```
+
+# Bibliografía
