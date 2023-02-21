@@ -15,7 +15,7 @@ f_pares <- function(nums) {
 # Función que regresa cuales son los nones
 f_nones <- function(nums) {
   nones <- which(nums %% 2 == 1)
-  return (pares)
+  return (nones)
 }
 
 # Función que regresa cuales son primos
