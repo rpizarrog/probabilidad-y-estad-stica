@@ -1,0 +1,413 @@
+---
+title: "Caso 11. Probabilidad Condicional"
+author: "Rubén Pizarro Gurrola"
+date: "15/03/2022"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+bibliography: references.bib
+---
+
+# Objetivo
+
+Determinar la probabilidad condicional
+
+# Descripción
+
+De un conjunto de varios ejercicios extraídos de de la literatura de probabilidad de entre libros y sitios WEB se de termina la probabilidad condicional a partir de datos iniciales.
+
+Lo datos iniciales pueden ser la frecuencias, las probabildiad de evento A y evento B así como la probabilidad de intersección entre ambos eventos o conjunto, con ello se determina la probabilidad condicional utilizando la fórmula que se cita más adelante.
+
+# Fundamento teórico
+
+La probabilidad y la estadística están relacionadas en una forma importante. La probabilidad se emplea como herramienta; permite que se evalúe la confiabilidad de las conclusiones acerca de la población cuando tenga sólo información muestral [@mendenhall2010].
+
+Por otra parte, la probabilidad indica el grado de certidumbre o certeza de un suceso o fenómeno estudiado, en la investigación científica existen muchos fenómenos en los cuales es necesario determinar la probabilidad de que un evento ocurra o dejen de ocurrir, para lo cual el estudio de este campo, es necesario, además tiene aplicaciones muy importantes en investigación; dado que es base para la inferencia estadística que permite el estudio de muestras con el objetivo de inferir o extrapolar características de estas a una población.[@benitez_morales_probabilidad_nodate]
+
+## Axiomas de la probabilidad
+
+Un axioma de probabilidad es el componente principal de un sistema de condiciones que deben cumplirse y junto con las pautas de inferencia especifican un sistema deductivo, para que una función determinada sobre un conjunto de eventos determine sus probabilidades.
+
+Existe un conjunto de axiomas que fueron formulados por el matemático ruso Kolmogórov. Por lo que se les denomina axiomas de Kolmogórov.[@cevallos_enfoque_2018]
+
+### Axioma 1
+
+La probabilidad de un evento E no es negativa y debe ser menor o igua a 1 $$
+0 < p(E) < 1
+$$
+
+Significa que al determinar una probabilidad sobre cualquier evento siempre es cero o superior y menor o gual a uno.
+
+Ejemplo: Pensar en la probabilidad de que llueva el dia de hoy: es probable que no llueva, probabilidad igual a cero; es probable que llueva en 0.50 o del 50%; y de que sea seguro que llueva 1 o 100%.
+
+La probabilidad de un evento seguro es igual a 1 y se denota $$P(Evento Seguro) = 1$$
+
+Ejemplo: En la mano cerrada se tienen dos monedas de a peso Mexicano, si es abre el puño y se extrae una moneda, ¿que tan probable es que sea de a un peso?. La probabilidad es de 1 o del 100% porque es indudable que al sacar la moneda sea de a un peso y únicamente sea a 1 un peso.
+
+### Axioma 2
+
+Si dos eventos son mutuamente excluyentes, la probabilidad de obtener A o B es igual a la probabilidad de obtener A más la probabilidad de obtener B.
+
+$$
+P(A \cup B) = P(A) + P(B)
+$$
+
+Ejemplo. si se lanz una moneda al aire, ¿cuál es la probabilidad de que caiga águila o sello?. en ambos casos 1/2 o 0.5 o el 50% de que al caer la moneda, la cara arriba sea sello o águila. $$
+P(sello) = 1/2
+$$ $$
+P(aguila) = 1/2
+$$
+
+$$\therefore$$ $$
+P(sello\cup aguila) = P(sello) + P(aguila) = 1/2+1/2 = 1
+$$
+
+En general se puede decir que la suma de las probabilidades de todos los posibles eventos mutuamente excluyentes es igual a 1. $$
+\sum _{i=1}^{n}P(E) = P(E_{1})+P(E_{2})+P(E_{3})+....P(E_{n}) = 1)
+$$
+
+### Axioma 3
+
+Si A es un evento cualquiera de un experimento aleatorio y A' es el complemento de A, entonces:
+
+$$
+P(A) = X
+$$ $$
+\therefore
+$$ $$
+P(A)'= 1 - P(A) = 1 - X
+$$
+
+o también se puede expresar matemáticamente como: $$
+P(A)\complement = 1 - P(A) = 1 - X
+$$
+
+Ejemplo: Si de un total de personas existen un $60\%$ del género femenino, ¿cuál es el complemento de ese subconjunto? y ¿su probabilidad?. $$
+P(mujeres) = 0.60
+$$
+
+$$
+P(mujeres)' = 1 - 0.60 = 0.40
+$$
+
+o el $40\%$ es el complemento del subconjunto mujeres.
+
+Suponiendo que $P(A)$ y $P(B)$ representan las probabilidades para los dos eventos $A$ y $B$, entonces $P(A \cup B)$ significa la probabilidad de que ocurran A o B. Entonces la $P(A \cup B) \neq 0$
+
+Si no hay elementos en común entre un conjunto A y B entonces se dice que la probabilidad de la intesección entre ambos es cero $P(A\cap B) = 0$
+
+En dado caso de que si existan elementos en común entre un subconjunto $A$ y $B$ $\therefore$ $$
+P(A \cup B) = P(A) + P(B) - P(A\cap B)
+$$
+
+El cálculo de las probabilidades se determina en el entendido de que si se conoce el número de casos de un subconjunto y el número total de casos del universo, la probabilidad es determinando la frecuencia relativa.
+
+$$
+P(conjunto) = casos / n
+$$
+
+siendo $casos$ la frecuencia y $n$ el total de elementos de un universo.
+
+Ejemplo: En el caso del ejemplo de las 100 personas y existen 40 hombres, ¿Cuál es la probabilidad de elegir a una persona y que ésta se del género masculino?: $$
+n  = 100
+$$
+
+$$
+casos = 40
+$$
+
+$$
+\therefore
+$$
+
+$$
+P(hombres) = \frac{casos}{n} = \frac{40}{n}  = 0.40
+$$
+
+La probabilidad de elegir a una persona del género masculino dentro de un conjunto de 100 personas es del $40\%$
+
+## Probabilidad Condicional
+
+De acuerdo a [@benitez_morales_probabilidad_nodate] se conoce como probabilidad condicional a la probabilidad de que se dé un suceso $A$, conociendo, que también se da un suceso $B$
+
+En el libro de [@mendenhall_introduccion_2010] se menciona que la probabilidad de un evento $A$, dado que el evento $B$ ha ocurrido, se denomina probabilidad condicional de $A$, dado que $B$ ha ocurrido, denotada por $$
+P(A | B)
+$$
+
+La fórmula de la probabilidad condicional está dada por la división de la probabilidad de la intersección de dos conjuntos o eventos entre la probabilidad del segundo evento o del segundo conjunto; se muestra de la siguiente manera:
+
+$$
+P(A | B) = \frac{P(A \cap B)}{P(B)} 
+$$
+
+ó bien por el contrario $$
+P(B | A) = \frac{P(B \cap A)}{P(A)}
+$$
+
+Siempre y cuando en ambos casos la $P(B)\ne0$ y $P(A) \ne0$
+
+Ejemplo: Se sabe que el 50% de la población fuma y que el 10% fuma **y** es hipertensa. ¿Cuál es la probabilidad de que un hipertenso sea fumador? o ¿Cuál es la probabilidad de que una persona sea hipertensa dado que es fumador?, se entiende que dado que sea fumador.[@anderson_estadistica_2008]
+
+$$
+A = \{hipertensos\}
+$$
+
+$$
+B=\{fumadores\}
+$$
+
+Se busca encontrar: $$ 
+P(A | B) = \text{hipertenso dado que sea fumador}\therefore P(A | B) = ?
+$$
+
+$$ 
+B = \{fumadores\}\therefore P(B) = 0.50
+$$
+
+$$
+P(A \cap B) = \{hipertenso.y.fumador\} = 0.10 
+$$
+
+$$
+\therefore
+$$
+
+$$
+P(A | B) = \frac{P(B \cap A)}{P(A)} = \frac{0.10}{0.50} = 0.20 \therefore
+$$
+
+La probabilidad de que se elija a una persona que sea hipertensa dado que es fumador es de $0.20$ o del $20\%$
+
+# Desarrollo
+
+Se presentan ejercicios probabilidad condicional
+
+## Las librerías
+
+Se carga la librería *knitr* previa instalación con *install.packages("knitr")* que permite entre otras cosas, dar formato a las tablas de datos.
+
+```{r}
+library(knitr)
+```
+
+## Ejercicio 1. Probabilidad A\|B y probabilidad B\|A
+
+Extraído de [@matemovil_probabilidad_nodate]
+
+$$P(A) = 0.60 $$ $$P(B) = 0.40$$
+
+$$P(A∩B) = 0.18$$
+
+Calcular:
+
+-   P(A\|B)
+
+$$P(A | B) = \frac{P(A \cap B)}{P(B)} = \frac{0.18}{0.40}=0.45$$
+
+```{r}
+prob.A <- 0.60
+prob.B <- 0.40
+prob.A.Inter.B <- 0.18
+prob.B.Inter.A <- prob.A.Inter.B # La misma
+```
+
+Entonces: $P(A | B)$
+
+```{r}
+Prob.A.dado.B <- prob.A.Inter.B / prob.B
+paste("La pobabilidad de que se de A dado B es: ", Prob.A.dado.B * 100, "%")
+```
+
+-   P(B\|A) $$P(B | A) = \frac{P(B \cap A)}{P(A)} = \frac{0.18}{0.60}=0.3$$
+
+Entonces: $P(B | A)$
+
+```{r}
+Prob.B.dado.A <- prob.B.Inter.A / prob.A
+paste("La pobabilidad de que se de A dado B es: ", Prob.B.dado.A * 100, "%")
+```
+
+## Ejercicio 2 Hombres y mujeres trabajan y desempleados
+
+Ejercicio tomado del libro de [@walpole_probabilidad_2007]
+
+Se identifican las frecuencias de personas que trabajan y no trabajan hombre y mujeres en una ciudad pequeña X:
+
++---------------+---------------+------------------+------------------+
+| Hombre        | Empleado      | Desempleado      | Total            |
++:=============:+:=============:+:================:+:================:+
+| Hombre        | 460           | 40               | 500              |
++---------------+---------------+------------------+------------------+
+| Mujer         | 140           | 260              | 400              |
++---------------+---------------+------------------+------------------+
+| Total         | 600           | 300              | 900              |
++---------------+---------------+------------------+------------------+
+
+```{r}
+hombres.trabajan = 460
+hombres.no.trabajan = 40
+mujeres.trabajan = 140
+mujeres.no.trabajan = 260
+
+n.personas <- sum(hombres.trabajan, hombres.no.trabajan, mujeres.trabajan, mujeres.no.trabajan)
+
+n.trabajan <- sum(hombres.trabajan, mujeres.trabajan)
+
+```
+
+-   Construir un conjunto de datos con los totales usando funcion *apply()* que genera los márgenes totales por renglón y por columna.
+-   La funciones *cbind()* agrega una nueva columna al conjunto de datos
+-   La función *rbind()* agrega un nuevo renglón al conjunto de datos
+
+```{r}
+datos <- data.frame(Empleado = c(hombres.trabajan, mujeres.trabajan), Desempleado = c(hombres.no.trabajan, mujeres.no.trabajan))
+
+kable(datos, caption = "Personas que trabajan y no trabajan")
+
+datos <- cbind(datos, Total = apply(datos, 1, sum))
+datos <- rbind(datos, apply(datos, 2, sum))
+
+rownames(datos) <- c("Hombre", "Mujer", "Total")
+
+kable(datos, caption = "Totales de personas (hombres y mujeres) que trabajan y no trabajan")
+
+```
+
+Uno de estos individuos se seleccionará al azar para que realice viaje a través del país para promover las ventajas de establecer industrias nuevas en la ciudad (Durango, México). Nos interesaremos en los eventos siguientes:
+
+-   se elige a un hombre y el elegido tiene empleo o trabajo.
+
+Entonces se elige a un hombre que trabaja (numerador de la fórmula de probabilidad condicional):
+
+$$P(hombres.y.trabajan) = P(hombres \cap trabajan)=n(hombres.trabajan) / n.personas \therefore$$
+
+$$P(hombres \cap trabajan) = 460/900 = 0.51$$
+
+La probabilidad de que que trabaje es: $$P(trabajan) = n.trabajan / n.personas = 600/900 = 0.66$$
+
+y finalmente conforme la fórmula ¿cuál es la probabilidad de que se elija a una persona que sea hombre dado que trabaja?: $$P(A | B) = \frac{P(A \cap B)}{P(B)} $$
+
+$$P(hombres | trabajan) = \frac{P(hombres \cap trabajan)}{P(trabajan)} = 0.51 / 0.66 = 0.76$$
+
+-   El siguiente bloque de código realiza las operaciones
+
+```{r}
+
+p.hombre.inter.trabajan <- hombres.trabajan / n.personas
+
+p.trabaja <- n.trabajan / n.personas
+
+p.hombre.dado.trabaja <- p.hombre.inter.trabajan / p.trabaja
+
+
+paste("La probabilidad que se elija a una persona que sea hombre dado que trabaja es: ", round(p.hombre.dado.trabaja * 100,2), "%")
+```
+
+## Ejercicio 3. Probabilidad de vuelo
+
+La probabilidad de que un vuelo programado normalmente *salga* a tiempo es $P(S) = 0.83$, la probabilidad de que *llegue* a tiempo es $P(L) = 0.82$ y la probabilidad de que *salga y llegue* a tiempo es $P(S ∩ L) = 0.78$
+
+a)  La probabilidad de que un avión llegue a tiempo, dado que salió a tiempo es:
+
+$$P(L | S) = \frac{P(L \cap S)}{P(S)} = \frac {0.78}{0.83} = 0.94 $$
+
+-   Se inicializan variables
+
+```{r}
+prob.S <- 0.83
+prob.L <- 0.82
+prob.S.inter.L <- 0.78
+```
+
+-   Se determina la probabilidad condicional
+
+```{r}
+prob.L.dado.S <- prob.S.inter.L / prob.S
+paste("La probabilidad de que un avión llegue a tiempo, dado que salió a tiempo es: ", round(prob.L.dado.S * 100, 2), "%")
+```
+
+b)  La probabilidad de que un avión haya salido a tiempo, dado que llegó a tiempo es:
+
+$$P(S | L) = \frac{P(S \cap L)}{P(L)} = \frac {0.78}{0.82} = 0.95 $$
+
+-   Determinamos la probabilidad condicional
+
+```{r}
+prob.S.dado.L <- prob.S.inter.L / prob.L
+paste("La probabilidad de que un avión llegue a tiempo, dado que salió a tiempo es: ", round(prob.S.dado.L * 100, 2), "%")
+```
+
+## Ejercicio 4. Primer y segundo examen
+
+Una maestra de matemáticas hizo en su clase dos exámenes.
+
+-   El 30% de la clase paso ambos exámenes,
+
+-   El 45% de la clase paso el primer examen.
+
+-   ¿Qué porcentaje de aquellos que pasaron el primer examen también pasaron el segundo? Caso extraído de : [@hotmath_hotmath_nodate]
+
+$$P(Ex1 \cap Ex2) = 0.30$$ $$P(Ex1) = 0.45$$ $$therefore$$ $$P(Ex2|Ex1) = \frac{P(Ex1 \cap Ex2)}{P(Ex1)} = \frac {0.30}{0.45} = 0.66$$
+
+```{r}
+P.Ex1 <- 0.45
+P.Ex1.inter.Ex2 <- 0.30
+
+P.Ex2.dado.Ex1 <- P.Ex1.inter.Ex2 / P.Ex1
+
+paste("El porcentaje de aquellos que pasaron el primer examen también pasaron el segundo es:", round(P.Ex2.dado.Ex1 * 100, 2), "%")
+paste("Dos tercios o aproximadamente el 66.7% de la clase paso el segundo examen.")
+
+```
+
+## Ejercicio 5. Personas hombres y mujeres escolaridad
+
+La siguiente es una clasificación, según el género y el nivel de escolaridad, de una muestra aleatoria de 200 adultos. ejercicio extraído de [@walpole2012].
+
+| Escolaridad | Hombre | Mujer |
+|:-----------:|:------:|:-----:|
+|  Primaria   |   38   |  45   |
+| Secundaria  |   28   |  40   |
+| Universidad |   27   |  22   |
+
+Si se elige una persona al azar de este grupo, ¿cuál es la probabilidad de que...
+
+-   la persona sea hombre, dado que su escolaridad es de secundaria?; $$
+    P(Hombre | Secundaria ) = \frac{P(Hombre  \cap Secundaria)}{P(Secundaria)} = \frac{0.14}{0.34}=0.41
+    $$
+
+-   la persona tenga un grado universitario,dado que es mujer?; $$P(Universidad | Mujer) = \frac{P(Universidad) \cap P(Mujer) }{P(Mujer)}= \frac{0.11}{0.535}=0.20$$
+
+# Interpretación
+
+¿Qué es la probabilidad condicional? ¿Cómo se utiliza?, en eventos relacionados ¿Cual es la fórmula? Algunas ideas de los ejercicios y el significado de su probabilidad de cada ejercicio?
+
+## **Resolver estos ejercicios**:
+
+**Alumnos de un centro escolar**
+
+En un centro escolar los alumnos pueden optar por cursar como lengua extranjera inglés o francés. En un determinado curso, el **90%** de los alumnos estudia inglés y el resto francés. El **30%** de los que estudian inglés son chicos y de los que estudian francés son chicos el **40%**. El elegido un alumno al azar, **¿cuál es la probabilidad de que sea chica?**
+
+$$
+p(chica) = 0.9 · 0.7 + 0.1 · 0.6 = 0.69
+$$
+
+
+
+**Deportes**
+
+En una clase en la que todos practican algún deporte, el **60%** de los alumnos juega al fútbol o al baloncesto y el **10%** practica ambos deportes. Si además hay un **60%** que no juega al fútbol, cuál será la probabilidad de que escogido al azar un alumno de la clase:
+
+-   Juegue sólo al fútbol.
+
+-   Juegue sólo al baloncesto.
+
+-   Practique uno solo de los deportes.
+
+-   No juegue ni al fútbol ni al baloncesto.
+    [@ejercici]
+
+# Referencias bibliográficas

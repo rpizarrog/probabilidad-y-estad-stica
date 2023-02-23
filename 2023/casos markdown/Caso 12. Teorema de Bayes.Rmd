@@ -1,0 +1,338 @@
+---
+title: "Caso 12. Teorema de Bayes"
+author: "Rubén Pizarro Gurrola"
+date: "16/3/2022"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+bibliography: references.bib
+---
+
+# Objetivo
+
+Calcular e interpretar probabilidades mediante el teorema de Bayes.
+
+# Descripción
+
+Cargar librerías necesarias, establecer el fundamento teórico, definir fórmula del teorema de Bayes y construir e interpretar ejercicios mediante Teprema de Bayes.
+
+# Fundamento Teórico
+
+## Ley de Multiplicación para eventos independientes
+
+La Ley de la Multiplicación es útil para calcular la probabilidad de la intersección de dos eventos.
+
+La ley de la multiplicación se basa en la definición de probabilidad condicional.
+
+Se multiplican las probabilidades, y en este caso teniendo las probabilidades identificadas en el árbol se determinan mediante su multiplicación.
+
+### Teorema de Bayes
+
+El teorema de Bayes es un método que se usa en probabilidad el cual es útil para encontrar una probabilidad condicionada, esto quiere decir que se calcula la probabilidad de un suceso cuando ya ha ocurrido otro suceso que afecta la probabilidad del primer suceso [@fhybear].
+
+Por otra parte, el teorema de Bayes se usa cuando hay múltiples sucesos que están relacionados, una herramienta que se usa para poder entender mejor las relaciones que hay entre sucesos son los diagramas de árbol identificados en este documento.
+
+### Probabilidad Apriori
+
+Se asume que los eventos E y NE son mutuamente excluyentes y colectivamente exhaustivos (se complementan o se asocian), y E y NE se refieren a cualquiera de ambos eventos. De ahí que en este caso E y EN sean complementos. [@lind2015].
+
+Suponga que el 5% de un pais tiene o padece una enfermedad. Sea E el evento "padece la enfermedad" y EN el evento "no padece la enfermedad". Por lo tanto, si selecciona al azar a una persona de ese País ficticio, la probabilidad de que el individuo elegido padezca la enfermedad es de 0.05 $P(E) = 0.05$ o **5%**.
+
+Esta probabilidad, $P(E) = P(\text{padece la enfermedad}) = 0.05$, recibe el nombre de probabilidad a priori, es deir, la que está basada en el nivel de información actual.[@lind2015].
+
+Entonces, la probabilidad a priori de que una persona **no padezca** la enfermedad es de $0.95$, o $P(EN) =0.95$, que se calcula mediante la resta $1 - 0.05$
+
+### Probabilidad A Posteriori
+
+Este este mismo ejemplo, existen pruebas para verificar si las personas tienen esa enfermedad, la prueba de diagnóstico para detectar la enfermedad, no es muy precisa. Sea PP\
+el evento "la prueba revela la presencia de la enfermedad".
+
+Suponga que la evidencia histórica muestra que si una persona padece realmente la enfermedad, la probabilidad de que la prueba indique su presencia es de $0.90$ por lo que la prueba resulta en $0.10$ de que negativa a personas que si la padecen.\
+Luego existe evidencia en las pruebas de que hay un $P(Pos) = 15$% de pruebas positivas a personas que no padecen la enfermedad y por consecuencia un $P(Neg)=85$% de pruebas negativas a personas que no la padecen.
+
+Para este ejemplo, las probabilidades indican que la enfermedad existe, sin embargo, la pregunta es: ¿Cuál es la probabilidad de que una persona realmente padezca la enfermedad?
+
+De forma simbólica se necesita $P(E | Pos)$ o lo que es lo mismo de acuerdo a la propiedad multiplicativa de eventos independientes $P(E \cap Pos) = P(E)\cdot P(Pos)$.
+
+A esto se le conoce como probabilidad A posteriori y es la base para el Teorema de Bayes.
+
+#### Diagrama de árbol de Enermedad y Pruebas
+
+![](images/apriori%20posteriori%20Bayes%20enfermedad%20y%20prueba%20de%20Enfermedad.jpg){width="700"}
+
+Así que la probabilidad de que una persona padezca la enfermedad, dado que la prueba fue positiva es de 0.24.
+
+Esto se interpreta de la siguiente manera: si se le somete a la prueba y resulta positiva, la probabilidad de que la persona padezca realmente la enfermedad se incrementa cinco veces, de 0.05 a 0.24.
+
+$$
+P(E|Pos) = \frac{P(E)\cdot P(E\cdot Pos)}{(P(E)\cdot P(E\cdot Pos) + P(NE)\cdot P(NE\cdot Pos))}\therefore
+$$
+
+$$
+P(E|Pos) = \frac{0.05\cdot 0.90}{0.05\cdot 0.90 + 0.95\cdot 0.15} = \frac{0.0450}{0.1875} = 0.24
+$$
+
+### Fórmula del teorema de Bayes
+
+$$
+p(A_i|B) = \frac{p(A_i) \cdot p(B|A_i)}{\sum_{i=1}^np(A_i) \cdotp(B|A_i)}
+$$
+
+![](images/imagen%20teorema%20de%20Bayes%20what.png){width="450"}
+
+Con el teorema de Bayes se calcula la probabilidad haciendo preguntas a la inversa, si la pregunta se hace al revés, es decir:
+
+Ejemplo:
+
+### Sectores
+
+Existen tres sectores en donde trabajan las personas
+
+-   Hay una probabilidad de que en el sector servicios trabaje 40%(0.40) de las personas
+
+-   Hay una probabilidad de que en el sector salud trabaje 35%(0.35) de las personas
+
+-   Hay una probabilidad de que en el sector otros trabaje 25%(0.25) de las personas
+
+La suma debe dar 100% o 1
+
+```{r}
+P.Servi <- 0.40
+P.Salud <- 0.35
+P.Otros <- 0.25
+```
+
+### Eventos Mujeres y Hombres de cada sector
+
+Se dan las probabilidades de que sea de algún género en función del servicio.
+
+#### Sector Servicios
+
+-   En el sector Servicios la probabilidad de que sea Mujer es del 0.30
+
+-   En el sector Servicios la probabilidad de que sea Hombre es del 0.70
+
+```{r}
+P.Servi.Mujer <- 0.30
+P.Servi.Hombre <- 0.70
+P.Servi.Mujer; P.Servi.Hombre
+```
+
+#### Sector Salud
+
+-   En el sector Salud la probabilidad de que sea Mujer es del 0.60
+
+-   En el sector Salud la probabilidad de que sea Hombre es del 0.40
+
+```{r}
+P.Salud.Mujer <- 0.60
+P.Salud.Hombre <- 0.40
+
+P.Salud.Mujer; P.Salud.Hombre
+
+```
+
+#### Sector Otros
+
+-   En el sector Otros la probabilidad de que sea Mujer es del 0.45
+
+-   En el sector Otros la probabilidad de que sea Hombre es del 0.55
+
+```{r}
+P.Otros.Mujer <- 0.45
+P.Otros.Hombre <- 0.55
+
+P.Otros.Mujer; P.Otros.Hombre
+
+```
+
+### Árbol de probabilidades
+
+![](images/arbol%20de%20decision%20personas%20hombre%20mujeres-01.jpg)
+
+### Cálculo de probabilidades.
+
+De de acuerdo a ley mutiplicativa para eventos independientes para encontrar $P(A\cap B) = P(A)\cdot P(B) \therefore$
+
+![](images/arbol%20de%20decision%20personas%20hombre%20mujeres%20con%20pregunta%20prob.jpg)
+
+![](images/arbol%20de%20decision%20personas%20hombre%20mujeres%20con%20calculo%20de%20probabilidades%20condicionales.jpg)
+
+¿Cuál es la probabilidad que si se selecciona a alguien que se a del sector salud, este es hombre?
+
+```{r}
+P.Salud_y_Hombre <- P.Salud * P.Salud.Hombre
+P.Salud_y_Hombre
+
+```
+
+#### ¿Cuál es la probabilidad que si se selecciona a alguien que se hombre, este es del sector Salud?
+
+El numerador es el producto de la probabilidad de A y B, el denominador es la probabilidad total.
+
+$$
+P(Hombre|Salud)\frac{P(Salud)\cdot P(Salud\cap Hombre)}{(P(Serv)\cdot P(Serv \cap Hombre) + P(Salud)\cdot P(Salud \cap Hombre) + P(Otros)\cdot P(Otros \cap Hombre))}
+$$
+
+$$
+P(Hombre|Salud) = \frac{0.14}{0.28 + 0.14 + 0.1375} = \frac{0.14}{0.5575} = 0.25 = 25\%
+$$
+
+##### Numerador
+
+```{r}
+P.Salud_y_Hombre <- P.Salud * P.Salud.Hombre
+P.Salud_y_Hombre
+```
+
+##### Denominador
+
+Es la probabilidad total con respecto a que se hombre
+
+```{r}
+P.Servicio_y_Hombre <- P.Servi * P.Servi.Hombre
+P.Salud_y_Hombre <- P.Salud * P.Salud.Hombre
+P.Otro_y_Hombre <- P.Otros * P.Otros.Hombre
+P.Total <- P.Servicio_y_Hombre + P.Salud_y_Hombre + P.Otro_y_Hombre 
+P.Total
+
+```
+
+La probabilidad es:
+
+```{r}
+Prob <- P.Salud_y_Hombre / P.Total
+Prob <- Prob * 100
+```
+
+Significa que la probabilidad de elegir aleatoriamente una persona que sea Hombre y que sea del sector Salud o que está en función del sector salud es del `r round(Prob, 4)`%.
+
+#### ¿Cuál es la probabilidad que si se selecciona a alguien que se mujer, este es del sector Salud?
+
+$$
+P(Mujer|Salud)\frac{P(Salud)\cdot P(Salud\cap Mujer)}{(P(Serv)\cdot P(Serv \cap Mujer) + P(Salud)\cdot  P(Salud \cap Mujer) + P(Otros)\cdot P(Otros \cap Mujer)}
+$$
+
+##### Numerador
+
+```{r}
+P.Salud_y_Mujer <- P.Salud * P.Salud.Mujer
+P.Salud_y_Mujer
+```
+
+##### Denominador
+
+Es la probabilidad total con respecto a que se hombre
+
+```{r}
+P.Servicio_y_Mujer <- P.Servi * P.Servi.Mujer
+P.Salud_y_Mujer <- P.Salud * P.Salud.Mujer
+P.Otro_y_Mujer <- P.Otros * P.Otros.Mujer
+P.Total <- P.Servicio_y_Mujer + P.Salud_y_Mujer + P.Otro_y_Mujer
+P.Total
+
+```
+
+La probabilidad es:
+
+```{r}
+Prob <- P.Salud_y_Mujer / P.Total
+Prob <- Prob * 100
+```
+
+Significa que la probabilidad de elegir aleatoriamente una persona que sea Mujer y que sea del sector Salud o que está en función del sector salud es del `r round(Prob, 4)`%.
+
+# Desarrollo
+
+Hacer los ejercicios siguientes:
+
+## Cargar librerías
+
+```{r}
+# Pendiente
+# No hay librerías a cargar
+```
+
+## Encuesta género y deporte
+
+Se hizo una encuesta a un grupo grande de personas donde se les preguntaba el genero y si ellos practicaban algún deporte o hacían ejercicio en general, los resultados de la encuesta fueron los siguientes: el 40% por ciento de los encuestados eran hombres y el 60% eran mujeres, de los cuales el 80% de los hombres y el 50% de las mujeres hacían ejercicios.
+
+### Árbol de probabilidades
+
+![](images/arbol%20decision%20para%20teorema%20de%20Bayes%20generos%20deporte.jpg)
+
+### Inicializando variables en R
+
+#### Hombre o Mujer
+
+```{r}
+P.H <- 0.40
+P.M <- 0.60
+
+
+```
+
+#### Practican deporte [SD =Si \| ND= No]
+
+```{r}
+P.SD_H <- 0.80
+P.ND_H <- 0.20
+
+P.SD_M <- 0.50
+P.ND_M <- 0.50
+
+
+```
+
+$$
+P(Hombre|Deporte)= \frac{P(Hombre\cap SI.Deporte)}{P(Hombre \cap SI.Deporte) + P(Mujer \cap SI.Deporte) }
+$$
+
+Numerador
+
+```{r}
+P.H_y_SI <- P.H * P.SD_H
+P.H_y_SI
+```
+
+Denominador
+
+```{r}
+P.H_y_SI <- P.H * P.SD_H
+P.M_y_SI <- P.M * P.SD_M
+P.Total <- P.H_y_SI + P.M_y_SI
+P.Total
+```
+
+La probabilidad es:
+
+```{r}
+Prob <- P.H_y_SI / P.Total
+Prob <- Prob * 100
+Prob
+```
+
+Significa que la probabilidad de elegir aleatoriamente una persona que SI practique Deporte y que sea Hombre es del `r round(Prob, 4)`%
+
+# Interpretación
+
+## Calcular y demostrar la probabilidad medante teorema de Bayes del siguiente ejercicio:
+
+Un fabricante de teléfonos celulares compra un microchip en particular denominado "LS-24" a 3 proveedores Hall Electronics, Schuller Sales,y Crawford Components.
+
+Del total de piezas 30% la adquiere Hall Electronics; 20% de Schuller Sales y el restante 50% de crawford.
+
+El fabricante cuenta con amplias historiales con los 3 proveedores y reconoce los porcentajes de defecto de los dispositivos de cada proveedores: 3% Hall Electronics 5% Schuller sales 4% Crawford Componens
+
+Cuando el fabricante recibe el material y lo lleva directamente a un depósito y no lo inspecciona ni lo identifica con el nombre de proveedor.
+
+Un trabajador selecciona un microchip para instalarlo y lo encontró defectuoso. **¿Cual es la probabibilidad que lo hayan fabricado Schuler Sales?**
+
+![](images/diagrama%20de%20arbol%20Bayes%20para%20Proveedore%20y%20Defectos%20de%20microship-01.jpg)
+
+Fuente: [@lind2015]
+
+# Bibliografía
