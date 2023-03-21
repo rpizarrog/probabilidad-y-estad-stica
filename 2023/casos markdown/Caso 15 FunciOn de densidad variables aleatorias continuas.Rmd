@@ -1,0 +1,344 @@
+---
+title: "Caso 15. Función de densidad variables aleatorias continuas"
+author: "Rubén Pizarro Gurrola"
+date: "2023-03-21"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+Simular función de densidad de varias muestras de la estatura de mujeres
+
+# Descripción
+
+El caso intenta simular la recolección de varias muestras diferentes en cantidad $n$ que permiten reflejar la función de densidad de cada una de ellas.
+
+Las muestras tienen solo una variable, la estatura de las personas mujeres en el norte una región y específicamente en la Entidad Federativa (estado) de Durango, México.
+
+Se calcula una media aritmética y una desviación estándar de los datos lo cual permite emular y simular encuestas sobre la estatura de las mujeres en Durango de varias muestras alrededor de estos dos estadísticos.
+
+El caso inicia con la carga de librerías adecuadas para el desarrollo del mismo
+
+Se presenta la función de densidad de cada uno de las muestras
+
+Se interpreta el caso de la función de densidad
+
+# Desarrollo
+
+## Cargar librerías
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(cowplot)
+```
+
+Se utiliza la función para expresar los valores numéricos en notación no exponencial y científica
+
+```{r}
+options (scipen = 999)
+```
+
+## Cargar datos
+
+Se cargan los datos del enlace <https://raw.githubusercontent.com/rpizarrog/Libro-Analisis-de-datos-con-R-2022/main/datos/CN_ANTROPOMETRIA.csv>
+
+```{r}
+datos_originales <- read.csv("https://raw.githubusercontent.com/rpizarrog/Libro-Analisis-de-datos-con-R-2022/main/datos/CN_ANTROPOMETRIA.csv", encoding = "UTF-8")
+
+
+# datos_originales <- read.csv("../../datos/CN_ANTROPOMETRIA.csv", encoding = "UTF-8")
+```
+
+### La estructura de los datos
+
+```{r}
+str(datos_originales)
+```
+
+### Transformar datos
+
+Las variables de interés de este conjunto de datos son la estatura, el género o sexo de la persona y la entidad o estado de la República Mexicana de en donde vive. Estas variables son por nombre las siguientes:
+
+-   TALLA_4\_1 Corresponde a la estatura
+
+-   SEXO Corresponde al género [1 Hombre \| 2 Mujer]
+
+-   ENT entidad federativa en donde reside. [de la 1 a la 32]
+
+-   EDAD que representa la edad de las personas
+
+Se hace una selección de estas cuatro variables con un filtro de aquellas personas (mujeres) valor de la variable sexo que sea 1, de la entidad federativa en donde el estado por catálogo de Durango es el numero 10 y que además tengan una edad entre 18 y 65 años. Todo el resultado del filtrado en una variable llamada datos
+
+```{r}
+datos <- select(.data = datos_originales, TALLA4_1, SEXO, ENT, EDAD) %>%
+  filter(SEXO == 2 & ENT == 10 & EDAD >=18 & EDAD <= 65)
+```
+
+Se renombran las variables del conjunto de datos a solo minúsculas y nombres asociativos.
+
+```{r}
+colnames(datos) <- c('estatura', 'genero', 'entidad', 'edad')
+```
+
+```{r}
+str(datos)
+```
+
+#### Descubriendo datos atípicos
+
+```{r warning=FALSE}
+ggplot(data = datos, aes(x = estatura)) + geom_boxplot() 
+```
+
+Se detectan datos atípicos de mujeres con estatura por debajo del primer cuartil menos 1.5 veces el rango intercuartílico y por encima del tercer cuartil mas 1.5 veces el rango intercuartílico.
+
+Se hace un deputado de los datos quitando datos atípicos
+
+```{r}
+datos <- filter(datos, estatura >= 140 & estatura <= 190)
+```
+
+```{r warning=FALSE}
+ggplot(data = datos, aes(x = estatura)) + geom_boxplot() 
+```
+
+Se quitaron los datos atípicos
+
+## Media y desviación estándar de la variable estatura
+
+Con estos datos se determina la media y la desviación estándar de todas las mujeres que fueron encuestadas que sean de Durango.
+
+```{r}
+media <- round(mean(datos$estatura, na.rm = TRUE), 4)
+desv.std <- round(sd(datos$estatura, na.rm = TRUE), 4)
+paste("La media aritmética de la estatura de las mujeres en Durango es de", media ," y la desviación estándar es de: ", desv.std)
+```
+
+## Histograma de los datos
+
+Se presenta el histograma de la estatura de las mujeres en Durango de acuerdo a encuesta de nutrición 2018.
+
+```{r warning=FALSE}
+g0 <- ggplot(data = datos, aes(x = estatura)) +
+  geom_histogram(binwidth = 1)
+g0
+```
+
+## Simulación de muestras
+
+Se crea una muestra de 10 datos. Se simula una encuesta a mujeres de Durango y se les pregunta su estatura, se sabe conforme a la encuesta original, al cálculo de la media aritmética y la desviación estándar que deben tener una media aproximada de 157.0905 con una desviación de 6.2227 centímetros aproximadamente.
+
+### Semilla inicial
+
+Se inicializa la semilla con valor del año de edición del libro 2023 para generar los mismos valores aleatorios al ejecutar las instrucciones en R
+
+```{r}
+set.seed(2023)
+```
+
+### Simulación con 10 muestras
+
+Se saca un vector con una muestra con diez datos, se utiliza la función *rnorm()* para generar valores aleatorios y adecuando los parámetros y los argumentos en la función, se espera que tengan aproximadamente la media y la desviación estándar previamente conocida.
+
+Se imprimen ordenados los diez datos
+
+```{r}
+n <- 10
+muestra1 <- rnorm(n = n, mean = media, sd = desv.std)
+sort(muestra1)
+```
+
+### Histograma y polígono de las muestras
+
+```{r warning=FALSE}
+g1 <- ggplot() +
+  geom_histogram(aes(x=muestra1), fill="lightblue", bins=30) +
+  geom_freqpoly(aes(x=muestra1), color = 'red', bins=30) 
+g1 
+```
+
+Se observa como los picos (topes arriba) de las línea de cada polígono en rojo que se extienden desde cero hasta la parte más alta de la barra que refleja la frecuencia (*count*) de cada intervalo establecido.
+
+Por ejemplo en la primer columna de la gráfica a la izquierda hay un valor aproximadamente de 146, hay otros dos valores con aproximadamente 150 y 151, hay tres valores con aproximadamente 153, 154 y 155, y así sucesivamente hasta la última barra en azul y con el polígono en rojo con un valor aproximado de 164.
+
+Ahora bien ¿Qué sucede si se generan 50 encuestas en una nueva muestra?
+
+### Simulación con 50 muestras
+
+Se genera y simula una muestra que representa la estatura de 50 mujeres encuestadas con los parámetros de media aritmética y desviación conocidos.
+
+```{r}
+n <- 50
+muestra2 <- rnorm(n = n, mean = media, sd = desv.std)
+sort(muestra2)
+```
+
+### Histograma y polígono de las muestras
+
+```{r warning=FALSE}
+g2 <- ggplot() +
+  geom_histogram(aes(x=muestra2), fill="lightblue", bins=30) +
+  geom_freqpoly(aes(x=muestra2), color = 'red', bins=30) 
+g2
+```
+
+Aquí los polígonos se empiezan a hacer picos menos achatados en el punto superior de ellos, así mismo, se observa como empieza a existir valores centralizados en medio de todos los datos de la distribución.
+
+¿Que sucede si se aumenta a 200 datos?
+
+### Simulación con 200 muestras
+
+Se genera y simula una muestra que representa la estatura de 200 mujeres encuestadas con los parámetros de media aritmética y desviación conocidos.
+
+```{r}
+n <- 200
+muestra3 <- rnorm(n = n, mean = media, sd = desv.std)
+sort(muestra3)
+```
+
+### Histograma y polígono de las muestras
+
+```{r warning=FALSE}
+g3 <- ggplot() +
+  geom_histogram(aes(x=muestra3), fill="lightblue", bins=30) +
+  geom_freqpoly(aes(x=muestra3), color = 'red', bins=30) 
+g3
+```
+
+Se observa aún más como se comienza a centralizar el valor de la estatura, es decir hay más repuestas muy cerca de la media aritmética conocida.
+
+¿que sucede si se aumenta a mil encuestas?
+
+### Simulación con 1000 muestras
+
+Se genera y simula una muestra que representa la estatura de 1000 mujeres encuestadas con los parámetros de media aritmética y desviación conocidos.
+
+En este punto por cuestiones prácticas solo se muestran los primero y úlTimos 50 datos ordenados.
+
+```{r}
+n <- 1000
+muestra4 <- rnorm(n = n, mean = media, sd = desv.std)
+head(sort(muestra4), 50)
+tail(sort(muestra4), 50)
+```
+
+### Histograma y polígono de las muestras
+
+```{r warning=FALSE}
+g4 <- ggplot() +
+  geom_histogram(aes(x=muestra4), fill="lightblue", bins=30) +
+  geom_freqpoly(aes(x=muestra4), color = 'red', bins=30) 
+g4 
+```
+
+Aquí se observa aún mas la centralizacón de los datos con respecto a la estatura de mujeres y se empieza a visualizar en rojo una suavización del polígono como tendiendo a ser una curva que sube y baja.
+
+¿Que sucede con una encuesta de diez mil datos?
+
+### Simulación con 10000 muestras
+
+Se genera y simula una muestra que representa la estatura de 10000 mujeres encuestadas con los parámetros de media aritmética y desviación conocidos.
+
+En este punto por cuestiones prácticas, nuevamente solo se muestran los primeros y últimos 50 datos ordenados.
+
+```{r}
+n <- 10000
+muestra5 <- rnorm(n = n, mean = media, sd = desv.std)
+head(sort(muestra5), 50)
+tail(sort(muestra5), 50)
+```
+
+### Histograma y polígono de las muestras
+
+```{r warning=FALSE}
+g5 <- ggplot() +
+  geom_histogram(aes(x=muestra5), fill="lightblue", bins=30) +
+  geom_freqpoly(aes(x=muestra5), color = 'red', bins=30) 
+g5
+```
+
+Aquí se observa aún mas la centralización de los datos con respecto a la estatura de mujeres y se ve aún más claro en rojo una suavización del polígono casi como una curva de campana.
+
+### Simulación con 1000000 (un millón de muestras)
+
+Se genera y simula una muestra que representa la estatura de 1000000 (un millón) de mujeres encuestadas con los parámetros de media aritmética y desviación conocidos.
+
+En este punto por cuestiones prácticas, nuevamente solo se muestran los primeros y últimos 50 datos ordenados.
+
+```{r}
+n <- 1000000
+muestra6 <- rnorm(n = n, mean = media, sd = desv.std)
+head(sort(muestra6), 50)
+tail(sort(muestra6), 50)
+```
+
+### Histograma y polígono de las muestras
+
+```{r warning=FALSE}
+g6 <- ggplot() +
+  geom_histogram(aes(x=muestra6), fill="lightblue", bins=30) +
+  geom_freqpoly(aes(x=muestra6), color = 'red', bins=30) 
+g6
+```
+
+Se visualiza aún mas la centralización de los datos con respecto a la estatura de mujeres y se ve aún más claro en rojo una curva suave del polígono casi, una curva de campana normal.
+
+Con lo anterior, se interpreta que las variables continuas pueden tomar valores numéricos reales y en un intervalo infinito y que la función de densidad es una generalización de los valores infinitos de las variables continuas.
+
+Además si se requiere encontrar probabilidades, es necesario conocer el intervalo requerido de entre todo el intervalo de toda la densidad.
+
+Por ejemplo la probabilidad de estatura de mujeres entre 150 y 160.
+
+```{r}
+plot_grid(g1, g2, g3, g4, g5, g6)
+```
+
+En la anterior gráfica se observa que cada muestra genera una curva más suave y que representa una mayor cantidad o densidad de datos.
+
+### Representar probabilidad de estatura de mujeres.
+
+¿Cuál es la probabilidad de encontrar una persona con una estatura de 170.09?. La respuesta es una probabilidad muy remota casi 0. Por el contrario ¿cuál es la probabilidad de encontrar a una persona que mida entre 155 y 165 cms?, Aquí si se entiende que hay bastantes personas que están en ese intervalo o rango de valores.
+
+En R, con la función *curve()* se puede representar la función de densidad de manera alternativa.
+
+Para esta curva se presume que las estaturas de las mujeres se comportan bajo una distribución de tipo normal. Este tema se verá en el capítulo 8. Sin embargo, aquí un pincelada de este tema
+
+Tomando en cuenta cualquier muestra de las generadas con anterioridad, como límites se utilizan los valores mínimos y máximos de la muestra3.
+
+```{r}
+curve(dnorm(x,media, desv.std), xlim=c(min(muestra3),max(muestra4)),col="blue",lwd=2,
+      xlab="x",ylab="f(x)",main=paste("Función de Densidad (",media,",",desv.std,")"))
+```
+
+Retomando la pregunta ¿cuál es la probabilidad de encontrar a una persona que mida entre 155 y 165 cms?.
+
+El sigiente código fué reutilizado del enlace que presenta https://estadistica-dma.ulpgc.es/cursoR4ULPGC/10-distribProbabilidad.html
+
+```{r}
+regionX=seq(155, 165,0.01)  # Intervalo a sombrear
+xP <- c(155, regionX, 165)  # Base de los polígonos que crean el efecto "sombra"
+yP <- c(0,dnorm(regionX, media, desv.std), 0)   # Altura de los polígonos sombreados
+curve(dnorm(x, media, desv.std),xlim=c(min(muestra3), max(muestra3)),yaxs="i",ylim=c(0, 0.10),ylab="f(x)",
+      main='Densidad ') 
+polygon(xP,yP,col="orange1")
+box()
+```
+
+Hay otras maneras de construir estas curvas y sus intervalos que se verán en el capítulo 8. Por lo pronto estas opciones.
+
+Finalmente y nuevamente retomando la pregunta ¿cuál es la probabilidad de encontrar a una persona que mida entre 155 y 165 cms?. La respuesta es.... lo que representa el área sombreada.
+
+# Interpretación
+
+Conforme se tienen más datos en una muestra con valores continuos la curva de densidad se hace más suave lo que a interpreta que puede haber muchos valores, es decir valores infinitos en todo e conjunto de datos o en cualquier intervalo de este.
+
+Para pretender calcular una probabilidad con variables aleatorias continuas, se debe entender que esta no está específicamente asociada a un valor específico de la variable, sino que está relacionada con un intervalo $f(x) = a \le x \le b$ de toda la función de probabilidad $f(x)$.
