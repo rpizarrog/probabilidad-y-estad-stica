@@ -52,23 +52,25 @@ f_graf_dens <- function (f_dens, x, intervalo) {
 
 # Para crear unos datos de prueba
 
-f_crear_datos_graf <- function(x, f_densidad) {
+# Para crear unos datos de prueba para la función de densidad
+
+f_crear_datos_graf <- function(x, f_densidad, minmax, intervalo) {
   y <- f_densidad(x)
   
   datos <- data.frame(x, y)
-  datos
+  # datos
   
   # Intervalo F(x)
-  min_x <- 0
-  max_x <- 2
+  min_x <- minmax[1]
+  max_x <- minmax[2]
   datos <- cbind(datos, f = ifelse(datos$x >= min_x & datos$x <= max_x, 'f(x)', '0'))
   datos$f <- as.factor(datos$f)
   # datos
   
   
   # Intervalo de probabilidad [a, b]
-  a <- 0.5
-  b <- 1.0
+  a <- intervalo[1]
+  b <- intervalo[2]
   datos <- cbind(datos, p = ifelse(datos$x >= a & datos$x <= b & datos$f == 'f(x)', 'P(x)', as.character(datos$f)))
   datos$p <- as.factor(datos$p)
   
