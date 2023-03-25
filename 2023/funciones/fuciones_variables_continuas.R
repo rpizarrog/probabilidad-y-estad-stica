@@ -3,8 +3,8 @@ f_prueba <- function(x) {
   ifelse(0 <= x & x <= 2, 1 - x/2, 0) }
 
 
-f_dens <- function (x) 
-  ifelse (x >=0 & x <= 2, 1 - x / 2, 0)
+# f_dens <- function (x) 
+#   ifelse (x >=0 & x <= 2, 1 - x / 2, 0)
  
 
 f_dens_1.entre.360 <- function(x) {
