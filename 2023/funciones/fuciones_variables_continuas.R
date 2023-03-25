@@ -17,10 +17,10 @@ f_valor_esperado <- function(f_densidad, minimo, maximo) {
   resultado <- integrate(function(x) x * f_densidad(x), 
                         lower = minimo, 
                         upper = maximo)
-
+  return(resultado)
 }
 
-# f_valor_esperado(.density_function = f_dens, minimo = , maximo =)
+# f_valor_esperado(f_densidad = f_dens, minimo = minimo, maximo = maximo)
 
 
 f_varianza <- function(f_densidad, VE, minimo, maximo) {
@@ -28,7 +28,7 @@ f_varianza <- function(f_densidad, VE, minimo, maximo) {
                          lower = minimo, 
                          upper = maximo)
   
-  resultado$value
+  resultado
 }
   
 f_graf_dens <- function (f_dens, x, intervalo) {
