@@ -28,7 +28,7 @@ f_varianza <- function(f_densidad, VE, minimo, maximo) {
                          lower = minimo, 
                          upper = maximo)
   
-  resultado
+  return(resultado)
 }
   
 f_graf_dens <- function (f_dens, x, intervalo) {
