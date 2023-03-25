@@ -13,19 +13,20 @@ f_dens_1.entre.360 <- function(x) {
 
 
 
-f_valor_esperado <- function(f_densidad) {
+f_valor_esperado <- function(f_densidad, minimo, maximo) {
   resultado <- integrate(function(x) x * f_densidad(x), 
-                        lower = -Inf, 
-                        upper = Inf)
-  
-  resultado$value
+                        lower = minimo, 
+                        upper = maximo)
+
 }
 
-# f_valor_esperado(.density_function = f_dens)
+# f_valor_esperado(.density_function = f_dens, minimo = , maximo =)
 
 
-f_varianza <- function(f_densidad, VE) {
-  resultado <- integrate(f = function(x) (x - VE)^2 * f_densidad(x), lower = -Inf, upper = Inf)
+f_varianza <- function(f_densidad, VE, minimo, maximo) {
+  resultado <- integrate(f = function(x) (x - VE)^2 * f_densidad(x), 
+                         lower = minimo, 
+                         upper = maximo)
   
   resultado$value
 }
@@ -52,13 +53,11 @@ f_graf_dens <- function (f_dens, x, intervalo) {
 
 # Para crear unos datos de prueba
 
-# Para crear unos datos de prueba para la función de densidad
-
 f_crear_datos_graf <- function(x, f_densidad, minmax, intervalo) {
   y <- f_densidad(x)
   
   datos <- data.frame(x, y)
-  # datos
+  datos
   
   # Intervalo F(x)
   min_x <- minmax[1]
