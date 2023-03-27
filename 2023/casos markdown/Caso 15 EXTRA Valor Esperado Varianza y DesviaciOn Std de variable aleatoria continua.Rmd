@@ -1,0 +1,595 @@
+---
+title: "Caso 15 EXTRA. Valor esperado,  varianza y desviación std. de variable continua"
+author: "Rubén Pizarro Gurrola"
+date: "26/03/2023"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+A partir de una función de densidad, representar la curva de densidad y calcular el valor esperado, la varianza y la desviación estándar de la distribución de los datos.
+
+# Descripción
+
+-   Se cargan las librerías necesarias
+
+-   Se cargan los datos de estaturas mujeres
+
+-   Se carga la función de densidad para estatura mujeres
+
+-   Se carga funciones de variables aleatorias continuas previamente codificadas
+
+-   Se presenta la gráfica de densidad
+
+-   Se calcula el valor esperado de los datos
+
+-   Se calcula la varianza de los datos
+
+-   Se calcula la desviación estándar de los datos
+
+-   Se interpreta todo el caso
+
+# Fundamento teórico
+
+Sea X una variable aleatoria continua. Entonces, una distribución de probabilidad o función de densidad de probabilidad (pdf) de X es una función $f(x)$ de modo tal que para dos números cualesquiera a y b con $a \le b$[@devore2016].
+
+$$
+P(a \le X \le b) = 
+\int_{a}^{b} f(x) dx\
+$$
+
+La probabilidad de que X asuma un valor en el intervalo $[a, b]$ es el área sobre este intervalo y bajo la curva de la función de densidad, como se ilustra en la figura siguiente en relación a los datos de las estaturas de mujeres del Durango vista con anterioridad en el caso anterior.
+
+![](images/funciones%20densidad%20y%20probabilidad%20155%20165%20estatura%20mujeres-05.png){width="400"}
+
+De acuerdo a Devore, para que $f(x)$ sea una función de densidad de probabilidad legítima debe satisfacer las dos siguientes condiciones:
+
+$$
+f(x) \ge 0 \text{ para todas las x's}
+$$
+
+$$
+\int_{-\infty}^{\infty}f(x)dx=\text{ área bajo toda la curva de f(x)}
+$$
+
+## La función *integrate*()
+
+La función *integrate()* en R, utiliza un algoritmo numérico para aproximar la integral, y la aproximación puede tener un cierto grado de error.
+
+El grado de error depende del algoritmo numérico utilizado, así como de los límites de integración y la función en sí. Por lo tanto, es posible que el valor obtenido mediante *integrate()* sea ligeramente diferente al valor calculado de forma analítica.
+
+En general, se espera que el valor obtenido mediante *integrate()* sea una buena aproximación del valor real de la integral.
+
+Para estimar el valor esperado y la varianza se va a utilizar la función *integrate()* de R.
+
+## Valor Esperado
+
+El valor esperado o valor medio de una variable aleatoria continua X con función de densidad de probabilidad f(x) es el valor que se espera que se de en promedio:
+
+$$
+\mu_{x} = VE(x) = \int_{-\infty}^{\infty}x\cdot f(x)dx \therefore \\
+\mu_{x} = VE(x) = \int_{0}^{2}x\cdot 1 - \frac{x}{2}dx
+$$[@devore2016]
+
+[@devore2016]
+
+## Varianza
+
+Es una medida de dispersión, se representa con $\sigma^2$ o $V(X)$. La varianza de una variable aleatoria continua X con función de densidad de probabilidad $f(x)$ y valor medio $\mu$ está dada por:
+
+$$
+varianza = \sigma^2=V(x)=\int_{-\infty}^{\infty}(x - \mu)^2\cdot f(x) dx 
+$$
+
+ó
+
+$$
+varianza = \sigma^2=V(x)=\int_{-\infty}^{\infty}x^2\cdot f(x)dx - \mu^2
+$$
+
+## Desviación Estándar
+
+Es medida de dispersión representada por $\sigma$ y es la raíz cuadrada de la varianza.
+
+$$
+Desv.Std = \sigma = \sqrt{\sigma^2}
+$$
+
+# Desarrollo
+
+En el desarrollo de estos ejercicios algunos de ellos cargan datos de los cuales se asume una función de densidad, otros ejercicios extraídos de la literatura de probabilidad sólo presentan la función de densidad.
+
+## Cargar librerías
+
+```{r warning=FALSE, message=FALSE}
+library(readr)
+library(ggplot2)
+```
+
+## Cargar funciones previamene codificadas
+
+```{r}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/funciones/fuciones_variables_continuas.R")
+```
+
+## Ejercicio de f(x) = 1 - x/2
+
+![](images/densidad%201-x%20entre%202.png){width="300"}
+
+### Función de densidad
+
+Se crea una función de densidad por decir función de gauss. $$
+f(x) =1 - \frac{x}{2} 
+$$
+
+### Condiciones de esta función de densidad
+
+X debe estar entre un intervalo de \$0 \$ y $2$
+
+Para generar una probabilidad; para todo valor diferente de este intervalo la probabilidad es cero.
+
+$$
+f(x) = 1 - \frac{x}{2}
+$$
+
+$$
+f(x) = \begin{cases} {1 - \frac{x}{2}} & \text{:if } (0 \leq x \leq 2)\\ 0 & \text{:en cualquier otro caso} \end{cases}
+$$
+
+### La función de densidad en R
+
+```{r}
+minimo <- 0
+maximo <- 2
+```
+
+```{r}
+f_dens <- function(x) {
+  ifelse(0 <= x & x <= 2, 1 - x/2, 0) }
+```
+
+### Construir datos con algunos valores
+
+Se construyen datos con valores x e y con la función de densidad respectiva haciendo uso de la función.
+
+Se inicializan los valores mínimo y máximo de la función. Se inicializan a y b que son el intervalo de la probabilidad.
+
+Se generan valores de una secuencia de valores numéricos que significan altura en centímetros y simulando el resultado de una encuesta a $n$ mujeres en donde se les pregunta su estatura en centímetros.
+
+Los datos solo se utilizan para construir los gráficos de densidad.
+
+```{r}
+
+x <- c(-4, -3, -2, -1, 0, 0.5, 0.75, 1, 2, 2.1, 3) 
+
+
+a <- 0.5
+b <- 1.0
+
+
+
+
+```
+
+Se presentan solo los primeros y últimos 20 registros de la simulación de la encuesta.
+
+La estructura de los datos son las coordenadas x e y; en la columna f se etiqueta como f(x) aquellos valores de x que están dentro del intervalo de los valores mínimos y máximos permisibles de la función; en la columna p aquellos valores que están dentro del intervalo de probabilidad [a, b] a calcular.
+
+```{r}
+datos_graf <- f_crear_datos_graf(x = x, f_densidad = f_dens, minmax = c(minimo, maximo), intervalo = c(a, b) )
+head(datos_graf, 20)
+tail(datos_graf, 20)
+```
+
+### Gráfica de densidad
+
+```{r}
+g <- f_graf_dens_ggplot(f_dens = f_dens, datos = datos_graf)
+g
+```
+
+### Cuestionamientos
+
+-   ¿Cuánto vale el área en color azul si toda el área en color rosa vale 1.0?
+
+-   ¿Cuál es la probabilidad de que el valor de x esté entre a y b, es decir entre 0.5 y 1.0?
+
+$$
+  P(a \leq x \leq b) = \int_{a}^{b} f(x) dx = \int_{a}^{b} (1 - x/2) dx
+$$
+
+$$
+\int_{0.5}^{1.0} (1 - x/2) dx
+$$
+
+### Función integrate() en acción
+
+Se inicializan a y b que son el intervalo de la probabilidad. Ya se tiene a y b.
+
+```{r}
+print(a)
+print(b)
+```
+
+```{r echo=TRUE}
+# Se calcula la integral de f(x) en el intervalo proporcionado con a y b
+resultado <- integrate(f = f_dens, a, b)
+
+# Se obtiene la probabilidad P(x) en el intervalo [a, b]
+probabilidad <- round(resultado$value * 100, 4)
+paste("La probabilidad de que x esté entre ", a , " y ", b, " es de ", probabilidad, "%, aproximadamente")
+
+paste("El error absoluto es de ", round(resultado$abs.error, 4))
+```
+
+### Valor Esperado
+
+```{r echo=TRUE}
+VE <- f_valor_esperado(f_densidad = f_dens, minimo = minimo, maximo = maximo)
+
+paste("El valor esperado de x en esta función es aproximadamente de : ", round(VE$value, 4))
+
+paste("Con un error absoluto aproximado de : ", round(VE$abs.error, 4))
+
+```
+
+### Varianza
+
+```{r echo=TRUE}
+
+varianza <- f_varianza(f_densidad = f_dens, VE = VE$value, minimo = minimo, maximo = maximo)
+
+paste("La varianza de x de la función de densidad es aproximadamente de ", round(varianza$value, 4))
+
+paste("Con un error absoluto aproximado de : ", round(varianza$abs.error, 4))
+
+
+```
+
+### Desviación estándar
+
+```{r echo=TRUE}
+desv.std <- round(sqrt(varianza$value), 4)
+paste("La desviación estándar de x de la función de densidad es aproximadamente de ", desv.std)
+
+```
+
+## Ejercicio de estatura mujeres
+
+![](images/estatura%20mujeres.jpg){width="300"}
+
+### Cargar los datos
+
+Se cargan los datos de estatura de mujeres del estado de Durango.
+
+```{r}
+datos <- read.csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/datos/datos_estaturas_edad_mujeres_durango.csv")
+
+
+```
+
+### Estructura de los datos
+
+```{r}
+str(datos)
+```
+
+### Variable de interés estatura
+
+La media de los datos de la variable de interés es de 157.4 cms. de altura de las mujeres con una desviación estándar de 6.22.
+
+En el conjunto de los datos existe 28 valores sin NA's que significa que son valores no capturados correctamente desde origen de los datos.
+
+```{r}
+media <- round(mean(datos$estatura, na.rm = TRUE), 4)
+desv.std <- round(sd(datos$estatura, na.rm = TRUE), 4)
+summary(datos$estatura)
+paste("La media aritmética de estatura es: ", media, "; con desviación estándar de: ", desv.std)
+```
+
+### Función de densidad
+
+Se crea una función de densidad por decir función de gauss. $$
+f(x) =\frac{1}{\sigma \cdot \sqrt{2 \cdot \pi}}\cdot e ^{\frac{-1}{2}\cdot ( \frac {x - \mu}{\sigma}) ^2} 
+$$
+
+en donde: $\pi = 3.14159$ y $e = 2.71828$ y se conoce la media de los datos $154.7$ y la desviación estándar de $6.22$.
+
+### Condiciones de esta función de densidad
+
+X debe estar entre un intervalo de $-\infty$ y $\infty$ o para estar en contexto dejarlo en $100$ y $220$ cms.
+
+Para generar una probabilidad; para todo valor diferente de este intervalo la probabilidad es cero.
+
+$$
+f(x) = f(x) =\frac{1}{\sigma \cdot \sqrt{2 \cdot \pi}}\cdot e ^{\frac{-1}{2}\cdot ( \frac {x - \mu}{\sigma}) ^2} \therefore
+$$
+
+$$
+f(x) = \begin{cases} {f(x) =\frac{1}{\sigma \cdot \sqrt{2 \cdot \pi}}\cdot e ^{\frac{-1}{2}\cdot ( \frac {x - \mu}{\sigma}) ^2} } & \text{:if } (100 \leq x \leq 220)\\ 0 & \text{:en cualquier otro caso} \end{cases} 
+$$
+
+### La función de densidad en R
+
+```{r}
+minimo <- 100
+maximo <- 220
+```
+
+```{r}
+f_dens <- function(x) {
+  ifelse(minimo <= x & x <= maximo, (exp(1)^(-(x - media)^2 / (2 * desv.std^2))) / (desv.std * sqrt(2 * pi)), 0) }
+```
+
+### Construir datos con algunos valores
+
+Se construyen datos con valores x e y con la función de densidad respectiva haciendo uso de la función.
+
+Se inicializan los valores mínimo y máximo de la función. Se inicializan a y b que son el intervalo de la probabilidad.
+
+Por ejemplo, en el ejercicio de la estatura de mujeres los valores mínimos y máximos serían 100 y 220 respectivamente; con respecto al intervalo de probabilidad [a, b] este será de 155 y 165 respectivamente.
+
+Se generan valores de una secuencia de valores numéricos que significan altura en centímetros y simulando el resultado de una encuesta a $n$ mujeres en donde se les pregunta su estatura en centímetros.
+
+Los datos solo se utilizan para construir los gráficos de densidad; se incluye en las estaturas los valore smínimos y máximos.
+
+```{r}
+
+x <- seq(minimo-1, maximo + 1, 0.5)
+head(x); tail(x)
+
+
+a <- 155
+b <- 165
+
+
+
+
+```
+
+Se presentan solo los primeros y últimos 20 registros de la simulación de la encuesta.
+
+La estructura de los datos son las coordenadas x e y; en la columna f se etiqueta como f(x) aquellos valores de x que están dentro del intervalo de los valores mínimos y máximos permisibles de la función; en la columna p aquellos valores que están dentro del intervalo de probabilidad [a, b] a calcular.
+
+```{r}
+datos_graf <- f_crear_datos_graf(x = x, f_densidad = f_dens, minmax = c(minimo, maximo), intervalo = c(a, b) )
+head(datos_graf, 20)
+tail(datos_graf, 20)
+```
+
+### Gráfica de densidad
+
+```{r}
+g <- f_graf_dens_ggplot(f_dens = f_dens, datos = datos_graf)
+g
+```
+
+### Cuestionamientos
+
+-   ¿Cuánto vale el área en color azul si toda el área en color rosa vale 1.0?
+
+-   ¿Cuál es la probabilidad de que el valor de x esté entre a y b, es decir entre 155 y 165?
+
+$$
+    P(a \leq x \leq b) = \int_{a}^{b} f(x) dx = \int_{a}^{b} 
+\frac{1}{\sigma \cdot \sqrt{2 \cdot \pi}}\cdot e ^{\frac{-1}{2}\cdot ( \frac {x - \mu}{\sigma}) ^2}
+ dx
+$$
+
+$$
+\int_{155}^{165} 
+\frac{1}{\sigma \cdot \sqrt{2 \cdot \pi}}\cdot e ^{\frac{-1}{2}\cdot ( \frac {x - \mu}{\sigma}) ^2}
+ dx
+$$
+
+### Función integrate() en acción
+
+Se inicializan a y b que son el intervalo de la probabilidad. Ya se tiene a y b.
+
+```{r}
+print(a)
+print(b)
+```
+
+```{r echo=TRUE}
+# Se calcula la integral de f(x) en el intervalo proporcionado con a y b
+resultado <- integrate(f = f_dens, a, b)
+
+# Se obtiene la probabilidad P(x) en el intervalo [a, b]
+probabilidad <- round(resultado$value * 100, 4)
+paste("La probabilidad de que x esté entre ", a , " y ", b, " es de ", probabilidad, "%, aproximadamente")
+
+paste("El error absoluto es de ", round(resultado$abs.error, 4))
+```
+
+### Valor Esperado
+
+```{r echo=TRUE}
+VE <- f_valor_esperado(f_densidad = f_dens, minimo = minimo, maximo = maximo)
+
+paste("El valor esperado de x en esta función es aproximadamente de : ", round(VE$value, 4))
+
+paste("Con un error absoluto aproximado de : ", round(VE$abs.error, 4))
+
+```
+
+### Varianza
+
+```{r echo=TRUE}
+
+varianza <- f_varianza(f_densidad = f_dens, VE = VE$value, minimo = minimo, maximo = maximo)
+
+paste("La varianza de x de la función de densidad es aproximadamente de ", round(varianza$value, 4))
+
+paste("Con un error absoluto aproximado de : ", round(varianza$abs.error, 4))
+
+
+```
+
+### Desviación estándar
+
+```{r echo=TRUE}
+desv.std <- round(sqrt(varianza$value), 4)
+paste("La desviación estándar de x de la función de densidad es aproximadamente de ", desv.std)
+
+```
+
+## Constructora
+
+![](images/constructora%20que%20vende%20arena%20y%20grava.jpg){width="300"}
+
+La distribución de la cantidad de grava (en toneladas) que vende a una empresa constructora en una semana se comporta una función continua:
+
+[@unam]
+
+### Función de densidad
+
+$$
+f(x) =\frac{3}{2}\cdot(1-x^{2}) 
+$$
+
+### Condiciones de esta función de densidad
+
+X debe estar entre un intervalo de $0$ y $1$
+
+Para generar una probabilidad; para todo valor diferente de este intervalo la probabilidad es cero.
+
+$$
+f(x) = f(x) =\frac{3}{2}\cdot(1-x^{2}) \therefore
+$$
+
+$$
+f(x) = \begin{cases} {f(x) =\frac{3}{2}\cdot(1-x^{2}) } & \text{:if } (0 \leq x \leq 1)\\ 0 & \text{:en cualquier otro caso} \end{cases} 
+$$
+
+### La función de densidad en R
+
+```{r}
+f_dens <- function(x) {
+  ifelse(minimo <= x & x <= maximo, (3/2) * (1 -x ^2), 0) }
+```
+
+### Construir datos con algunos valores
+
+Se construyen datos con valores x e y con la función de densidad respectiva haciendo uso de la función.
+
+Se inicializan los valores mínimo y máximo de la función. Se inicializan a y b que son el intervalo de la probabilidad.
+
+Por ejemplo, en el ejercicio de la constructora los valores mínimos y máximos serían 0 y 1 respectivamente; con respecto al intervalo de probabilidad [a, b] este será de 0.40 y 0.60 respectivamente.
+
+Los datos solo se utilizan para construir los gráficos de densidad; se incluye en las estaturas los valores y máximos.
+
+```{r}
+minimo <- 0
+maximo <- 1
+```
+
+```{r}
+
+x <- seq(minimo-1, maximo + 1, 0.1)
+x
+
+
+a <- 0.40
+b <- 0.60
+
+
+```
+
+La estructura de los datos son las coordenadas x e y; en la columna f se etiqueta como f(x) aquellos valores de x que están dentro del intervalo de los valores mínimos y máximos permisibles de la función; en la columna p aquellos valores que están dentro del intervalo de probabilidad [a, b] a calcular.
+
+```{r}
+datos_graf <- f_crear_datos_graf(x = x, f_densidad = f_dens, minmax = c(minimo, maximo), intervalo = c(a, b) )
+head(datos_graf, 20)
+tail(datos_graf, 20)
+```
+
+### Gráfica de densidad
+
+```{r}
+g <- f_graf_dens_ggplot(f_dens = f_dens, datos = datos_graf)
+g
+```
+
+### Cuestionamientos
+
+-   ¿Como se comporta la curva de densidad?
+
+-   ¿Cuál es la probabilidad de vender cuando $x$ está entre $0.40$ a $0.60$?
+
+-   ¿Cuál es el valor medio que espera vender la constructora?. Valor esperado
+
+-   ¿Cuánto puede variar?, Desviación estándar
+
+### Función integrate() en acción
+
+Se inicializan a y b que son el intervalo de la probabilidad. Ya se tiene a y b.
+
+```{r}
+print(a)
+print(b)
+```
+
+```{r echo=TRUE}
+# Se calcula la integral de f(x) en el intervalo proporcionado con a y b
+resultado <- integrate(f = f_dens, a, b)
+
+# Se obtiene la probabilidad P(x) en el intervalo [a, b]
+probabilidad <- round(resultado$value * 100, 4)
+paste("La probabilidad de que x esté entre ", a , " y ", b, " es de ", probabilidad, "%, aproximadamente")
+
+paste("El error absoluto es de ", round(resultado$abs.error, 4))
+```
+
+### Valor Esperado
+
+```{r echo=TRUE}
+VE <- f_valor_esperado(f_densidad = f_dens, minimo = minimo, maximo = maximo)
+
+paste("El valor esperado de x en esta función es aproximadamente de : ", round(VE$value, 4))
+
+paste("Con un error absoluto aproximado de : ", round(VE$abs.error, 4))
+
+```
+
+0.375 significa lo que se espera vender de grava en la semana.
+
+### Varianza
+
+```{r echo=TRUE}
+
+varianza <- f_varianza(f_densidad = f_dens, VE = VE$value, minimo = minimo, maximo = maximo)
+
+paste("La varianza de x de la función de densidad es aproximadamente de ", round(varianza$value, 4))
+
+paste("Con un error absoluto aproximado de : ", round(varianza$abs.error, 4))
+
+
+```
+
+### Desviación estándar
+
+```{r echo=TRUE}
+desv.std <- round(sqrt(varianza$value), 4)
+paste("La desviación estándar de x de la función de densidad es aproximadamente de ", desv.std)
+
+```
+
+# Enlaces
+
+[@pizarro_variable_nodate]
+
+[@pizarro_variables_nodate-1]
+
+[@pizarro_variables_nodate]
+
+# Interpretación del caso
+
+# Bibliografía
