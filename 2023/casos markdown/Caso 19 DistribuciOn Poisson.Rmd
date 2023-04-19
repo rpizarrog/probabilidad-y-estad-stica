@@ -1,0 +1,573 @@
+---
+title: "Caso 19. Distribución Poisson"
+author: "Rubén Pizarro Gurrola"
+date: "2023-04-19"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+bibliography: references.bib
+---
+
+# Objetivo
+
+Identificar los valores de la función de probabilidad bajo la fórmula de distribución de Poisson.
+
+# Descripción
+
+Realizar distribuciones de probabilidad conforme a la distribución de probabilidad de *Poisson* a partir del valor medio dado en ejercicios.
+
+Se generan las tablas de probabilidad conforme a distribución *Poisson*, se identifican los valores de probabilidad cuando la variable discreta $x$ tenga algún exactamente algún valor, $\leq$ a algún valor o $\gt$ o $\geq$, entre otros.
+
+# Fundamento teórico
+
+Otra variable aleatoria discreta que tiene numerosas aplicaciones prácticas es la variable aleatoria de *Poisson*. Su distribución de probabilidad da un buen modelo para datos que representa el número de sucesos de un evento especificado en una unidad determinada de tiempo o espacio [@mendenhall_introduccion_2006].
+
+Los experimentos que dan valores numéricos de una variable aleatoria X, el número de resultados que ocurren durante un intervalo dado o en una región específica, se llaman experimentos de Poisson.[@walpole_probabilidad_2012]
+
+Esta distribución discreta, suele usarse para estimar el número de veces que sucede un hecho determinado (ocurrencias) en un intervalo de tiempo o de espacio. Por ejemplo,
+
+-   La variable de interés va desde el número promedio de automóviles que llegan (llegadas) a un lavado de coches en una hora o
+
+-   El número medio de reparaciones necesarias en 10 kms. de una autopista o,
+
+-   El número promedio de fugas de agua en tubería en un lapso 3 meses.
+
+-   El número de focos promedio que fallan en una cantidad de lote de 1000 focos.
+
+-   El número medio de fugas en 100 kms.de tubería, entre otros [@anderson_estadistica_2008].
+
+## Fórmula
+
+$$
+f(x) = \frac{{e^{ - \mu }\cdot \mu ^x }}{{x!}}
+$$ en donde:
+
+-   $f(x)$ es la función de probabilidad para valores de $x=0,1,2,3..,n$.
+
+-   $\mu$ es el valor medio esperado en cierto lapso de tiempo. Algunas veces expresado como $\lambda$ lambda.
+
+-   $x$ es la variable aleatoria. Es una variable aleatoria discreta $(x = 0, 1,. 2, . . . )$
+
+-   $e$ valor constante, es la base de los logaritmos naturales $2.71728$.
+
+Propiedades de un evento Poisson:
+
+-   La probabilidad de ocurrencia es la misma para cualquiera de dos intervalos de la misma longitud.
+
+-   La ocurrencia o no ocurrencia en cualquier intervalo es independiente de la ocurrencia o no ocurrencia en cualquier otro intervalo.
+
+-   El factor de proporcionalidad para la probabilidad de un hecho en un intervalo infinitésimo. Se le suele designar como parámetro de intensidad y corresponde con el número medio de hechos que cabe esperar que se produzcan en un intervalo unitario (media de la distribución);
+
+-   El valor de la media también coincide con la varianza de la distribución.
+
+-   Se trata de un modelo discreto y que el campo de variación de la variable será el conjunto de los número naturales, incluido el cero: $x \in \text{{0, 1, 2, 3, 4 ......... ......}}$
+
+## Probabilidad acumulada
+
+$$
+F(x) = 
+\sum_{0}^{n}f.x_i
+$$
+
+## Esperanza, varianza y desviación estándard
+
+Los valores de la esperanza (o media) y de la varianza para la distribución de Poisson son de la siguiente manera:
+
+### El valor medio o esperanza$$E(X) = \lambda $$
+
+### La varianza$$Var(X) = \sigma^{2} = \lambda$$
+
+Es decir, tanto el valor esperado como la varianza de una variable aleatoria con distribución de Poisson son iguales.
+
+### La desviación$$\sigma = \sqrt{Var(x)} = \sqrt{\sigma^{2}}$$
+
+El los siguiente ejercicios se hace uso de funciones de distribución para *Poisson* en R, al igual que otras de las distribuciones de probabilidad, R trae consigo funciones de paquete base que ya permiten calcular la probabilidad, la densidad y la generación de números aleatorios, entre otras.
+
+![](images/funciones%20Poisson%20en%20R.jfif){width="400"}
+
+De igual modo se tienen funciones previamente codificadas que generan los mismos resultados en la dirección: <https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/funciones/funciones%20para%20disribuciones%20de%20probabilidad.R>
+
+# Desarrollo
+
+## Cargar librerías
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(mosaic) # Gráficos de distribuciones
+library(cowplot) #Imágenes en el mismo renglón
+
+library(plotly)
+options(scipen=999) # Notación normal
+# options(scipen=1) # Notación científica
+```
+
+## Notación normal
+```{r}
+options(scipen=999) # Notación normal 
+```
+
+
+## Cargar funciones
+
+```{r}
+#source("../funciones/funciones.distribuciones.r")
+# o
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/funciones/funciones%20para%20disribuciones%20de%20probabilidad.R")
+```
+
+## Ejercicios
+
+Se describen ejercicios en donde se encuentra la función de distribución
+
+### Llegadas a cajero automático
+
+![](images/cajero%20automatico.jfif){width="400"}
+
+Suponga que desea saber el número de llegadas, en un lapso de **15 minutos**, a la rampa del cajero automático de un banco.[@anderson_estadistica_2008]
+
+Si se puede suponer que la probabilidad de llegada de los automóviles es la misma en cualesquiera de dos lapsos de la misma duración y si la llegada o no--llegada de un automóvil en cualquier lapso es independiente de la llegada o no--llegada de un automóvil en cualquier otro lapso, se puede aplicar la función de probabilidad de Poisson.
+
+Dichas condiciones se satisfacen y en un análisis de datos pasados encuentra que el número promedio de automóviles que llegan en un lapso de **15 minutos** es igual a **10**;
+
+Aquí la variable aleatoria es $x$ número de automóviles que llegan en un lapso de 15 minutos.
+
+#### Probabilidad de que lleguen exactamente 5 automóviles en 15 minutos
+
+Si la administración desea saber la probabilidad de que lleguen exactamente 5 automóviles en 15 minutos, $x=5$,y se obtiene:
+
+Inicializando variables y valores, estos valores son los parámetros que requiere la función de Poisson. $x$ como variable aleatoria, $\mu$ (*miu*) o $\lambda$ (*lambda*) es el valor medio de la distribución y $n$ como un valor final de los valores de la variable discreta $x$, desde $0$ hasta $n$;.
+
+Este último valor de $n$ puede modificarse y observar los valores de densidad (probabilidad) de la variable discreta van reduciendo poco a poco.
+
+```{r}
+media <- 10 # Media o lambda en la función de densidad
+x <- 5    # Valores de la variable disreta
+n = 25 # Estimado final de la variable aleatoria x , pero puede variar
+```
+
+Utilizando la función creada conforme a la fórmula
+
+```{r}
+prob <- round(f.prob.poisson(media = media, x = x),4)
+paste("La probabilidad de que sean exactamente 5 automóviles es de : ", prob)
+```
+
+Utilizando la función *dpois()*
+
+```{r}
+prob2 <- round(dpois(x = x, lambda = media),4)
+paste("La probabilida de que sean exactamente 5 automóviles es de : ", prob2)
+```
+
+Para este caso al igual que las entregas de Caso de binomial e hipergeométrica, también se hace uso de la función previamente *f.poisson.all(...)* construída para este fín y que se encuentra en el *script* previamente cargado con la función *source().*
+
+Esta función *f.poisson.all(...),* devuelve entre otras cosas, la tabla de distribución, el valor esperado, la varianza, la desviación estándar así como las visualizaciones gráficas de la densidad, histograma y acumulado de la variable discreta *Poisson*.
+
+#### Tabla de probabilidad y gráfica de la probabilidad de Poisson.
+
+Se crea una tabla de distribución codificada manualmente
+
+```{r}
+
+tabla1 <- data.frame(x=0:25, f.x = round(dpois(x = 0:25, lambda = media),8), F.x = round(ppois(q=0:25, lambda = media), 8))
+tabla1
+```
+
+Se hace la misma tabla de distribución usando la variable *resultado* que provienen de haber ejecutado la función previamente.
+
+Ejecutando la función *f.poisson.all(...)*
+
+```{r}
+resultado <- f.poisson.all(media = media)
+```
+
+```{r}
+tabla <- resultado$tabla
+tabla
+```
+
+El resultado de ambas tablas debe ser similar.
+
+#### Visualizando probabilidad de Poisson
+
+Se presentan la gráfica de probabilidad con histograma y la densidad respectivamente. Se utiliza la llamada de la variable resultado.
+
+```{r}
+
+plot_grid(resultado$g.dens, resultado$g_all$dens)
+```
+
+Histograma y acumulado
+
+```{r}
+plot_grid(resultado$g_barra, resultado$g_all$acum)
+```
+
+Usando plotly para visualizaciones dinámicas
+
+```{r}
+resultado$g.hist.plotly
+resultado$g.acum.plotly
+```
+
+#### ¿Cual es la probabilidad de que X sea menor o igual a diez?
+
+$$f(x \leq10) = P(x=0) + P(x=1) + P(x=2) + P(x=3) + ... + P(x=10)$$
+
+```{r}
+i <- 10
+tabla$F.x[i + 1]
+paste("La probabilidad de que el valor de x sea menor o igua a 10 es: ", tabla$F.x[i + 1])
+```
+
+#### Usando ppois()
+
+*ppois()* determina la probabilidad acumulada de una distribución Poisson.
+
+```{r}
+prob <- round(ppois(q = 10, lambda = media), 4)
+paste("La probabilidad de que el valor de x sea menor o igua a 10 es: ", prob)
+```
+
+#### Media diferente
+
+En el ejemplo anterior se usó un lapso de 15 minutos, pero también se usan otros lapsos. Suponga que desea calcular la probabilidad de una llegada en un lapso de 3 minutos.
+
+Regla de tres:
+
+$$ 10 = 15$$ $$  ? = 3$$
+
+Entonces, la probabilidad de $x=4$ llegadas en un lapso de 3 minutos con $μ = 2$ está dada por la siguiente nueva función de probabilidad de Poisson.
+
+$$
+\mu = 2
+$$
+
+$$
+f(x) = \frac{{e^{ - \mu }\cdot \mu ^x }}{{x!}}
+$$
+
+Entonces ....
+
+```{r}
+media <- 2
+x <- 4
+```
+
+```{r}
+prob <- round(dpois(x = 4, lambda = media),4)
+paste("La probabilidad cuando x = 4 y media igual a 2 es del:", prob * 100, "%")
+```
+
+#### El valor de la esperanza media
+
+Regresando a la media $\mu = 10 \text{ o }\lambda = 10$ , entonces la esperanza media es igual a: $10$
+
+#### La varianza
+
+La varianza es igual a $10$
+
+#### La desviación estándar
+
+La raiz cuadrada de $\sqrt{10}$
+
+```{r}
+sqrt(media)
+```
+
+#### Interpretación
+
+Pendiente
+
+### Instalaciones industriales
+
+![](images/instalaciones%20industriales.jfif){width="400"}
+
+En ciertas instalaciones industriales los accidentes ocurren con muy poca frecuencia. Se sabe que la probabilidad de un accidente en cualquier día dado es $0.005$ y los accidentes son independientes entre sí [@walpole_probabilidad_2012].
+
+¿Cuál es la probabilidad de que en cualquier periodo dado de 400 días habrá un accidente en un día?\
+Se multiplica la cantidad la de días por su probabilidad para encontrar la media. Esta media será el parámetro para la distribución *Poisson*.
+
+```{r}
+n <- 400
+prob <- 0.005
+media <- n * prob
+media
+```
+
+La variable aleatoria son los días desde $x=0$...hasta $x=n$
+
+#### La tabla de distribución de probabilidad de Poisson
+
+```{r}
+resultado <- f.poisson.all(media = media)
+```
+
+```{r}
+tabla <- resultado$tabla
+tabla
+```
+
+#### Visualización de Poisson
+
+Se presentan la gráfica de probabilidad con histograma y la densidad respectivamente. Se utiliza la llamada de la variable *resultado*.
+
+```{r}
+
+plot_grid(resultado$g.dens, resultado$g_all$dens)
+```
+
+Histograma/Barra y acumulado
+
+```{r}
+plot_grid(resultado$g_barra, resultado$g_all$acum)
+```
+
+Usando plotly para visualizaciones dinámicas
+
+```{r}
+resultado$g.hist.plotly
+resultado$g.acum.plotly
+```
+
+#### ¿Cuál es la probabilidad de que en cualquier periodo dado de 400 días habrá un accidente en un día?
+
+$f(x=1)$
+
+Recordar que el índice de la tabla empieza en el valor cero de tal forma que se necesita el siguiente valor $x+1$ en la tabla:
+
+```{r}
+i <- 1
+prob <- tabla$f.x[i+1]
+paste("La probabilidad del valor de x=1 es: ", prob)
+```
+
+```{r}
+paste("La probabilidad del valor de x=1 es: ", round(dpois(x = 1, lambda = media), 4))
+```
+
+### ¿Cuál es la probabilidad de que haya a lo más tres días con un accidente?
+
+-   El indice en la tabla comienza en cero
+$$
+f(x=0) + f(x=1) + f(x=2) + f(x=3) \\
+0.13533528 + 0.27067057 + 0.27067057 + 0.18044704 = 0.8571235
+$$
+
+```{r}
+i <- 3
+prob <- round(tabla$F.x[i+1],4)
+paste("La probabilidad del valor de x<=3 es: ", prob)
+```
+
+```{r}
+paste("La probabilidad acumlada del valor de x<=3 es: ", round(ppois(q = 3, lambda = media, lower.tail = TRUE), 4))
+```
+
+#### Interpretación
+
+Pendiente
+
+### Fabricante de automóviles
+
+![](images/fabrica%20de%20automoviles.jfif){width="400"}
+
+Un fabricante de automóviles se preocupa por una falla en el mecanismo de freno de un modelo específico. La falla puede causar en raras ocasiones una catástrofe a alta velocidad. Suponga que la distribución del número de automóviles por año que experimentará la falla es una variable aleatoria de Poisson con $\lambda = 5$ [@walpole_probabilidad_2012].
+
+Inicializando valores
+
+```{r}
+media <- 5
+```
+
+#### La tabla de distribución cuando media igual a 5
+
+```{r}
+resultado <- f.poisson.all(media = media)
+```
+
+```{r}
+tabla <- resultado$tabla
+tabla
+```
+
+#### Visualización de Poisson
+
+Se presentan la gráfica de probabilidad con histograma y la densidad respectivamente. Se utiliza la llamada de la variable *resultado*.
+
+```{r}
+
+plot_grid(resultado$g.dens, resultado$g_all$dens)
+```
+
+Histograma/barra y lineal acumulado
+
+```{r}
+plot_grid(resultado$g_barra, resultado$g_all$acum)
+```
+
+Usando plotly para visualizaciones dinámicas
+
+```{r}
+resultado$g.hist.plotly
+resultado$g.acum.plotly
+```
+
+#### ¿Cuál es la probabilidad de que, a lo más, 3 automóviles por año sufran una catástrofe?
+
+$$f(X \leq 3)$$
+
+$$f(X=0) + f(X=1) + f(X=2) + f(X=3)$$
+
+```{r}
+i <- 3
+prob <- tabla$F.x[i+1]
+paste("La probabilidad del valor de x<=3 es: ", round(prob * 100,4), "%")
+```
+
+```{r}
+paste("La probabilidad del valor de x<=3 es: ", round(ppois(q = 3, lambda = media),4) * 100, "%")
+```
+
+#### ¿Cuál es la probabilidad de que más de 1 automóvil por año experimente una catástrofe?
+
+$$ 1 - F(X \leq 1) $$ $$ 1 - (f(X=0) + f(x=1))$$
+
+```{r}
+i <- 1
+prob <- 1 - tabla$F.x[i+1]
+paste("La probabilidad del valor de x>1 es: ", round(prob * 100,4), "%")
+```
+
+```{r}
+prob <- ppois(q = 1, lambda = media, lower.tail = FALSE)
+paste("La probabilidad del valor de x>1 es: ", round(prob * 100,4), "%")
+```
+
+
+#### ¿Cuál es la probabilidad de que, a lo más, 3 automóviles por año sufran una catástrofe?
+
+$$f(X \leq 3)$$
+
+$$f(X=0) + f(X=1) + f(X=2) + f(X=3)$$
+
+```{r}
+i <- 3
+prob <- tabla$F.x[i+1]
+paste("La probabilidad del valor de x<=3 es: ", round(prob * 100,4), "%")
+```
+
+```{r}
+paste("La probabilidad del valor de x<=3 es: ", round(ppois(q = 3, lambda = media),4) * 100, "%")
+```
+
+#### ¿Cuál es la probabilidad de que más de 1 automóvil por año experimente una catástrofe?
+
+$$ 1 - F(X \leq 1) $$ $$ 1 - (f(X=0) + f(x=1))$$
+
+```{r}
+i <- 1
+prob <- 1 - tabla$F.x[i+1]
+paste("La probabilidad del valor de x>1 es: ", round(prob * 100,4), "%")
+```
+
+```{r}
+prob <- ppois(q = 1, lambda = media, lower.tail = FALSE)
+paste("La probabilidad del valor de x>1 es: ", round(prob * 100,4), "%")
+```
+#### Interpretación
+
+Pendiente
+
+### Declaración de impuestos
+
+![](images/imagen%20sat.jfif){width="400"}
+
+Suponga que, en promedio, $1 \text { persona en }1000$\
+comete un error numérico al preparar su **declaración de impuestos**. Si se seleccionan $10,000$ formas al azar y se examinan, encuentre la probabilidad de que $6, 7 \text { u } 8$ de las formas contengan un error.[@walpole2007]. *Ejercicio 5.65, Pág. 165.*
+
+$$
+f(x=6:8) = f(x=6) + f(x=7) + f(x=8)
+$$
+
+#### Valores iniciales
+
+```{r}
+prob <- 1 / 1000
+media <- prob * 10000
+```
+
+#### Tabla de distribución
+
+```{r}
+resultado <- f.poisson.all(media = media)
+```
+
+```{r}
+tabla <- resultado$tabla
+tabla
+```
+
+
+
+
+#### ¿Cuál es la probabilidad de que haya entre 6 y 8 declaraciones con errores?
+
+$$
+f(x \text { de 6 a }8) = f(x=6) + f(x=7) + f(x=8)
+$$
+
+Se suman las probabilidades
+
+Usando *dpois()*
+
+```{r}
+paste(round(dpois(x = 6, lambda = media),4), "+", round(dpois(x = 7, lambda = media),4), "+"
+, round(dpois(x = 8, lambda = media),4))
+prob <- sum(dpois(x = 6:8, lambda = media))
+paste("La probabilidad del valor de x de 6 a 8 es: ", round((prob * 100),4), "%")
+```
+
+Con *ppois()*, restando el valor acumulado de $F(x=8)$ - el valor cumulado en $F(x=5)$
+
+```{r}
+prob <- ppois(q = 8, lambda = media) - ppois(q = 5, lambda = media)
+prob
+```
+
+
+#### Visualización de Poisson
+
+Se presentan la gráfica de probabilidad con histograma y la densidad respectivamente. Se utiliza la llamada de la variable *resultado*.
+
+```{r}
+
+plot_grid(resultado$g.dens, resultado$g_all$dens)
+```
+
+Histograma/barra y lineal acumulado
+
+```{r}
+plot_grid(resultado$g_barra, resultado$g_all$acum)
+```
+
+Usando plotly para visualizaciones dinámicas
+
+```{r}
+resultado$g.hist.plotly
+resultado$g.acum.plotly
+```
+
+
+#### Interpretación
+
+# Interpretación del caso
+
+Pendiente
+
+# Referencias Bibliográficas
+
