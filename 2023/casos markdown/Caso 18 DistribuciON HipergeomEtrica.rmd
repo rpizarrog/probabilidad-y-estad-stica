@@ -316,7 +316,7 @@ x <- 0:r
 
 Se manda llamar la función y dejar todo en la variable resultado
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 resultado <- f.hiper.all(poblacion = N, muestra = n, exitosos = r)
 ```
 
@@ -332,13 +332,13 @@ tabla
 Se presentan la gráfica de probabilidad con histograma y la densidad respectivamente. Se utiliza la llamada de la variable resultado.
 
 ```{r}
-plot_grid(resultado$g.hist, resultado$g.dens)
+plot_grid(resultado$g.dens, resultado$g_all$acum)
 ```
 
 Histograma y acumulado
 
 ```{r}
-plot_grid(resultado$g.hist, resultado$g_all$acum)
+plot_grid(resultado$g_barra, resultado$g_all$acum)
 ```
 
 Usando plotly para visualizaciones dinámicas
@@ -350,7 +350,7 @@ resultado$g.acum.plotly
 
 ### Probabilidad uno de tres
 
-¿Cuál es la probabilidad de que el inspector encuentre que uno de los tres fusibles está defectuoso?
+¿Cuál es la probabilidad de que el inspector encuentre que uno de los tres fusibles esté defectuoso?
 
 #### Utilizando la tabla de distribución.
 
@@ -466,13 +466,13 @@ tabla
 Se presentan la gráfica de probabilidad con histograma y la densidad respectivamente. Se utiliza la llamada de la variable resultado.
 
 ```{r}
-plot_grid(resultado$g.hist, resultado$g.dens)
+plot_grid(resultado$g.dens, resultado$g_all$dens)
 ```
 
 Histograma y acumulado
 
 ```{r}
-plot_grid(resultado$g.hist, resultado$g_all$acum)
+plot_grid(resultado$g_barra, resultado$g_all$acum)
 ```
 
 Usando *plotly* para visualizaciones dinámicas
@@ -554,13 +554,13 @@ tabla
 Se presentan la gráfica de probabilidad con histograma y la densidad respectivamente. Se utiliza la llamada de la variable resultado.
 
 ```{r}
-plot_grid(resultado$g.hist, resultado$g.dens)
+plot_grid(resultado$g.dens, resultado$g_all$acum)
 ```
 
 Histograma y acumulado
 
 ```{r}
-plot_grid(resultado$g.hist, resultado$g_all$acum)
+plot_grid(resultado$g_barra, resultado$g_all$acum)
 ```
 
 Usando plotly para visualizaciones interactivas
@@ -652,13 +652,13 @@ tabla
 Se presentan la gráfica de probabilidad con histograma y la densidad respectivamente. Se utiliza la llamada de la variable resultado.
 
 ```{r}
-plot_grid(resultado$g.hist, resultado$g.dens)
+plot_grid(resultado$g.dens, resultado$g_all$acum)
 ```
 
 Histograma y acumulado
 
 ```{r}
-plot_grid(resultado$g.hist, resultado$g_all$acum)
+plot_grid(resultado$g_barra, resultado$g_all$acum)
 ```
 
 Usando plotly para visualizaciones dinámicas
