@@ -639,6 +639,7 @@ f.poisson.all <- function(media) {
   distribucion <- list(tabla = tabla, VE = VE, 
                        varianza = varianza, desv.std = desv.std,
                        g.dens = g.dens, g.hist = g.hist, g.acum = g.acum, g.text = g.text,
+                       g_barra = g_barra,
                        g.hist.plotly = g.hist.plotly, g.acum.plotly = g.acum.plotly,
                        g_all = f.hist.dens.discreta(tabla))
   
