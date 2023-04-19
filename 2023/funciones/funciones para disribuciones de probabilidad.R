@@ -366,6 +366,7 @@ f.binom.all <- function(n, exito){
                        g.acum = g.acum,
                        g.text = g.text,
                        g_barra = g_barra,
+                       g_barra = g_barra,
                        g.hist.plotly = g.hist.plotly,
                        g.acum.plotly = g.acum.plotly,
                        g_all = f.hist.dens.discreta(tabla))
@@ -605,6 +606,15 @@ f.poisson.all <- function(media) {
     ggtitle(label = "Distribución Poisson",
             subtitle = paste("ve=", VE, ";", "var=", round(varianza, 2), ";", "sd=", round(desv.std, 2))
     )
+  
+  t_dist <- 'Distribución Poisson'
+  g_barra <- ggplot(data = tabla, aes(x = x, y=f.x , fill=x)) +
+    geom_bar(stat="identity") +
+    geom_vline(xintercept = VE, color = 'red', linetype = "dashed", size = 1) +
+    geom_vline(xintercept = VE - desv.std, color = 'blue', linetype = "dashed", size = 1) +
+    geom_vline(xintercept = VE + desv.std, color = 'blue', linetype = "dashed", size = 1) +
+    labs(title=t_dist, subtitle = paste("VE", round(VE, 2), "± Desv. Std", round(desv.std, 2)), x="Variable X", y="Probabilidad")
+  
   
   g.hist.plotly <- plot_ly(
     x = c(tabla$x),
