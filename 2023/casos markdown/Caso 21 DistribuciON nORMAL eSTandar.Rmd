@@ -1,0 +1,341 @@
+---
+title: "Caso 21 Distribución Normal Estándar Z"
+author: "Rubén Pizarro Gurrola"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 5
+    code_folding: hide
+    toc_float: yes
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+Transformar distribución normal a normal estándar y calcular probabilidades.
+
+# Fundamento teórico
+
+![](images/distribucion-normal-estandar.jpg)
+
+La distribución normal estándar o distribución normal tipificada es una distribución normal singular cuya denominación es media igual a cero y desviación igual a 1. $\mu = 0 ; \sigma = 1$.
+
+Se necesita una variable, Z que representa el producto de una transformación o cambio de variable de la variable aleatoria continua X que sigue una distribución normal del tipo $N(μ, σ)$.
+
+Esta transformación se llama tipificación (también estandarización o normalización):
+
+**¿Porque Z?** En general, el valor de $Z$ se interpreta como el número de desviaciones estándar que están comprendidas entre el promedio y un cierto valor de variable $x$.
+
+Se identifica $z$ como la diferencia entre un valor de la variable y el promedio, expresada esta diferencia en cantidad de desviaciones estándar.[@mendenhall2010].
+
+Entonces, a partir de cualquier variable aleatoria $x$ que siga una distribución, se puede obtener otra característica $z$ con una distribución normal estándar, sin más que efectuar la transformación conforme y de acuerdo a la fórmula.
+
+## Fórmula para calcular Z:
+
+$$
+z = \frac{x - \mu}{\sigma}
+$$
+
+$$
+x \text{ es el valor de una variable aleatoria continua de una distribución  normal} \\
+\sigma \text{ desviación estándar de población} \\ 
+\mu \text{ media de la población}
+$$
+
+## Regla empírica
+
+Establece que si una variable aleatoria está normalmente distribuida, entonces:
+
+1.  Aproximadamente 68% de las observaciones caerán entre más y menos una desviación estándar de la media.
+2.  Aproximadamente 95% de las observaciones caerán entre más y menos dos desviaciones estándar de la media.
+3.  Prácticamente todas, o 99.7% de las observaciones caerán entre más y menos tres desviaciones estándar de la media.[@lind2015].
+
+Ejemplo: una desviación estándar de la media es igual al valor $z$ de 1.00. Al hablar de la tabla de probabilidad normal estándar, el valor $z$ de 1.00 corresponde a una probabilidad de 0.3413. Por lo tanto, ¿qué porcentaje de las observaciones caerá entre más y menos una desviación estándar de la media? Se multiplica (2)(0.3413), lo que da 0.6826, o aproximadamente $68\%$ de las observaciones están entre más y menos una desviación estándar de la media.
+
+![](images/regla%20emp%C3%ADrica%20para%20Z.jpg)
+
+# Descripción
+
+Cargar librerías y datos para representar una distribución normal y transformar a distribución normal estándar
+
+# Desarrollo
+
+## Cargar librerías
+
+```{r message=FALSE, warning=FALSE}
+library(cowplot) # Gráficos
+library(ggplot2) # Gráfico
+library(mosaic)
+library(dplyr)  # Para proesar filtrar ordenar con arrange
+```
+
+## Crear datos
+
+### Inicializando variables
+
+La población tiene una variable aleatoria de interés como lo puede ser la altura de las personas. Valores medidos en centímetros.
+
+![](images/estaturas.png){width="400"}
+
+Se inicializan las variables para generar valores aleatorios y simular una población.
+
+```{r}
+n <- 200
+media <- 175
+desv <- 10
+```
+
+Se generan 200 valores aleatorios o con las condiciones de una distribución normal de media igual a $\mu = 175cm.$ y desviación de $\sigma = 10cm.$.
+
+```{r}
+set.seed(2023)
+n <- 200
+estaturas<- rnorm(n = n, mean = media, sd = desv)
+estaturas
+```
+
+## Determinar los parámetros media y desviación de los datos
+
+Se identifican la media aritmética y la desviación de la población generada.
+
+```{r}
+media.p <- round(mean(estaturas),2)
+desv.p <- round(sd(estaturas),2)
+media.p; desv.p
+```
+
+## Visualizar la distribución normal con plotDist()
+
+Se muestra la distribución normal con función *plotDist()* de la librería *mosaic*.
+
+```{r}
+g1 <- plotDist(dist = "norm", mean = media.p, sd = desv.p, type = "h", xlab = "x's = Estaturas", col = 'blue')
+g1
+```
+
+## Transformar a distribución normal estándar
+
+![](images/distribucion-normal-estandar-01.jpg)
+
+Z se interpreta como los valores que están a la derecha de una distribución normal con media igual a cero y desviación igual a 1.
+
+$$
+z = \frac{x - \mu}{\sigma}
+$$
+
+En la siguiente función *f.devolver.z()* se hace una simulación de transforma cualquier valor de $x$ a valores de $z$. Se simula transformar valores de 170 a 180 de 0.5 en 0.5.
+
+En el archivo que se carga a continuación, se encuentra programada una función *f.devolver.z()* para obtener el valor de z a partir de los parámetros x, media y desviación.
+
+```{r warning=FALSE, message=FALSE}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/funciones/funciones%20para%20disribuciones%20de%20probabilidad.R")
+```
+
+```{r}
+x = seq(from = 170, to = 180, by = .5)
+
+z <- f.devolver.z(x = x, media = media.p, desv = desv.p)
+x; z
+```
+
+## Data.frame de x's y z's
+
+```{r}
+equivalencias <- data.frame (x = estaturas, z = f.devolver.z(x = estaturas, media = media, desv = desv))
+# equivalencias
+```
+
+### Ordenando equivalencias
+
+Se muestran ordenados para identificarlos de manera más práctica y únicamente los primeros y últimos veinte registros.
+
+```{r}
+equivalencias <- arrange(equivalencias, x)
+head(equivalencias, 20)
+tail(equivalencias, 20)
+```
+
+## Normal estándar
+
+La media debe ser 0 y la desviación es 1
+
+$$
+\mu = 0 \\
+\sigma = 1
+$$
+
+### Gráfica de normal estándar con plotDist()
+
+Se muestran los datos de la distribución estaturas con valores transformados a z.
+
+```{r}
+g2 <- plotDist(dist = "norm", mean = 0, sd = 1, type = "h", xlab = "Z's", col = 'red')
+g2
+```
+
+### Gráficas en el mismo renglón
+
+```{r}
+plot_grid(g1, g2, nrow = 1, ncol=2)
+```
+
+### Visualizando con ggplot
+
+Se muestran las gráficas de distribución normal con datos de estaturas en azul y gráficas de valores de estaturas transformados a $z$ en color rojo.
+
+```{r}
+gnormal <- ggplot(data = equivalencias) +
+  geom_point(aes(x = x, y = dnorm(x = x, mean = media.p, sd = desv.p)), col = 'blue') +
+  geom_line(aes(x = x, y = dnorm(x = x, mean = media.p, sd = desv.p)), col = 'blue') +
+  geom_vline(xintercept = media.p) +
+  ggtitle(label = "Distribución normal", subtitle = paste("Media = ", media.p))
+gnormalstd <- ggplot(data = equivalencias) +
+  geom_point(aes(x = z, y = dnorm(x = z, mean = 0, sd = 1)), col = 'red') +
+  geom_line(aes(x = z, y = dnorm(x = z, mean = 0, sd = 1)), col = 'red') +
+  geom_vline(xintercept = 0) +
+  ggtitle(label = "Distribución normal Estándar", subtitle = paste("Media = ", 0))
+plot_grid(gnormal, gnormalstd, nrow=1, ncol=2)
+```
+
+## Calcular probabilidades
+
+### ¿Cuál es la probabilidad de que una persona tenga una estatura x por encima de 180 cm.?
+
+$$
+P(x \ge 180) = 1 - P(x < 180) = \text {lower tail = FALSE}
+$$
+
+```{r}
+x <- 180
+prob1 <- round(pnorm(q = x, mean = media.p, desv.p, lower.tail = FALSE) * 100, 2)
+paste(prob1, "%") 
+```
+
+#### Gráfica
+
+```{r}
+gnormal <- plotDist(dist = "norm", mean = media.p, sd = desv.p, type = "h", xlab = "x's", groups = x >= 180, col = c('blue', 'pink'), main= "Distribución normal", sub= paste("Media = ", media.p, "f(x > ", x , ") = ", prob1, "%"))
+```
+
+#### Transformar 180 a z
+
+```{r}
+x <- 180
+z <- f.devolver.z(x = x, media = media.p, desv = desv.p)
+z
+```
+
+#### La probabilidad con respecto a z
+
+```{r}
+prob2 <- round(pnorm(q = z, mean = 0, sd=1, lower.tail = FALSE) * 100, 2)
+paste(prob2, "%") 
+```
+
+#### Gráfica con respecto a Z
+
+```{r}
+gnormal.z <- plotDist(dist = "norm", mean = 0, sd = 1, type = "h", xlab = "z's", groups = x >= z, col = c('red', 'pink'), main= "Distribución normal estándar", sub= paste("Media = ", 0, "f(z > ", round(z,2) , ") = ", prob2, "%"))
+```
+
+#### Gráficas en el mismo renglón
+
+```{r}
+plot_grid(gnormal, gnormal.z, nrow = 1, ncol=2)
+```
+
+### ¿Cuál es la probabilidad de tener una estatura por debajo o igual que la media?
+
+La respuesta es razonar y deducir si el 50% está a la derecha y el otro 50% está a la izquierda entonces la probabilidad es aproximadamente del 50% $$
+P(x <= mean) = 50 \% \\
+o \\
+P(z <= 0 ) = 50\%
+$$
+
+#### Probabilidad en distribución normal
+
+```{r}
+x <- media.p
+prob1 <- round(pnorm(q = x, mean = media.p, desv.p, lower.tail = FALSE) * 100, 2)
+paste(prob1, "%") 
+```
+
+#### Gráfica
+
+```{r}
+gnormal <- plotDist(dist = "norm", mean = media.p, sd = desv.p, type = "h", xlab = "x's", groups = x<= media.p, col = c('blue', 'pink'), main= "Distribución normal", sub= paste("Media = ", media.p, "f(x < ", x , ") = ", prob1, "%"))
+```
+
+#### Transformar la media de la población a z
+
+```{r}
+x <- media.p
+z <- f.devolver.z(x = x, media = media.p, desv = desv.p)
+z
+```
+
+#### La probabilidad con respecto a z
+
+```{r}
+prob2 <- round(pnorm(q = z, mean = 0, sd=1) * 100, 2)
+paste(prob2, "%") 
+```
+
+#### Gráfica con respecto a Z
+
+```{r}
+gnormal.z <- plotDist(dist = "norm", mean = 0, sd = 1, type = "h", xlab = "z's", groups = x <= z, col = c('red', 'pink'), main= "Distribución normal estándar", sub= paste("Media = ", 0, "f(z < ", round(z,2) , ") = ", prob2, "%"))
+```
+
+#### Gráficas en el mismo renglón
+
+```{r}
+plot_grid(gnormal, gnormal.z, nrow = 1, ncol=2)
+```
+
+# Ejercicio
+
+Se toma de referencia algunos ejercicios de distribuciones normales. [@matemovil].
+
+Por ejemplo, si se desea encontrar la probabilidad de que la variable estandarizada $z$, tome un valor entre $0$ y $1.50$; hay que encontrar el área bajo la curva entre $z = 0$ y $z = 1.50$, o lo que es lo mismo la probabilidad $P(0 \le z \le 1.50)$ [@matemovil].
+
+```{r}
+z1 = 0
+z2 = 1.5
+prob2 <- pnorm(q = z2, mean = 0, sd=1) - pnorm(q = z1, mean = 0, sd = 1)
+prob2 <- round(prob2 * 100, 2)
+paste(prob2, "%")
+```
+
+## Visualizar gráfica
+
+```{r}
+gnormal.z <- plotDist(dist = "norm", mean = 0, sd = 1, type = "h", xlab = "z's", groups = x >= z1 & x <= z2, col = c('grey', 'pink'), main= "Distribución normal estándar", sub= paste("Media = ", 0, "f(",z1, "<= z <=",z2,")", prob2, "%")) 
+  
+gnormal.z
+```
+
+## Usando xpnorm()
+
+La función **xpnorm()** de librería mosaic refleja el área bajo la curva y los valores porcentuales de probabilidad.
+
+```{r message=FALSE, warning=FALSE}
+grafica <- xpnorm(q = c(0, 1.5), mean = 0, sd = 1)
+grafica
+round(grafica[1] - grafica[2], 4)
+```
+
+Salida de **xpnorm()**
+
+If X \~ N(0, 1), then
+
+    P(X <= 0.0) = P(Z <= 0.0) = 0.5000  P(X <= 1.5) = P(Z <= 1.5) = 0.9332
+    P(X >  0.0) = P(Z >  0.0) = 0.50000 P(X >  1.5) = P(Z >  1.5) = 0.06681
+
+# Interpretación
+
+Pendiente
+
+# Bibliografía
