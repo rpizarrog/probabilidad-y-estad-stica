@@ -1,0 +1,266 @@
+---
+title: "Caso 23. Distribución Exponencial"
+author: "Rubén Pizarro Gurrola"
+date: "2023-04-26"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 5
+    code_folding: hide
+    toc_float: yes
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+# Fudamento Teórico
+
+## Concepto
+
+Muchos de las situaciones de las ciencias en términos de probabilidad pueden resolverse con la distribución normal y estandarizada Z, sin embargo, exiten situaciones especiales en donde resulta necesario conocer y aplicar otras distribuciones como lo es la distribución exponencial. [@devore2016]
+
+De cuerdo Anderson (2018) la distribución de probabilidad exponencial se aplica a variables como las llegadas de automóviles a un centro de lavado de autos, los tiempos requeridos para cargar un camión, las distancias entre dos averías en una carretera, entre otras situaciones[@anderson_estadistica_2008].
+
+Otros contextos para tratar con distribución exponencial ptiene que ver con la cantidad de tiempo que transcurre hasta que se produce algún evento específico. Por ejemplo, la cantidad de tiempo (que comienza ahora) hasta que se produzca un terremoto tiene una distribución exponencial. Otros ejemplos son la duración, en minutos, de las llamadas telefónicas de larga distancia comerciales y la cantidad de tiempo, en meses, que dura la batería de un automóvil. También se puede demostrar que el valor del cambio que se tiene en el bolsillo o en el monedero sigue una distribución exponencial aproximadamente. [@openstax] [@openstax]
+
+Por otra parte la representación visual de la densidad de una distribución exponencial significa que hay valores de densidad altos a valores de $x$ pequeños y viceversa, hay valores de densidad bajo a grandes valores de $x$.
+
+La distribución exponencial es una distribución de probabilidad continua que se utiliza para modelar el tiempo o espacio entre eventos en un proceso y tiene relación directa con la distribución discreta de Poisson.
+
+La distribución exponencial es la distribución de probabilidad del tiempo o espacio entre dos eventos en un proceso de Poisson, donde los eventos ocurren de manera continua e independiente a una tasa constante $\lambda$ llamado lambda.
+
+$\lambda$ lambda representa una tasa constante (valor constante) sobre la ocurrencia de eventos de manera continua e independiente.
+
+En R existen las funciones estadísticas para tratar con distribución expnencial que se obervarán en este caso:
+
+-   *dexp() para densidad,*
+
+-   *pexp() para probabilidad acumulada*
+
+-   *qexp* para devolver valores de x de acuerdo a probabilidades acumuladas. Es la inversa de *pexp()*
+
+-   *rexp()* para generación de valores aleatorios de *x*.
+
+## Función de Densidad
+
+$$
+f(x) = \lambda \cdot e^{-\lambda\cdot x}
+$$
+
+-   La función de densidad en R se obtiene con *dexp()*
+
+-   Se requiere el valor de lambda $\lambda$ taza constante y continua y/o valor de media.
+
+-   Se requiere el valor de $e = 
+
+    2.718282$
+
+-   Se requiere el valor de la variable aleatoria continua $x$
+
+## Función acumulada
+
+$$
+F(x) = P(X\le x) = 1 - e^{-\lambda\cdot x} \text{ si x } \ge 0
+$$
+
+La función acumulada de probabilidad en R se obtiene con *pexp()*
+
+## Valor esperado
+
+$$
+\frac{1}{\lambda}
+$$
+
+## Varianza y desviación estándar
+
+$$
+Varianza =  \sigma^{2}= \frac{1}{\lambda^{2}}
+$$
+
+$$
+Desv.Std = \sigma = \sqrt{\sigma^{2}}
+$$
+
+# Descripcón
+
+-   Se calculan probabilidades de acuerdo a la función de densidad y probabilidades acumuladas de varios ejercicios relacionados con distribución Exponencial.
+
+-   Se muestran gráficos de densidad y probabilidad acumulada
+
+-   Se interpreta los ejercicios y el caso final
+
+# Desarrollo
+
+## Cargar librerías
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(mosaic)
+library(ggplot2)  # Para gráficos
+library(cowplot) #Imágenes en el mismo renglón
+library(visualize)
+options(scipen=999) # Notación normal
+```
+
+## Establecer semilla para valores aleatorios
+
+```{r}
+set.seed(2023)
+```
+
+## Visualización de densidad de una distribución Exponencial
+
+### Inicializar variables 
+
+Se crea una secuencia de valooes de x desde 0 hasta 10 de saltos 0.2 en .2 para generar 50 valores continuos.
+
+```{r}
+constante_lambda = 1
+x = seq(from = 0, to= 10, by=0.2)
+
+# Densidad
+print("Densidad")
+densidad <- round(dexp(x = x, rate = constante_lambda), 6)
+densidad
+
+# Acumulada
+print("Probabildia Acumulada")
+acumulada <- round(pexp(q = x, rate =  constante_lambda), 6)
+acumulada
+
+
+
+
+
+```
+
+### Presentar los datos
+
+```{r}
+datos <- data.frame(x = x, f.x = densidad, F.x = acumulada)
+datos
+```
+
+### Visualizar los datos
+
+```{r}
+ggplot(data = datos, aes(x = x, y = f.x)) + 
+  geom_point(color = 'blue') + 
+  geom_line(color = 'red')
+  
+```
+
+Aquí otra forma de representar curvas de densidad de una distribución exponencial [@rubio]
+
+```{r}
+curve(dexp(x, rate = 1.0), from=0, to=10, col='blue')
+curve(dexp(x, rate = 1.5), from=0, to=10, col='red', add=TRUE)
+curve(dexp(x, rate = 2.0), from=0, to=10, col='purple', add=TRUE)
+
+legend("topright", 
+       legend=c("rate=1.0", "rate=1.5", "rate=2.0"),
+       col = c("blue", "red", "purple"), 
+       lty=1, cex=1.2)
+```
+
+## Cálculo de probabilidades
+
+Siguiendo con el ejercicio inicial de lambda = 1 con valores desde 0 hasta 10 de 0.2 en 0.2.
+
+### ¿cuál es la probabilidad a la izquierda cuando x sea 0.5 o menor?
+
+$f(x\le0.5)$
+
+Entonces :
+
+```{r}
+prob = round(pexp(q = 0.5, rate = constante_lambda), 6)
+paste("La probabilida área bajo la curva es ...", prob, " aproximadamente " , prob * 100, "%")
+```
+
+### Visualización de área bajo la curva
+
+Usando la función *visualize.exp()* de la librería *visualize*
+
+```{r}
+visualize.exp(stat = 0.5, theta = constante_lambda, section = "lower")
+```
+
+### ¿cuál es la probabilidad del intervalo entre 0.5 y 2?
+
+$P(0.5 \le X \le 2)$
+
+```{r}
+prob = round(pexp(q = 2, rate = constante_lambda) - pexp(q = 0.5, rate = constante_lambda), 6)
+paste("La probabilida área bajo la curva es ...", prob, " aproximadamente " , prob * 100, "%")
+
+```
+
+### Visualización de área bajo la curva
+
+Nuevamente usando la función *visualize.exp()* de la librería *visualize*
+
+```{r}
+visualize.exp(stat = c(0.5, 2), theta = constante_lambda, section = "bounded")
+```
+
+### ¿cuál es la probabilidad del a partir de 2 hacia la derecha?
+
+$P(X \ge 2)$
+
+```{r}
+prob = round(pexp(q = 2, rate = constante_lambda, lower.tail = FALSE), 6)
+paste("La probabilida área bajo la curva es ...", prob, " aproximadamente " , prob * 100, "%")
+
+```
+
+### Visualización de área bajo la curva
+
+Nuevamente usando la función *visualize.exp()* de la librería *visualize*
+
+```{r}
+visualize.exp(stat = 2, theta = constante_lambda, section = "upper")
+```
+
+## Valor esperado
+
+De acuerdo a la fórmula arriba presentada:
+
+```{r}
+VE = 1 / constante_lambda
+paste ("El valor esperado es ...", VE)
+```
+
+## Varianza y desviación
+
+De acuerdo a la fórmula arriba presentada:
+
+```{r}
+varianza = round(1 / constante_lambda^2, 6)
+desv.std = round(sqrt(varianza), 6)
+
+paste("Varianza = ", varianza, "Desv.Std = ", desv.std)
+```
+
+Valor de x a partir de q
+
+```{r}
+qexp(p = 0.393469, rate = constante_lambda)
+print("Muy cercano al valor de x = 0.5")
+```
+
+## Valores aleatorios
+
+```{r}
+aleatorios = rexp(n = 20, rate = constante_lambda)
+aleatorios
+```
+
+# Desarrollo
+
+Se presentan varios ejercicios extraídos de la literatura
+
+Pendiente ... ...
+
+# Bibliografía
