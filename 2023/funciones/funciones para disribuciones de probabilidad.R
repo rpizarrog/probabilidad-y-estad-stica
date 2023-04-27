@@ -819,7 +819,7 @@ f_exponencial_all <- function(media, intervalo, tipo = 1) {
     b <- intervalo[2]
     
     # x's
-    x = seq(from = 0, to=(media*2), by=0.5)
+    x = seq(from = 0, to=(media*3), by=0.001)
     # Densidad
     f.x <- round(dexp(x = x, rate = lambda), 6)
     f.x
