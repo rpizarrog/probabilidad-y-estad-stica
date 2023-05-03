@@ -961,6 +961,7 @@ f.t.int.conf <- function (confianza, n, cola) {
   if (cola == "ambas" ) {
     alfa = (1 - confianza) / 2
     t <- qt(p = alfa, df = gl)
+    t = abs(t)
   }
 
   return (t)
