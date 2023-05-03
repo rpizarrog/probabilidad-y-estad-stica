@@ -975,11 +975,11 @@ f.intervalo.confianza.t <- function (media, desv, confianza, n, tipo) {
     ls <- Inf
   }
   if (tipo == 2) { # cola derecha
-    ls <- -Inf
+    li <- -Inf
     ls <- media + f.t.int.conf(confianza, n, cola = "der") * desv / sqrt(n)
   }
   if (tipo == 3) { # ambas colas
-    ls <- media - f.t.int.conf(confianza, n, cola = "ambas") * desv / sqrt(n)
+    li <- media - f.t.int.conf(confianza, n, cola = "ambas") * desv / sqrt(n)
     ls <- media + f.t.int.conf(confianza, n, cola = "ambas") * desv / sqrt(n)
   }
   
