@@ -830,9 +830,9 @@ f_exponencial_all <- function(media, intervalo, tipo = 1) {
     
     datos <- data.frame(x = x, f.x = f.x, F.x = F.x)
 
-    VE <- 1/lambda
-    varianza = 1 / (lambda ^2)
-    desv.std = sqrt(varianza)
+    VE <- round(lambda, 4)
+    varianza = round(1 / (lambda ^2), 4)
+    desv.std = round(sqrt(varianza), 4)
     
 
   # Cola izquierda
