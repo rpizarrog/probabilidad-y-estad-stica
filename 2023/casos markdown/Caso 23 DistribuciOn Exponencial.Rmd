@@ -18,11 +18,11 @@ bibliography: references.bib
 
 ## Concepto
 
-Muchos de las situaciones de las ciencias en términos de probabilidad pueden resolverse con la distribución normal y estandarizada Z, sin embargo, exiten situaciones especiales en donde resulta necesario conocer y aplicar otras distribuciones como lo es la distribución exponencial. [@devore2016]
+Muchos de las situaciones de las ciencias en términos de probabilidad pueden resolverse con la distribución normal y estandarizada Z, sin embargo, exiten situaciones especiales en donde resulta necesario conocer y aplicar otras distribuciones como lo es la distribución exponencial. [@devore2016][@devore2016]
 
 De cuerdo Anderson (2018) la distribución de probabilidad exponencial se aplica a variables como las llegadas de automóviles a un centro de lavado de autos, los tiempos requeridos para cargar un camión, las distancias entre dos averías en una carretera, entre otras situaciones[@anderson_estadistica_2008].
 
-Otros contextos para tratar con distribución exponencial ptiene que ver con la cantidad de tiempo que transcurre hasta que se produce algún evento específico. Por ejemplo, la cantidad de tiempo (que comienza ahora) hasta que se produzca un terremoto tiene una distribución exponencial. Otros ejemplos son la duración, en minutos, de las llamadas telefónicas de larga distancia comerciales y la cantidad de tiempo, en meses, que dura la batería de un automóvil. También se puede demostrar que el valor del cambio que se tiene en el bolsillo o en el monedero sigue una distribución exponencial aproximadamente. [@openstax] [@openstax]
+Otros contextos para tratar con distribución exponencial ptiene que ver con la cantidad de tiempo que transcurre hasta que se produce algún evento específico. Por ejemplo, la cantidad de tiempo (que comienza ahora) hasta que se produzca un terremoto tiene una distribución exponencial. Otros ejemplos son la duración, en minutos, de las llamadas telefónicas de larga distancia comerciales y la cantidad de tiempo, en meses, que dura la batería de un automóvil. También se puede demostrar que el valor del cambio que se tiene en el bolsillo o en el monedero sigue una distribución exponencial aproximadamente. [@openstax] [@openstax][@openstax]
 
 Por otra parte la representación visual de la densidad de una distribución exponencial significa que hay valores de densidad altos a valores de $x$ pequeños y viceversa, hay valores de densidad bajo a grandes valores de $x$.
 
@@ -50,11 +50,9 @@ $$
 
 -   La función de densidad en R se obtiene con *dexp()*
 
--   Se requiere el valor de lambda $\lambda$ taza constante y continua y/o valor de media.
+-   Se requiere el valor de lambda $\lambda$ taza constante y continua y/o valor de media a la inversa. Si se tiene la media de la distribución, entonces $\lambda = 1/\mu$ que es la inversa de la media.
 
--   Se requiere el valor de $e = 
-
-    2.718282$
+-   Se requiere el valor de $e =2.718282$
 
 -   Se requiere el valor de la variable aleatoria continua $x$
 
@@ -69,7 +67,7 @@ La función acumulada de probabilidad en R se obtiene con *pexp()*
 ## Valor esperado
 
 $$
-\frac{1}{\lambda}
+\frac{1}{\lambda} = \mu
 $$
 
 ## Varianza y desviación estándar
@@ -82,11 +80,13 @@ $$
 Desv.Std = \sigma = \sqrt{\sigma^{2}}
 $$
 
-# Descripcón
+# Descripción
 
--   Se calculan probabilidades de acuerdo a la función de densidad y probabilidades acumuladas de varios ejercicios relacionados con distribución Exponencial.
+-   Se calculan densidades de la distribución exponencial manualmente y usando la función *dexp()*
 
--   Se muestran gráficos de densidad y probabilidad acumulada
+-   Se calculan probabilidades acumuladas de acuerdo a la función de probabilidades pexp() de varios ejercicios relacionados con distribución Exponencial.
+
+-   Se muestran gráficos de densidad y probabilidad acumulada con las funciones visualzie() de la librería *visualize* y *distPlot*() de la librería *mosaic*
 
 -   Se interpreta los ejercicios y el caso final
 
@@ -95,12 +95,18 @@ $$
 ## Cargar librerías
 
 ```{r message=FALSE, warning=FALSE}
-library(dplyr)
-library(mosaic)
-library(ggplot2)  # Para gráficos
-library(cowplot) #Imágenes en el mismo renglón
-library(visualize)
+library(dplyr)      # Para filtros entre otros
+library(mosaic)     # Para gráficos
+library(ggplot2)    # Para gráficos
+library(cowplot)    # Imágenes en el mismo renglón
+library(visualize)  # Para gráficos
 options(scipen=999) # Notación normal
+```
+
+## Cargar funciones precodificadas
+
+```{r message=FALSE, warning=FALSE}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/funciones/funciones%20para%20disribuciones%20de%20probabilidad.R")
 ```
 
 ## Establecer semilla para valores aleatorios
@@ -111,22 +117,73 @@ set.seed(2023)
 
 ## Visualización de densidad de una distribución Exponencial
 
-### Inicializar variables 
+### Inicializar variables
 
-Se crea una secuencia de valooes de x desde 0 hasta 10 de saltos 0.2 en .2 para generar 50 valores continuos.
+Se crea una secuencia de valores de x desde 0 hasta 10 de saltos 0.2 en .2 para generar 50 valores continuos.
+
+La constante lambda vale 1 $1/\mu = 1/1=1$ que representa el parámetro de tasa (inversa de la media) en la distribución exponencial de acuerdo a la fórmula de densidad y de la probabilidad acumulada de la distribución exponencial.
+
+### La densidad a un valor de x
+
+Calcular la densidad de acuerdo a la fórmula de densidad de la distribución exponencial: $densidad = f(x) = \lambda \cdot e^{-\lambda\cdot x}$ y usando la función *dexp()* respectivamente. Los valores de densidad deben salir igual por cualquiera de las dos alternativas.
 
 ```{r}
-constante_lambda = 1
+media = 1
+lambda = 1/media
+e = exp(1)
+x=0.5
+
+# Densidad conforme a la fórmula
+densidad = lambda * e ^(-lambda*x)
+densidad
+
+# Densidad usando dexp()
+dexp(x = x, rate = lambda)
+```
+
+### La probabilidad acumulada de un valor de x
+
+Ahora calculando probabilidades acumuladas con la fórmula $Prob. Acumulada = F(x) = 1 - e^{-\lambda\cdot x}$ y con la función *pexp()*. Deben salir los valores calculados exactamente iguales. Por defecto la probabilidad acumulada es cola a la izquierda, si se cola a la derecha hay que restarle la probabilidad a 1 que representa el 100%.
+
+```{r}
+print("Por medio de la fórmula")
+prob.acum = 1 - e^(-lambda * x)
+prob.acum
+
+print("Usando la función pexp()")
+pexp(q = x, rate = lambda)
+
+
+
+```
+
+Por defecto la probabilidad acumulada es cola a la izquierda, si se probabilidad mayor que x, significa cola a la derecha, por lo que hay que restarle la probabilidad a 1 que representa el 100%. Se utiliza el argumento *lower.tail = FALSE* en la función pexp() para indicarle que es cola a la derecha o que la probabilidad es mayor o igual al valor de $x$ especificado.
+
+```{r}
+# Probabilidad a la derecha F(x>0.5)
+1 - prob.acum
+
+# Probabilidad cola a la derecha con pexp()
+pexp(q = x, rate = lambda, lower.tail = FALSE)
+
+
+```
+
+Ahora construyendo una serie de densidades y probabilidades acumuladas a partir de una secuencia de 0 a 10 con saltos de 0.2 en 0.2.
+
+```{r}
+# media = 1
+# lambda = 1/media
 x = seq(from = 0, to= 10, by=0.2)
 
 # Densidad
 print("Densidad")
-densidad <- round(dexp(x = x, rate = constante_lambda), 6)
+densidad <- round(dexp(x = x, rate = lambda), 6)
 densidad
 
 # Acumulada
-print("Probabildia Acumulada")
-acumulada <- round(pexp(q = x, rate =  constante_lambda), 6)
+print("Probabilidad Acumulada")
+acumulada <- round(pexp(q = x, rate =  lambda), 6)
 acumulada
 
 
@@ -144,6 +201,8 @@ datos
 
 ### Visualizar los datos
 
+Usando ggplot
+
 ```{r}
 ggplot(data = datos, aes(x = x, y = f.x)) + 
   geom_point(color = 'blue') + 
@@ -151,7 +210,7 @@ ggplot(data = datos, aes(x = x, y = f.x)) +
   
 ```
 
-Aquí otra forma de representar curvas de densidad de una distribución exponencial [@rubio]
+Aquí otra forma de representar curvas de densidad de una distribución exponencial [@rubio][@rubio]
 
 ```{r}
 curve(dexp(x, rate = 1.0), from=0, to=10, col='blue')
@@ -164,6 +223,8 @@ legend("topright",
        lty=1, cex=1.2)
 ```
 
+También se puede usar *visualize()* y *plotDist()* para visualizar gráficas de distribuciones en este caso de la distribución exponencial, esta se muestra más adelante su uso.
+
 ## Cálculo de probabilidades
 
 Siguiendo con el ejercicio inicial de lambda = 1 con valores desde 0 hasta 10 de 0.2 en 0.2.
@@ -175,7 +236,7 @@ $f(x\le0.5)$
 Entonces :
 
 ```{r}
-prob = round(pexp(q = 0.5, rate = constante_lambda), 6)
+prob = round(pexp(q = 0.5, rate = lambda), 6)
 paste("La probabilida área bajo la curva es ...", prob, " aproximadamente " , prob * 100, "%")
 ```
 
@@ -184,7 +245,24 @@ paste("La probabilida área bajo la curva es ...", prob, " aproximadamente " , p
 Usando la función *visualize.exp()* de la librería *visualize*
 
 ```{r}
-visualize.exp(stat = 0.5, theta = constante_lambda, section = "lower")
+visualize.exp(stat = 0.5, theta = lambda, section = "lower")
+```
+
+Visualizando con *plotDist()* de la librería *mosaic*
+
+El área de color rosa representa aproximadamente el 39% del total del área bajo la curva.
+
+```{r}
+plotDist(dist = "exp", media = lambda, type="h",xlab ="Valores de la variable continua X", ylab = "Densidad" , groups = x <= 0.5, xlim = c(0:5), ylim=c(0,1), main=paste("F(x ≤ 0.5):", prob),  sub= paste('Lambda =', lambda))
+```
+
+Usando la función pre codificada *f_exponencial_all()* previamente cargada. La función recibe tres argumento en los tres parámetros que deben recibir: El valor de la media, el intervalo que puede ser empezar en 0 y terminar en un valor mayor que 0 y el tipo qe puede ser 1 cola a la izquierda, 2 cola a la derecha y 3 intervalo intermedio con valores a y b.
+
+Esta primera opción es cola a la izquierda con valor tipo == 1
+
+```{r}
+resultado <- f_exponencial_all(media = media, intervalo = c(0, 0.5), tipo = 1)
+resultado$g_curva
 ```
 
 ### ¿cuál es la probabilidad del intervalo entre 0.5 y 2?
@@ -192,8 +270,8 @@ visualize.exp(stat = 0.5, theta = constante_lambda, section = "lower")
 $P(0.5 \le X \le 2)$
 
 ```{r}
-prob = round(pexp(q = 2, rate = constante_lambda) - pexp(q = 0.5, rate = constante_lambda), 6)
-paste("La probabilida área bajo la curva es ...", prob, " aproximadamente " , prob * 100, "%")
+prob = round(pexp(q = 2, rate = lambda) - pexp(q = 0.5, rate = lambda), 6)
+paste("La probabilidad del área bajo la curva es ...", prob, " aproximadamente " , prob * 100, "%")
 
 ```
 
@@ -202,15 +280,28 @@ paste("La probabilida área bajo la curva es ...", prob, " aproximadamente " , p
 Nuevamente usando la función *visualize.exp()* de la librería *visualize*
 
 ```{r}
-visualize.exp(stat = c(0.5, 2), theta = constante_lambda, section = "bounded")
+visualize.exp(stat = c(0.5, 2), theta = lambda, section = "bounded")
 ```
 
-### ¿cuál es la probabilidad del a partir de 2 hacia la derecha?
+Nuevamente usando la función *distPlot()* de la librería *mosaic*
+
+```{r}
+plotDist(dist = "exp", media = lambda, type="h",xlab ="Valores de la variable continua X", ylab = "Densidad" , groups = x >= 0.5 & x<= 2, xlim = c(0:5), ylim=c(0,1), main=paste("F(0.5 ≤ x ≤ 2):", prob),  sub= paste('Lambda =', lambda))
+```
+
+Esta segunda opción es un intervalo con valor tipo == 3
+
+```{r}
+resultado <- f_exponencial_all(media = media, intervalo = c(0.5, 2), tipo = 3)
+resultado$g_curva
+```
+
+### ¿cuál es la probabilidad a partir de 2 hacia la derecha?
 
 $P(X \ge 2)$
 
 ```{r}
-prob = round(pexp(q = 2, rate = constante_lambda, lower.tail = FALSE), 6)
+prob = round(pexp(q = 2, rate = lambda, lower.tail = FALSE), 6)
 paste("La probabilida área bajo la curva es ...", prob, " aproximadamente " , prob * 100, "%")
 
 ```
@@ -220,7 +311,20 @@ paste("La probabilida área bajo la curva es ...", prob, " aproximadamente " , p
 Nuevamente usando la función *visualize.exp()* de la librería *visualize*
 
 ```{r}
-visualize.exp(stat = 2, theta = constante_lambda, section = "upper")
+visualize.exp(stat = 2, theta = lambda, section = "upper")
+```
+
+Ahora usando *plotDist()*
+
+```{r}
+plotDist(dist = "exp", media = lambda, type="h",xlab ="Valores de la variable continua X", ylab = "Densidad" , groups = x >= 2, xlim = c(0:5), ylim=c(0,1), main=paste("F(x ≥ 2):", prob),  sub= paste('Lambda =', lambda))
+```
+
+Esta tercera opción usando la función *f_exponencial_all()* es cola a la derecha, es decir, tipo == 2
+
+```{r}
+resultado <- f_exponencial_all(media = media, intervalo = c(0, 2), tipo = 2)
+resultado$g_curva
 ```
 
 ## Valor esperado
@@ -228,7 +332,7 @@ visualize.exp(stat = 2, theta = constante_lambda, section = "upper")
 De acuerdo a la fórmula arriba presentada:
 
 ```{r}
-VE = 1 / constante_lambda
+VE = 1 / lambda
 paste ("El valor esperado es ...", VE)
 ```
 
@@ -237,7 +341,7 @@ paste ("El valor esperado es ...", VE)
 De acuerdo a la fórmula arriba presentada:
 
 ```{r}
-varianza = round(1 / constante_lambda^2, 6)
+varianza = round(1 / lambda^2, 6)
 desv.std = round(sqrt(varianza), 6)
 
 paste("Varianza = ", varianza, "Desv.Std = ", desv.std)
@@ -246,14 +350,14 @@ paste("Varianza = ", varianza, "Desv.Std = ", desv.std)
 Valor de x a partir de q
 
 ```{r}
-qexp(p = 0.393469, rate = constante_lambda)
+qexp(p = 0.393469, rate = lambda)
 print("Muy cercano al valor de x = 0.5")
 ```
 
 ## Valores aleatorios
 
 ```{r}
-aleatorios = rexp(n = 20, rate = constante_lambda)
+aleatorios = rexp
 aleatorios
 ```
 
@@ -261,6 +365,83 @@ aleatorios
 
 Se presentan varios ejercicios extraídos de la literatura
 
-Pendiente ... ...
+## El tiempo de revisión del motor
+
+Ejercicio extraído de: [@probafácil]. El tiempo de revisión del motor de un avión sigue una distribución exponencial con media 22 minutos. Encontrar y resolver algunas probabilidades:
+
+### Probabilidad de $F(X\le 10)$
+
+Encontrar la probabilidad de que el tiempo de revisión sea menor o igual a 10 minutos. $F(X\le 10)$
+
+```{r}
+media <- 22
+lambda <- 1/media
+x <- 10
+prob = round(pexp(q = x, rate = lambda), 6)
+paste("La probabilidad es ...", prob, " aproximadamente " , prob * 100, "%")
+
+```
+
+### Visualizar probabilidad
+
+Se presenta la gráfica con la función *visualize()*
+
+```{r}
+visualize.exp(stat = x, theta = lambda, section = "lower")
+```
+
+Se visualiza con la función *plotDist()* de librería *mosaic.*
+
+```{r}
+plotDist(dist = "exp", media = lambda, type="h",xlab ="Valores de la variable continua X", ylab = "Densidad" , groups = x<=10, xlim = c(0:22), ylim=c(0,1), main=paste("F(x<=10):", prob),  sub= paste('Lambda =:', lambda))
+```
+
+
+Ahora se presenta la misma gráfica pero usando la función *f_exponencial_all()*, cola a la izquierda.
+
+Se envía parámetro tipo == 1 es cola a la derecha
+
+```{r}
+resultado <- f_exponencial_all(media = media, intervalo = c(0, 10), tipo = 1)
+resultado$g_curva
+```
+### Probabilidad de $F(X\ge 10)$
+
+Encontrar la probabilidad de que el tiempo de revisión sea mayor o igual a 10 minutos. $F(X\ge 10)$
+
+Se envía parámetro tipo == 2 es cola  ala derecha
+```{r}
+resultado <- f_exponencial_all(media = media, intervalo = c(10, 10), tipo = 2)
+resultado$g_curva
+```
+
+### Probabilidad de $F(5 \le X\ge 10)$
+
+Encontrar la probabilidad de que el tiempo de revisión sea mayor o igual 5 y menor o igual a 10 minutos. $F(X\le 10)$
+
+Se envía parámetro tipo == 3 es ambas colas
+
+```{r}
+resultado <- f_exponencial_all(media = media, intervalo = c(5, 10), tipo = 3)
+resultado$g_curva
+```
+
+
+### Valor esperado VE y desviación estándar
+
+
+El valor esperado
+```{r}
+resultado$VE
+```
+
+Varianza y desviación estándar
+```{r}
+resultado$varianza; resultado$desv.std
+```
+
+
+Se esper que haya un tiempo esperado medio de 22 minutos con una varición de 
+
 
 # Bibliografía
