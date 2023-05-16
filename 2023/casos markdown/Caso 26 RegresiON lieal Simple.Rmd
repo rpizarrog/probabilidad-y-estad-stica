@@ -1,0 +1,597 @@
+---
+title: "Caso 26. Regresión Lineal Simple"
+author: "Rubén Pizarro Gurrola"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+Determinar predicciones de datos bajo el modelo de regresión lineal simple.
+
+# Descripción
+
+De un conjunto de datos con dos variables (bivariable) en donde una de ellas es $X$ variable independiente y otra de ellas $Y$ variable dependiente, predecir el valor de Y conforme la historia de X.
+
+# Fundamento teórico
+
+## Coeficiente de Correlación $r$
+
+La utilidad principal de los análisis correlacionales es saber cómo se puede comportar un concepto o una variable al conocer el comportamiento de otras variables vinculadas, por ejemplo: a mayor estudio mejor rendimiento; a mayor cantidad de sol mayor temperatura de ambiente; a mayor frecuencia de actividad social mayor porcentaje de contagios, entre muchos otros [@hernandez_sampieri_metodologiinvestigacion_2014].
+
+La importancia de la correlación es conocer el grado de relación entre variables y ayuda a las técnicas de predicción, es decir, intentar predecir el valor aproximado que tendrá un grupo de individuos o casos en una variable, a partir del valor que poseen en las variables relacionadas [@hernandez_sampieri_metodologiinvestigacion_2014].
+
+La correlación puede ser positiva o negativa de entre $-1$ a $1$ y significa que el coeficiente r de Pearson puede variar de −1.00 a +1.00, donde:
+
+−1.00 = correlación negativa perfecta. ("A mayor X, menor Y", de manera proporcional. Es decir, cada vez que X aumenta una unidad, Y disminuye siempre una cantidad constante). Esto también se aplica "a menor X, mayor Y".
+
+-   −0.90 = Correlación negativa muy fuerte.
+-   −0.75 = Correlación negativa considerable.
+-   −0.50 = Correlación negativa media.
+-   −0.25 = Correlación negativa débil.
+-   −0.10 = Correlación negativa muy débil.
+-   0.00 = No existe correlación alguna entre las variables.
+-   +0.10 = Correlación positiva muy débil.
+-   +0.25 = Correlación positiva débil.
+-   +0.50 = Correlación positiva media.
+-   +0.75 = Correlación positiva considerable.
+-   +0.90 = Correlación positiva muy fuerte.
+-   +1.00 = Correlación positiva perfecta ("A mayor X, mayor Y" o "a menor X, menor Y", de manera proporcional. Cada vez que X aumenta, Y aumenta siempre una cantidad constante).
+
+El signo indica la dirección de la correlación (positiva o negativa); y el valor numérico, la magnitud de la correlación [@hernandez_sampieri_metodologiinvestigacion_2014].
+
+Por otra parte [@walpole_probabilidad_2012], menciona que el análisis de correlación intenta medir la intensidad de tales relaciones entre dos variables por medio de un solo número denominado coeficiente de correlación.
+
+Para determinar el coeficiente de correlación de Pearson de una muestra se utiliza la siguiente fórmula:
+
+### Fórmula para correlación de Pearson
+
+$$r = \frac{\sum_{i=1}^{n}(x_i - \bar{x})\cdot(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n}(x_i - \bar{x})^{2}\cdot\sum_{i=1}^{n}(y_i - \bar{y})^{2}}}$$
+
+Siendo $r$ el valor del coeficiente de correlación. La correlación de Pearson funciona bien con variables cuantitativas que tienen una distribución normal. [@amat_rodrigo_correlacion_2016]
+
+La idea básica del análisis de correlación es identificar la asociación entre dos variables; por lo general, se puede describir la relación graficando o elaborando un diagrama de dispersión entre $x$ y $y$.
+
+## Regresión lineal simple
+
+La regresión lineal simple implica aplicar una ecuación matemática de mínimos cuadrados que permite pronosticar o predecir el valor de una variable con base en el valor de otra; este procedimiento se llama análisis de regresión.
+
+El análisis de regresión es un método para examinar una relación lineal entre dos variables; se utiliza el concepto de correlación $r$, sin embargo, la regresión proporciona mucho más información, además de permitir estimaciones o predicciones de la relación lineal con la ecuación de mínimos cuadrados [@lind_estadistica_2015].
+
+## Fórmula de mínimo cuadrados para regresión lineal
+
+$$Y = a + bx$$
+
+En donde:
+
+-   $Y$ es el valor a predecir
+-   $a$ Es el valor del cruce del eje y
+-   $b$ Es el valor de la pendiente o inclinación.
+-   $x$ el valor de la variable independiente
+
+##### Fórmulas par obtener coeficientes a y b en el método de mínimos cuadrados
+
+$$
+b = r \cdot(\frac{
+s_{y}}{s_x}) = r \cdot \frac{\sqrt{ \frac{\sum_{i=1}^n(y_i- \bar{y})^2}{n-1}}} {\sqrt{ \frac{\sum_{i=1}^n(x_i- \bar{x})^2}{n-1}}}
+$$
+
+En donde:
+
+-   $r$ es el coeficiente de correlación.
+
+-   $S_y$ es la desviación estándar de $y$. $\text {es el denominador}$
+
+-   $S_x$ es la desviación estándar de la variable $x$. $\text{es el numerador}$
+
+Y para determinar a:
+
+$$a = \bar{y} - b \cdot\bar{x}$$
+
+-   Se requiere la media de y $\bar{y}$
+-   Se necesita la media de x $\bar{x}$
+
+[@lind_estadistica_2015].
+
+Un valor que es importante destacar en la regresión lineal, es el coeficiente de determinación también representado por $r^{2}$ que se puede sacar elevando al cuadrado el coeficiente de correlación previamente determinado.
+
+Cuando el coeficiente $r$ de Pearson se eleva al cuadrado $r^{2}$, se obtiene el coeficiente de determinación y el resultado indica la variabilidad de factores comunes. Esto es, el porcentaje de la variación de una variable debido a la variación de la otra variable y viceversa (o cuánto explica o determina una variable la variación de la otra) [@hernandez_sampieri_metodologiinvestigacion_2014].
+
+El coeficiente de determinación es la proporción y la explicación de la variación total de la variable dependiente $y$ con respecto a la variable independiente $x$. [@lind_estadistica_2015].
+
+# Desarrollo
+
+## Las librerías
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(mosaic)
+library(readr)
+library(ggplot2)  # Para gráficos
+library(knitr)    # Para formateo de datos
+```
+
+## Ejercicio llamadas y ventas
+
+![](images/llamadas%20y%20ventas-02.jfif)
+
+### Cargar los datos
+
+Datos de llamadas que hacen vendedores y las ventas que realizan.
+
+```{r}
+vendedores <- paste("V",1:15, sep="")
+llamadas <- c(96, 40, 104, 128, 164, 76, 72, 80 , 36, 84, 180, 132, 120, 44, 84) 
+ventas <- c(41, 41, 51, 60, 61, 29, 39, 50, 28, 43, 70, 56, 45, 31, 30)
+datos <- data.frame(vendedores, llamadas, ventas)
+datos
+```
+
+### Valor de correlación entre las variables
+
+-   Se determina la correlación de Pearson con la función cor(x,y) que establece el grado de relación entre dos variables; 'x' son los llamadas y 'y' las ventas.
+
+```{r}
+r <- cor(datos$llamadas, datos$ventas)
+r
+```
+
+### Gráfica de dispersión
+
+```{r}
+ggplot(data = datos, aes(x = llamadas, y = ventas)) +
+  geom_point(colour = 'blue')
+```
+
+### Generar el modelo regresión lineal $Y = a + bx$
+
+-   Determinar los coeficientes a y b por medio de la función lineal *lm()*
+-   El caracter '\~' en la fórmula de la función *l*m() de regresión se interpreta como que la variable 'y' está en función de la variable 'x'.
+
+```{r}
+modelo <- lm(data = datos, formula = ventas~llamadas)
+modelo
+```
+
+### Encontrar el coeficiente de determinación
+
+-   Elevando al cuadrado el coeficiente de correlación. $$r^{2}$$
+
+```{r}
+summary(modelo)
+paste("El coeficiente de determinación o Multiple R-squared: es igual al cuadrado del coeficiente de correlación: ", r^2)
+```
+
+-   El coeficiente de determinación $r^{2}$ con valor de `r round(r^2,4)` significa que el valor de llamadas representa y explica el `r round(r^2* 100, 2)` % de las ventas.
+
+### Determinar los valores de a y b
+
+```{r}
+a <- modelo$coefficients[1]
+b <- modelo$coefficients[2]
+a ; b
+```
+
+### Medias de las variables
+
+```{r}
+mean(datos$llamadas)
+mean(datos$ventas)
+```
+
+### Gráfica de tendencia
+
+```{r}
+ggplot() + 
+  geom_point(data = datos, aes(x = llamadas, y = ventas), colour='blue') +
+  geom_point(aes(x= mean(datos$llamadas), y = mean(datos$ventas)), col = 'green') +
+  geom_line(aes( x = datos$llamadas, y = predict(modelo, datos)), color = "red") +
+  xlab("Llamadas") + 
+  ylab("Ventas") + 
+  ggtitle("Linea de tendencia sobre Conjunto de Datos")
+```
+
+### Predecir conforme al modelo
+
+-   Para predecir se puede usar la ecuación $y=a+bx$ o utilizar la función *predict()*
+-   Predecir para valores 100, 130 y 160
+
+```{r}
+x <- c(100, 130, 160)
+prediccion <- predict(object = modelo, newdata = data.frame(llamadas = x))
+prediccion
+# Comprobar
+y = a + b * x
+y
+```
+
+### Interpretar el ejercicio
+
+-   Se utilizó la función *lm()* para crear el modelo de regresión lineal y determinar los coeficientes de $a$ y $b$.
+-   Se utilizó la función *predict()* para predecir nuevos valores de x o ventas.
+-   Se comprobó las predicciones
+-   Para un valor de 170 el valor de la predicción es 64.28 en ventas
+
+## Ejercicio ventas en función de comerciales
+
+![](images/comerciales%20marketing%20ventas.png){width="300"}
+
+### Cargar o generar los datos
+
+De un conjunto de datos para una empresa que invierte dinero en comerciales se tienen un historial de ventas de doce semanas.
+
+```{r}
+semanas <- c(1:12)
+comerciales <- c(2,5,1,3,4,1,5,3,4,2,3,2)
+ventas <- c(50,57,41,54,54,38,63,48,59,46, 45, 48 )
+datos <- data.frame(semanas,comerciales,ventas)
+kable(datos, caption = "Ventas en función de inversión en comerciales")
+```
+
+### Valor de correlación entre las variables
+
+-   Se determina la correlación de Pearson con la función cor(x,y) que establece el grado de relación entre dos variables; 'x' son los comerciales y 'y' las ventas.
+
+```{r}
+r <- cor(datos$comerciales, datos$ventas)
+r
+```
+
+### Gráfica de dispersión
+
+```{r}
+ggplot(data = datos, aes(x = comerciales, y = ventas)) +
+  geom_point(colour = 'blue')
+```
+
+### Generar el modelo regresión lineal $Y = a + bx$
+
+-   Determinar los coeficientes a y b por medio de la función lineal *lm()*
+-   El caracter '\~' en la fórmula de la función *lm()* de regresión se interpreta como que la variable 'y' está en función de la variable 'x'.
+
+```{r}
+modelo <- lm(data = datos, formula = ventas~comerciales)
+modelo
+```
+
+### Encontrar el coeficiente de determinación
+
+-   Elevando al cuadrado el coeficiente de correlación. $$r^{2}$$
+
+```{r}
+summary(modelo)
+paste("El coeficiente de determinación o Multiple R-squared: es igual al cuadrado del coeficiente de correlación: ", r^2)
+```
+
+-   El coeficiente de determinación $r^{2}$ con valor de `r round(r^2,4)` significa que el valor de comerciales representa el `r round(r^2* 100, 2)` % de las ventas.
+
+### Determinar los valores de a y b
+
+```{r}
+a <- modelo$coefficients[1]
+b <- modelo$coefficients[2]
+a ; b
+```
+
+### Medias de las variables
+
+```{r}
+mean(datos$comerciales)
+mean(datos$ventas)
+```
+
+### Gráfica de tendencia
+
+```{r}
+ggplot() + 
+  geom_point(data = datos, aes(x = comerciales, y = ventas), colour='blue') +
+  geom_point(aes(x= mean(datos$comerciales), y = mean(datos$ventas)), col = 'green') +
+  geom_line(aes( x = datos$comerciales, y = predict(modelo, datos)), color = "red") +
+  xlab("Comerciales") + 
+  ylab("Ventas") + 
+  ggtitle("Linea de tendencia sobre Conjunto de Datos")
+```
+
+### Predecir conforme al modelo
+
+-   Para predecir se puede usar la ecuación $y=a+bx$ o utilizar la función *predict()*
+-   Predecir para valores 4, 3.5, 2, 0 y 1
+
+```{r}
+x <- c(4, 3.5, 2, 0,1)
+prediccion <- predict(object = modelo, newdata = data.frame(comerciales = x))
+prediccion
+# Comprobar
+y = a + b * x
+y
+```
+
+### Interpretar el ejercicio
+
+-   Se utilizó la función *lm()* para crear el modelo de regresión lineal y determinar los coeficientes de a y b.
+-   Se utilizó la función *predict()* para predecir nuevos valores de x o comerciales.
+-   Se comprobó las predicciones
+-   Por ejemplo para un valor de 4 en comerciales la predicción de ventas es de 55.99.
+
+## Ejercicio. Medidas de los sólidos contaminantes y la demanda de oxígeno bioquímico.
+
+![](images/solido%20contaminante%20oxigeno%20bioqu%C3%ADmico.jpg){width="300"}
+
+Uno de los problemas más desafiantes que se enfrentan en el área del control de la contaminación del agua lo representa la industria de la peletería (dedicada a la elaboración de indumentaria, cuero y piel animal).
+
+Los desechos de ésta tienen una complejidad química. Se caracterizan por valores elevados de demanda de oxígeno bioquímico, sólidos volátiles y otras medidas de la contaminación. [@walpole_probabilidad_2007]
+
+Tal vez si existen contaminantes sólidos se requiera mayor oxígeno bioquímico.
+
+### Cargar o generar los datos
+
+```{r}
+seq <- c(1:33)
+solido <- c(3,7,11,15,18,27,29,30,30,31,31,32,33,33,34,36,36,36,37,38,39,39,39,40,41,42,42,43,44,45,46,47,50)
+oxigeno <- c(5,11,21,16,16,28,27,25,35,30,40,32,34,32,34,37,38,34,36,38,37,36,45,39,41,40,44,37,44,46,46,49,51 )
+datos <- data.frame(seq,solido,oxigeno)
+kable(datos, caption = "Contaminante oxígeno en función de sólidos contaminantes")
+```
+
+### Valor de correlación entre las variables
+
+-   Se determina la correlación de Pearson con la función cor(x,y) que establece el grado de relación entre dos variables; 'x' son los valores de sólido y 'y' el porcentaje de oxígeno.
+
+```{r}
+r <- cor(datos$solido, datos$oxigeno)
+r
+```
+
+### Gráfica de dispersión
+
+```{r}
+ggplot(data = datos, aes(x = solido, y = oxigeno)) +
+  geom_point(colour = 'blue')
+```
+
+### Generar el modelo regresión lineal $Y = a + bx$
+
+-   Determinar los coeficientes a y b por medio de la función lineal *lm()*
+-   El caracter '\~' en la fórmula de la función *lm()* de regresión se interpreta como que la variable 'y' está en función de la variable 'x'.
+
+```{r}
+modelo <- lm(data = datos, formula = oxigeno~solido)
+modelo
+```
+
+### Encontrar el coeficiente de determinación $r^{2}$
+
+```{r}
+summary(modelo)
+paste("El coeficiente de determinación o Multiple R-squared: es igual al cuadrado del coeficiente de correlación :", r^2)
+```
+
+-   El coeficiente de determinación $r^{2}$ con valor de `r round(r^2,4)` significa que el valor de solido representa el `r round(r^2* 100, 2)` % del oxígeno.
+
+### Determinar los valores de a y b
+
+```{r}
+a <- modelo$coefficients[1]
+b <- modelo$coefficients[2]
+a ; b
+```
+
+### Medias de las variables
+
+```{r}
+mean(datos$solido)
+mean(datos$oxigeno)
+```
+
+### Gráfica de tendencia
+
+```{r}
+ggplot() + 
+  geom_point(data = datos, aes(x = solido, y = oxigeno), colour='blue') +
+  geom_point(aes(x= mean(datos$solido), y = mean(datos$oxigeno)), col = 'green') +
+  geom_line(aes( x = datos$solido, y = predict(modelo, datos)), color = "red") +
+  xlab("Reducción de sólido") + 
+  ylab("% Oxígeno") + 
+  ggtitle("Linea de tendencia sobre Conjunto de Datos")
+```
+
+### Predecir conforme al modelo
+
+-   Para predecir se puede usar la ecuación $y=a+bx$ o utilizar la función *predict()*
+-   Predecir para valores $x=15,20,35,40,50$
+
+```{r}
+x <- c(15,20,35,40,50)
+prediccion <- predict(object = modelo, newdata = data.frame(solido = x))
+prediccion
+# Comprobar
+y = a + b * x
+y
+```
+
+### Interpretar el ejercicio
+
+Pendiente..
+
+## Ejercicio Caso de mediciones del cuerpo humano (Peso y Estatura)
+
+![](images/pesos%20personas.jpg){width="300"}
+
+Mediciones del cuerpo humano en donde se buscar identificar el coeficiente de correlación $r$, el coeficiente de determinación $r^2$ y el modelo de regresión lineal para predecir peso en relación a la estatura de una persona.
+
+### Cargar los datos
+
+-   La variable x independiente será la estatura
+-   La variable y dependiente será la peso
+
+```{r}
+datos <- read.table("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/datos/body.dat.txt", quote="\"", comment.char="")
+datos <- as.data.frame(datos)
+```
+
+#### Estructura de los datos
+
+Son 507 observaciones y 25 variables. Se identifican todas las variables de datos. Las variables de interés son las variables numéricas (columnas 23 y 24) y la columna 25 de género solo para ubicar género Masculino (1) o Femenino (2).
+
+```{r}
+str(datos)
+```
+
+#### Selección de variables de interés
+
+Se seleccionan las columnas que tienen valores de peso en kilogramso y estaturas en centímetros de personas así como el género, Se muestran los primeros 10 y últimos 10 registros.
+
+```{r}
+colnames(datos)[23:25] <- c("peso", "estatura", "genero")
+# Solo interesan las tres últimas columnas
+datos <- select(datos, estatura, peso, genero)
+kable(head(datos, 10), caption = "Datos de pesos y estaturas de personas")
+kable(tail(datos, 10), caption = "Datos de pesos y estaturas de personas")
+```
+
+### Valor de correlación entre las variables
+
+-   Se determina la correlación de Pearson con la función cor(x,y) que establece el grado de relación entre dos variables; $x$ estatura y $y$ peso de una persona.
+
+```{r}
+r <- cor(datos$estatura, datos$peso)
+r
+```
+
+-   El coeficiente de correlación con valor de `r r` significa el grado de relación entre las variables y su valor se interpreta siendo $0.50 \le r \le 0.75$ una correlación positiva de media a considerable [@hernandez_sampieri_metodologiinvestigacion_2014].
+
+### Gráfica de dispersión
+
+```{r}
+ggplot(data = datos, aes(x = estatura, y = peso)) +
+  geom_point(colour = 'blue')
+```
+
+### Generar el modelo regresión lineal $Y = a + bx$
+
+-   Determinar los coeficientes a y b por medio de la función lineal *lm()*
+-   El caracter '\~' en la fórmula de la función *lm()* de regresión se interpreta como que la variable 'y' está en función de la variable 'x'.
+
+```{r}
+modelo <- lm(data = datos, formula = peso~estatura)
+modelo
+```
+
+### Encontrar el coeficiente de determinación $r^{2}$
+
+```{r}
+summary(modelo)
+paste("El coeficiente de determinación o Multiple R-squared: es igual al cuadrado del coeficiente de correlación :", r^2)
+```
+
+-   El coeficiente de determinación $r^{2}$ con valor de `r round(r^2,4)` significa que el valor de la estatura de una persona representa el `r round(r^2* 100, 2)` % del peso de la misma.
+
+### Determinar los valores de a y b
+
+```{r}
+a <- modelo$coefficients[1]
+b <- modelo$coefficients[2]
+a ; b
+```
+
+### Medias de las variables
+
+```{r}
+mean(datos$estatura)
+mean(datos$peso)
+```
+
+### Gráfica de tendencia
+
+```{r}
+ggplot() + 
+  geom_point(data = datos, aes(x = estatura, y = peso), colour='blue') +
+  geom_point(aes(x= mean(datos$estatura), y = mean(datos$peso)), col = 'green') +
+  geom_line(aes( x = datos$estatura, y = predict(modelo, datos)), color = "red") +
+  xlab("Estatura") + 
+  ylab("Peso") + 
+  ggtitle("Linea de tendencia sobre Conjunto de Datos")
+```
+
+### Predecir conforme al modelo
+
+-   Para predecir se puede usar la ecuación $y=a+bx$ o utilizar la función **predict()**
+-   Predecir para valores $x = {150, 160, 170, 175, 185, 190}$
+
+```{r}
+x <- c(150, 160, 170, 175, 185, 190)
+prediccion <- predict(object = modelo, newdata = data.frame(estatura = x))
+prediccion
+# Comprobar
+y = a + b * x
+y
+```
+
+### Interpretar el ejercicio
+
+Conforme a los datos obtenido de una muestra de mediciones del cuerpo humano en relación las variables independiente estatura y la variable dependiente el peso. Se concluye lo siguiente:
+
+El valor de la correlación entre las variables estatura y peso es de `r r` que significa y se interpreta como una correlación positiva considerable.
+
+El valor del coeficiente determinación $r^{2}$ significa que el valor de la estatura de una persona representa el `r round(r^2* 100, 2)` % del peso de la misma.
+
+Por cada unidad de estatura en una persona el peso varía en función de `r b`
+
+Para una persona que mide `r x[3]` centímetros la predicción de peso es de `r a + b * x[3]`
+
+Para una persona que mide `r x[5]` centímetros la predicción de peso es de `r a + b * x[5]`
+
+## Ejercicio extra con los datos del caso 22 y 23
+
+![](images/extra%20extra.png){width="300"}
+
+### Cargar o construir los datos
+
+¿Cuál es la variable independiente y cuál la variable dependiente?
+
+¿Cuál es la estructura de los datos?
+
+### Valor de correlación entre las variables
+
+Determinar la correlación de Pearson con la función *cor(x,y)* que establece el grado de relación entre dos variables; $x$ e $y$.
+
+¿Cómo se interpreta el valor del coeficiente de correlación?
+
+### Gráfica de dispersión
+
+Construir la dispersión de las variables
+
+### Construir el modelo regresión lineal $Y = a + bx$
+
+Construir el modelo de regresión lineal
+
+#### Encontrar el coeficiente de determinación
+
+$r^{2}$
+
+¿Cuál es el valor y qué significa el coeficiente de determinación?
+
+#### Determinar los valores de a y b
+
+¿Cuáles son los valores de $a$ y $b$ en la ecuación de mínimos cuadrados? $Y = a + b\cdot x$
+
+#### Gráfica de tendencia
+
+### Predecir conforme al modelo
+
+Predecir conforme a valores nuevos con la función *predict()* y verificar manualmente.
+
+### Interpretar el ejercicio
+
+# Interpretación
+
+Interpretación del caso pendiente ...
+
+# Referencias bibliográficas
