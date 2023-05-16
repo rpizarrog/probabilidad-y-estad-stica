@@ -156,7 +156,7 @@ Aquí los datos preparados para este ejercicio
 
 # Con url
 
-datos <- read.csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/datos/world%20ranking%20universities.csv", encoding = "UTF-8", stringsAsFactors = TRUE)
+datos <- read.csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/datos/world%20ranking%20universities.csv", encoding = "UTF-8", stringsAsFactors = TRUE)
 
 ```
 
@@ -212,7 +212,7 @@ datos_a_visualizar <- datos %>%
 f_diag.dispersion(datos_a_visualizar)
 ```
 
-Se observa una tendencia lineal hacia abajo, tal vez con una curva descediente, entre más publicaciones tenga la universidad, mejor *ranking* tiene, por ejemplo aquellas universidades que publican por encima de la media aritmética de 118153 artículos están en el *top* 100 del *ranking* a nivel mundial.
+Se observa una tendencia lineal hacia abajo, tal vez con una curva descediente, entre más publicaciones tenga la universidad, mejor *ranking* tiene, por ejemplo aquellas universidades que publican por encima de la media aritmética de 98666 artículos están en el *top* 100 del *ranking* a nivel mundial.
 
 # Interpretación
 
