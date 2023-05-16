@@ -554,39 +554,53 @@ Para una persona que mide `r x[5]` centímetros la predicción de peso es de `r 
 
 ### Cargar o construir los datos
 
-¿Cuál es la variable independiente y cuál la variable dependiente?
+Con los datos de "<https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/datos/players_20.csv>" datos de FIFA. Se seleccionan las dos variables numéricas de interés, *height_cm* y *weight_kg*; se modifican los nombres de variables a altura y peso.
 
-¿Cuál es la estructura de los datos?
+y con los datos de Universidades
+
+"<https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/datos/world%20ranking%20universities.csv>" y las variables de interés numéricas \*publications y rank.\*
+
+Para cada conjunto de datos:
+
+-   ¿Cuál es la variable independiente y cuál la variable dependiente?. En los datos de FIFA la variabel estatura es la variable independiente y peso la variable dependiente; para los datos de las universidades la variable indepediente es *publications* y la variable dependiente es *rank* .
+
+-   ¿Cuál es la estructura de los datos?
 
 ### Valor de correlación entre las variables
 
-Determinar la correlación de Pearson con la función *cor(x,y)* que establece el grado de relación entre dos variables; $x$ e $y$.
+Para los dos conjuntos de datos y las dos variables de interés, determinar la correlación de Pearson con la función *cor(x,y)* que establece el grado de relación entre dos variables; $x$ e $y$.
 
-¿Cómo se interpreta el valor del coeficiente de correlación?
+¿Cómo se interpreta el valor del coeficiente de correlación? para ambos conjunto de datos y las dos variables de interés.
 
 ### Gráfica de dispersión
 
-Construir la dispersión de las variables
+Construir la dispersión de las variables para ambos conjuntos de datos
 
 ### Construir el modelo regresión lineal $Y = a + bx$
 
-Construir el modelo de regresión lineal
+Construir el modelo de regresión lineal para ambos conjuntos de datos
 
 #### Encontrar el coeficiente de determinación
 
 $r^{2}$
 
-¿Cuál es el valor y qué significa el coeficiente de determinación?
+¿Cuál es el valor y qué significa el coeficiente de determinación?, para ambos conjuntos de datos
 
 #### Determinar los valores de a y b
 
-¿Cuáles son los valores de $a$ y $b$ en la ecuación de mínimos cuadrados? $Y = a + b\cdot x$
+¿Cuáles son los valores de $a$ y $b$ en la ecuación de mínimos cuadrados? $Y = a +  b\cdot x$ para ambos conjuntos de datos
 
 #### Gráfica de tendencia
 
+para ambos conjuntos de datos
+
 ### Predecir conforme al modelo
 
-Predecir conforme a valores nuevos con la función *predict()* y verificar manualmente.
+Predecir el pesos en kgs de los jugadores de fútbol conforme a valores nuevos con la función *predict()* y verificar manualmente.
+
+Para el conjunto de datos de FIFA y las variables estatura y peso, ¿cuál será el peso de un jugador de Fútbol que tiene estatura 172, 175 y 180.
+
+Para el conjunto de datos de Universidades y las variables *publications* y *rank* ¿cual debiera ser la predicción para una cantidad de predicciones de una universidad que publica 70000, 90000, y 100000 artículos.
 
 ### Interpretar el ejercicio
 
