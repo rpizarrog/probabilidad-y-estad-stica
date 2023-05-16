@@ -17,8 +17,8 @@ f_diag.dispersion <- function (datos) {
   x = datos[,1]
   y = datos[,2]
   
-  media.x <- round(mean(x), 4)
-  media.y <- round(mean(y), 4)
+  media.x <- round(mean(x, na.rm = TRUE), 4)
+  media.y <- round(mean(y, na.rm = TRUE), 4)
   
   ggplot() +
     geom_point(aes(x = x, y = y), col='red') +
@@ -62,8 +62,8 @@ f.diag.prueba.signif.corr <- function (t, t.signif,  n, confianza) {
 f_reg_lineal_simple <- function (datos) {
   
   tabla <- datos
-  media_x <- mean(datos[, 1])
-  media_y <- mean(datos[, 2])
+  media_x <- round(mean(datos[, 1], na.rm = TRUE), 4)
+  media_y <- round(mean(datos[, 2], na.rm = TRUE), 4)
   n <- nrow(datos)
   
   
