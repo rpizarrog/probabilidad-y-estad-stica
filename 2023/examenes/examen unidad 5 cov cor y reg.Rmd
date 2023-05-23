@@ -26,7 +26,7 @@ variables numéricas de *publications* y *rank* de una muestra del conjunto de d
 -   Se calculan los coeficientes a y b de la fórmula de regresión simple
 - Se visualiza la linea de tendenncia con la dispersión de los datos
 -   Se calcula predicciones de *rank* con tres valores de la variable independiente *publications*
--   Al final, se interpreta el caso con al menos 50 palabras respondientdo a las preguntas inmersas en el ejercicio.
+-   Al final, se interpreta el caso con al menos 50 palabras respondiendo a las preguntas inmersas en el ejercicio. Si el modelo en el valor de *Multipel R Square* está por encima del 60% entonces el modelo explica un 60% a la variable dependiente por lo que para estos datos y esta muestra se acepta el modelo de lo contrario no se acepta.
 
 # Desarrollo
 
