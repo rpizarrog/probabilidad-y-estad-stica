@@ -1,0 +1,167 @@
+---
+title: "Examen Unidad 5 Cov Cor y Reg"
+author: "Rubén Pizarro Gurrola"
+date: "2023-05-23"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# Objetivo
+
+Elaborar un documento *markdown* que describa la relación entre dos
+variables numéricas de *publications* y *rank* de una muestra del conjunto de datos universidades determinando la dispersión de los datos con diagrama de dispersión, la covarianza, la correlación de Pearson y la regresión lineal simple que servirá para simular predicciones de la variable dependiente *rank*.
+
+# Descripción
+
+-   Se cargan librerías necesarias
+-   Se cargan las funciones preparadas
+-   Se cargan los datos "https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/datos/universidades_clean.csv" y se determina una muestra del 20% del total de los  registros
+-   Se requiere el diagrama de dispersión de los datos de las variables *publicactions* y *rank*
+-   Se calcula el valor de la covarianza de las variables *publicactions* y *rank* y su interpretación
+-   Se calcula el valor de la correlación de Pearson de las variables *publicactions* y *rank* y su interpretación
+-   Se construye el modelo de regresión lineal simple con las variables de las variables *publicactions* y *rank*
+-   Se calculan los coeficientes a y b de la fórmula de regresión simple
+- Se visualiza la linea de tendenncia con la dispersión de los datos
+-   Se calcula predicciones de *rank* con tres valores de la variable independiente *publications*
+-   Al final, se interpreta el caso con al menos 50 palabras respondientdo a las preguntas inmersas en el ejercicio.
+
+# Desarrollo
+
+## Cargar librerías
+
+```{r message=FALSE, warning=FALSE}
+library(ggplot2)
+library(readr)
+library(dplyr)
+library(knitr)
+library(DT)
+library(mosaic)
+library(PerformanceAnalytics) # Para coorelaciones gráficas
+```
+
+
+## Cargar funciones preparadas
+
+```{r message=FALSE, warning=FALSE}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/funciones/funciones%20para%20dispersion%20correlacion%20regresion.R", encoding = "UTF-8")
+```
+
+## Cargar datos
+
+```{r}
+datos_bruto <- read.csv("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/datos/universidades_clean.csv", encoding = "UTF-8", stringsAsFactors = TRUE)
+
+str(datos_bruto)
+```
+
+## Transformar datos
+
+### Seleccionar solo las variables de interés publications y rank
+
+Ejecutar esta instrucciones para limpiar los datos y dejar solo las
+variable de interés
+
+-   publications_Variable x independiente
+-   rank: variabel y dependiente
+
+```{r}
+datos <- select(datos_bruto, publications, rank)
+str(datos)
+```
+
+## Determinar una muestra del 20%
+
+Cada equipo decide el valor de la semilla *random*, por ejemplo 2023,
+ustedes pongan los cuatro o tres últimos dígitos de su número de
+control o el de uno de ustedes
+
+```{r}
+set.seed(2023)
+muestra <- datos[sample(x = 1:nrow(datos), size = round(nrow(datos) * 0.20), replace = FALSE), ]
+muestra
+```
+¿De cuántos registros es la muestra?
+
+## Determinar la covarianza
+
+Convarianza entre *publications* y *rank*
+¿Cuál es el valor de la covarianza ?
+
+```{r}
+# Pendiente
+```
+
+## Determinar la correlación
+
+Correlación $r$ entre *publications* y *rank*
+¿Cuál es el valor de la correlación de Pearson y cómo se interpreta?
+
+```{r}
+# Pendiente
+```
+
+## Diagrama de dispresión
+
+Diagrama de dispersión entre *publications* y *rank*
+¿Cómo se observa el diagrama de dispersión de las dos variables x *publications* e y *rank*?
+
+```{r}
+# Pendiente
+```
+
+## Regresión
+
+Construir el modelo de regresión entre *publications* y *rank*
+¿Cuáles son los estadísticos del modelos de regresión:  summary(modelo)
+```{r}
+# Pendiente
+```
+
+
+## Valor del R Square
+¿Cuál es el valor del estadístico *R Square* en el modelo de regresión construído y cómo se interpreta?
+
+## Coeficientes a y b
+
+$$
+Y = a + b \cdot x
+$$
+
+Coeficientes $a$ y $b$ de la fórmula de regresión lineal simple
+¿Cuál es el valor de los coeficientes?
+```{r}
+# Pendiente
+```
+
+## Linea de tendencia
+¿Cómo se observa la lónea de tendencia?
+```{r}
+# Pendiente
+```
+
+
+## Predicciones
+
+### ¿Cuál es la predicción del ranking (rank) para un valor de publications igual a 15000?
+```{r}
+# Pendiente
+```
+
+
+### ¿Cuál es la predicción del ranking (rank) para un valor de publications igual a 20000?
+```{r}
+# Pendiente
+```
+
+
+### ¿Cuál es la predicción del ranking (rank) para un valor de publications igual a 25000?
+```{r}
+# Pendiente
+```
+
+# Intrepretación
+
+al menos 50 palabras
+
