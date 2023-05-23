@@ -19,7 +19,7 @@ variables numéricas de *publications* y *rank* de una muestra del conjunto de d
 -   Se cargan las funciones preparadas
 -   Se cargan los datos "https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/2023/datos/universidades_clean.csv" y se determina una muestra del 20% del total de los  registros
 -   Se construye una muestra del 20% y sobre la muestra se hacen los estadísticos
--   Se requiere el diagrama de dispersión de los datos de las variables *publicactions* y *rank*
+-   Se requiere el diagrama de dispersión de la muestra de las variables *publicactions* y *rank*
 -   Se calcula el valor de la covarianza de las variables *publicactions* y *rank* y su interpretación
 -   Se calcula el valor de la correlación de Pearson de las variables *publicactions* y *rank* y su interpretación
 -   Se construye el modelo de regresión lineal simple con las variables de las variables *publicactions* y *rank*
