@@ -1,0 +1,466 @@
+---
+title: "Caso 29. Distribución muestral de la media"
+author: "Rubén Pizarro Gurrola"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 5
+    code_folding: hide
+    toc_float: yes
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+Determinar la distribución muestral de la media.
+
+# Descripción
+
+Se simula población con sueldos de trabajadores de una Institución educativa. La distribución de esta población no es normal es decir, no tiene características de ser distribución normal.
+
+Se crean datos relacionados con la población y se determinan los parámetros descriptivos.
+
+Se crean 100 y 1000 muestras diferentes con n elementos diferentes relacionados con la población y se determinan la media aritmética de cada muestra.
+
+Se determina la distribución muestral de la media de las cien muestras y se identifica que la distribución se acera a una distribución normal además de que la media de la distribución muestral se acerca a la media de la población.
+
+# Marco de referencia
+
+Si se organizan las medias de todas las muestras posibles (por decir cien y mil) en una distribución de probabilidad, el resultado recibe el nombre de distribución muestral de la media.
+
+DISTRIBUCIÓN MUESTRAL DE LA MEDIA es la distribución de probabilidad de todas las posibles medias de las muestras de un determinado tamaño muestral de la población. [@lind2015].
+
+# Desarrollo
+
+## Configuraciones iniciales
+
+### Librerías
+
+```{r}
+library(cowplot)
+library(ggplot2)
+library(knitr)
+```
+
+### Notación normal
+
+Para que no aparezca notación científica
+
+```{r}
+options(scipen=999)
+```
+
+### Semilla
+
+```{r}
+set.seed(2022)
+```
+
+### Variables iniciales
+
+```{r}
+N <- 650 # Cantidad de datos de población
+rango <- 5000:35000 # Rango de sueldos
+n = 100  # Cantidad de datos de cada muestra
+q1 = 100  # Cantidad de muestras m1, m2, m3
+q2 = 1000  # Cantidad de muestras m1, m2, m3
+q3 <- 10000 
+```
+
+## Crear datos
+
+Se simula una población de trabajadores por medio de la creación de un vector con valores que contienen sueldos mensuales en pesos mexicanos de una población de $N=650$ trabajadores que laboran en una Institución educativa. El rango del sueldo de manera simulada está entre \$5000 y \$35000 pesos (\$) mensuales.
+
+### Población
+
+$$
+poblacion = \text{ {x | x es un trabajador de una Institución educativa;  }} \therefore \\ 
+x_1, x_2, x_3, ... ,x_{N=6500}
+$$
+
+```{r}
+poblacion <- data.frame(x = 1:N, sueldo=sample(x = rango, size =  N, replace = TRUE))
+```
+
+### Primeros treinta observaciones de Población
+
+```{r}
+head(poblacion$sueldo, 30)
+```
+
+### Últimos treinta observaciones de Población
+
+```{r}
+tail(poblacion$sueldo, 30)
+```
+
+### Parámetros poblacionales
+
+```{r}
+summary(poblacion$sueldo)
+```
+
+```{r}
+media.p <- round(mean(poblacion$sueldo),2)
+desv.p <- round(sd(poblacion$sueldo),2)
+media.p; desv.p
+```
+
+Se tiene una media aritmética poblacional de `r media.p` con una desviación estándar de `r desv.p`.
+
+$$
+\mu = \frac{\sum{sueldo_x}}{N} = 19761.25
+$$ 
+
+## Muestra
+
+Se determina una primera muestra de 100 trabajadores sin reemplazo que significa que no se puede repetir el trabajador el valor de $x$.
+
+$$
+muestra = \text{ {x | x es un trabajador de la población;  }} \therefore \\ 
+x_1, x_2, x_3, ... ,x_{n=100}
+$$
+
+La variables **xs** como parte de la muestra puede ser cualquier trabajador de la población que representa a la población.
+
+```{r}
+xs <- sample(x = 1:N, size =  n, replace = FALSE)
+muestra <- poblacion[xs,]
+```
+
+### Estadísticos muestrales
+
+```{r}
+summary(muestra$sueldo)
+```
+
+```{r}
+media.m <- round(mean(muestra$sueldo),2)
+desv.m <- round(sd(muestra$sueldo),2)
+media.m; desv.m
+```
+
+Se tiene una media aritmética de la primera muestra de `r media.m` con una desviación estándar de `r desv.p`. 
+$$
+\bar{x_1} = \frac{\sum{sueldo_x}}{n} = 20140.97
+$$
+
+## Error muestral
+
+El error muestral es porque los estadísticos no son valores numéricos igual que los parámetros de la población, siempre existirá una diferencia.
+
+```{r}
+paste("Media aritméica poblacional", media.p, ";", "media muestral", media.m)
+paste("Desviación estándar poblacional", desv.p, ";","desviación muestral", desv.m)
+```
+
+Se determina el error muestral del estadístico media de la muestra con respecto al parámetro de la media poblacional
+
+```{r}
+dif.media <- media.p - media.m
+paste("El error muestral con respecto a la media aritmética es de: ", round(dif.media, 2))
+```
+
+$$
+\text{Error muestral =} (\mu - \bar{x}) = (19761.25 - 20140.97) =-379.72
+$$ 
+
+## Histograma de población y muestra
+
+```{r message=FALSE, warning=FALSE}
+# Histograma con densidad
+g1 <- ggplot(poblacion, aes(x = sueldo)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "blue") +
+  labs(title = "Población",
+      subtitle = paste("ME=", media.p, "; ds=", desv.p,  "; Err muestral media=",dif.media),
+              caption = "Fuente propia") +  
+  
+  geom_vline(xintercept = media.m, col='red') +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g1 <- g1 + theme(
+  plot.title = element_text(color = "black", size = 10, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+g2 <- ggplot(muestra, aes(x = sueldo)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "green") +
+    geom_vline(xintercept = media.m, col='red') +
+  labs(title = "Muestra",
+      subtitle = paste("me=", media.m, "; ds.=", desv.m),
+              caption = "Fuente propia") +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g2 <- g2 + theme(
+  plot.title = element_text(color = "black", size = 10, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+plot_grid(g1, g2, nrow = 1, ncol = 2)
+```
+
+Se observa que **no es una distribuciones normal**, ni los datos de población ni los datos de la muestra se comportan como distribución normal.
+
+## Distribución muestral de la media 100 muestras.
+
+Se determinan cien (100) muestras de 100 elementos cada una, luego se organizan las medias de todas las muestras en una distribución de probabilidad, el resultado recibe el nombre de distribución muestral de la media [@lind2015].
+
+```{r}
+muestras = as.list(NULL)
+m.muestras = NULL
+for (i in 1:q1) {
+    muestras[[i]] <- sample(x = poblacion$sueldo, size = q1, replace = FALSE)
+    
+  m.muestras[i] <- mean(muestras[[i]])
+}
+```
+
+### Distribución de las muestras 100
+
+Se construye una tabla de distribución de todos los sueldos de cada muestra, solo se muestran los tres primeros y los últimos tres en la columna final se observa la media de cada muestra.
+
+La función *t()* transforma registros a columnas de un data.frame.
+
+```{r}
+sueldos <- data.frame(muestras)
+sueldos <- t(sueldos)
+colnames(sueldos) <- paste0("sueldo",1:q1)
+rownames(sueldos) <- paste0("M",1:q1)
+tabla <- data.frame(sueldos[,1:3], "..."="...", sueldos[,(q1-2):q1], medias.muestrales = m.muestras)
+kable(tabla, caption = "Tabla de medias aritméticas de cien muestras de cien sueldos cada una")
+```
+
+### Media de todas las muestras 100
+
+```{r}
+media.todas.muestras <- round(mean(tabla$medias.muestrales),4)
+paste("La media de todas las muestras es de: ", media.todas.muestras)
+```
+
+### Histograma de medias muestrales CIEN
+
+```{r message=FALSE, warning=FALSE}
+# Histograma con densidad
+g1 <- ggplot(poblacion, aes(x = sueldo)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "blue") +
+  labs(title = "Población",
+      subtitle = paste("ME = ", media.p),
+              caption = "Fuente propia") +  
+  
+  geom_vline(xintercept = media.m, col='red') +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g1 <- g1 + theme(
+  plot.title = element_text(color = "black", size = 10, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+g2 <- ggplot(tabla, aes(x = medias.muestrales)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "green") +
+    geom_vline(xintercept = media.todas.muestras, col='red') +
+  labs(title = "Distribución muestral de la media CIEN",
+      subtitle = paste("Media =", media.todas.muestras),
+              caption = "Fuente propia") +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g2 <- g2 + theme(
+  plot.title = element_text(color = "black", size = 10, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+plot_grid(g1, g2, nrow = 1, ncol = 2)
+```
+
+Se observa la diferencia de forma de las distribuciones poblacional y muestral de medias.
+
+
+También existe una diferencia en el rango de las medias de la población con respecto a la media de todas las muestras. El rango del sueldo de la población es `r range(poblacion$sueldo)`, mientras que las medias muestrales de la población con respecto al sueldo varían de 
+`r range(tabla$medias.muestrales)`.
+
+En cuanto a la diferencias de las desviaciones estándar de la población y de las muestras:
+
+```{r}
+sd(poblacion$sueldo)
+sd(tabla$medias.muestrales)
+```
+
+Se reduce su rango o lo que es lo mismo la desviación disminuye de `r sd(poblacion$sueldo)` en la población a `r sd(tabla$medias.muestrales)` en las medias muestrales.
+
+## Distribución muestral de la media 1000 muestras.
+
+¿Que pasará con mil muestras?
+
+Se repite el proceso, ahora en lugar de ser cien ahora serán mil muestras.
+
+Se determinan mil (1000) muestras de 100 elementos cada una, luego se organizan las medias de todas las muestras en una distribución de probabilidad, el resultado recibe el nombre de distribución muestral de la media [@lind2015].
+
+```{r}
+muestras = as.list(NULL)
+m.muestras = NULL
+for (i in 1:q2) {
+    muestras[[i]] <- sample(x = poblacion$sueldo, size = q2, replace = TRUE)
+    
+  m.muestras[i] <- mean(muestras[[i]])
+}
+```
+
+### Distribución de las muestras 1000
+
+Se construye una tabla de distribución de todos los sueldos de cada muestra, solo se muestran los tres primeros y los últimos tres en la columna final se observa la media de cada muestra.
+
+Como son mil muestras solo se muestran las primeras cincuenta y las últimas cincuenta.
+
+```{r}
+sueldos <- data.frame(muestras)
+sueldos <- t(sueldos)
+colnames(sueldos) <- paste0("sueldo",1:q2)
+rownames(sueldos) <- paste0("M",1:q2)
+tabla <- data.frame(sueldos[,1:3], "..."="...", sueldos[,(q2-2):q2], medias.muestrales = m.muestras)
+```
+
+#### Primeras cincuenta
+
+```{r}
+kable(head(tabla,50), caption = paste("Tabla de medias aritméticas de ",q2," muestras de cien sueldos cada una"))
+```
+
+#### Últimas cincuenta
+
+```{r}
+kable(tail(tabla,50), caption = paste("Tabla de medias aritméticas de ",q2," muestras de cien sueldos cada una"))
+```
+
+### Media de todas las muestras 1000
+
+```{r}
+media.todas.muestras <- round(mean(tabla$medias.muestrales),2)
+paste("La media de todas las ", q2, " muestras "," es de: ", media.todas.muestras)
+```
+
+### Histograma de medias muestrales MIL
+
+```{r message=FALSE, warning=FALSE}
+# Histograma con densidad
+g1 <- ggplot(poblacion, aes(x = sueldo)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "blue") +
+  labs(title = "Población",
+      subtitle = paste("ME=", media.p),
+              caption = "Fuente propia") +  
+  
+  geom_vline(xintercept = media.m, col='red') +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g1 <- g1 + theme(
+  plot.title = element_text(color = "black", size = 10, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+g2 <- ggplot(tabla, aes(x = medias.muestrales)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "green") +
+    geom_vline(xintercept = media.todas.muestras, col='red') +
+  labs(title = "Distribución muestral de la media MIL",
+      subtitle = paste("Media =", media.todas.muestras),
+              caption = "Fuente propia") +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g2 <- g2 + theme(
+  plot.title = element_text(color = "black", size = 10, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=6),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+plot_grid(g1, g2, nrow = 1, ncol = 2)
+```
+
+Se observa que la media de todas las muestras se acerca a la media de la población así mismo, la distribución muestral de la media es una distribución que se parece a distribución normal con gráfica de gauss o campana.
+
+Entre mas muestras haya, la dispersión de los datos disminuye y entre más muestras se determinen, el valor de la media de todas las muestras se acerca al valor de la media poblacional.
+
+# Interpretación
+
+¿Cuál es el valor de la media muestral de 10000 mil muestras de 100 datos cada una?: 19761.13
+
+¿Cuál es el error muestral de la media de todas las muestras con respeto a la media aritmética de población. -0.12
+
+¿Cómo se observa la gráfica de campana?
+
+Aquí la solución replicando el código modificando valores en variables...
+
+
+```{r }
+q3 = 10000
+muestras = as.list(NULL)
+m.muestras = NULL
+for (i in 1:q3) {
+    muestras[[i]] <- sample(x = poblacion$sueldo, size = q3, replace = TRUE)
+    
+  m.muestras[i] <- mean(muestras[[i]])
+}
+```
+
+```{r}
+sueldos <- data.frame(muestras)
+sueldos <- t(sueldos)
+colnames(sueldos) <- paste0("sueldo",1:q3)
+rownames(sueldos) <- paste0("M",1:q3)
+tabla <- data.frame(sueldos[,1:3], "..."="...", sueldos[,(q3-2):q3], medias.muestrales = m.muestras)
+```
+
+
+```{r}
+media.todas.muestras <- round(mean(m.muestras),2)
+paste("La media de todas las ", q3, " muestras "," es de: ", media.todas.muestras)
+```
+
+Histograma de medias muestrales de la muestra con DIEZ MIL observaciones
+
+```{r message=FALSE, warning=FALSE}
+# Histograma con densidad
+g1 <- ggplot(poblacion, aes(x = sueldo)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "blue") +
+  labs(title = "Población",
+      subtitle = paste("ME=", media.p),
+              caption = "Fuente propia") +  
+  
+  geom_vline(xintercept = media.m, col='red') +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g1 <- g1 + theme(
+  plot.title = element_text(color = "black", size = 10, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=7),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+g2 <- ggplot(tabla, aes(x = medias.muestrales)) + 
+  geom_histogram(aes(y = ..density..),
+                 colour = 1, fill = "green") +
+    geom_vline(xintercept = media.todas.muestras, col='red') +
+  labs(title = "Distribución muestral de la media DIEZ MIL",
+      subtitle = paste("Media =", media.todas.muestras),
+              caption = "Fuente propia") +
+  geom_density(lwd = 1.2,
+               linetype = 2,
+               colour = 2)
+g2 <- g2 + theme(
+  plot.title = element_text(color = "black", size = 10, face = "bold"),
+  plot.subtitle = element_text(color = "black",size=6),
+  plot.caption = element_text(color = "black", face = "italic", size=6)
+)
+plot_grid(g1, g2, nrow = 1, ncol = 2)
+```
+
+# Bibliografía

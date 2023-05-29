@@ -1,0 +1,548 @@
+---
+title: "Caso 32. Prueba de Hipótesis para medias"
+author: "Rubén Pizarro Gurrola"
+date: "2022-12-01"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 5
+    code_folding: hide
+    toc_float: yes
+    number_sections: yes
+bibliography: references.bib
+---
+
+# Objetivo
+
+Realizar pruebas de hipótesis de una y dos colas para estimaciones de **medias aritméticas** de una población.
+
+# Descripción
+
+Se cargan algunos ejercicios del contexto de literatura consultada.
+
+Se describe prueba de hipótesis de dos colas.
+
+Se describe prueba de hipótesis de una cola por la izquierda.
+
+Se describe prueba de hipótesis de una cola por la derecha.
+
+Aspectos generales del caso.
+
+# Fundamento teórico
+
+![](images/Area-de-aceptacion-y-rechazo-igual.jpg){width="450"}
+
+## ¿Qué es una hipótesis?
+
+Una hipótesis estadística es una afirmación sobre el valor de un solo parámetro que representa una característica de una población o característica de una distribución de probabilidad, o una afirmación sobre los valores de varios parámetros o sobre la forma de una distribución de probabilidad completa [@devore2016].
+
+En cualquier problema de prueba de hipótesis hay dos hipótesis contradictorias en consideración. Por ejemplo una hipótesis es suponer que la media de la edad de una población de personas podría ser $\mu = 32$ años, y la otra $\mu \ne 32$ años.
+
+Otra podría ser pretender un valor para otros parámetros como la desviación estándar de la población $\sigma$ o la proporción $p$, entre otros.
+
+La finalidad de las propuestas de hipótesis es decidir, con base en información muestral, cuál de las dos hipótesis es la correcta. [@devore2016].
+
+Cuando se hace una prueba de hipótesis se empieza por hacer una suposición tentativa acerca del parámetro poblacional. A esta suposición tentativa se le llama hipótesis nula y se denota por $h_0$. Después se define otra hipótesis, llamada hipótesis alternativa, que dice lo contrario de lo que establece la hipótesis nula. La hipótesis alternativa se denota $h_a$.[@anderson2008].
+
+## Errores tipo I y II
+
+Las hipótesis nula $h_0$ y alternativa $h_a$ son afirmaciones opuestas acerca de la población. Una de las dos, ya sea la hipótesis nula o la alternativa es verdadera, pero no ambas. Lo que se busca en la prueba de hipótesis es que se lleve a la aceptación de $h_0$ cuando $h_0$ sea verdadera y al rechazo de $h_a$ cuando $H_a$ sea verdadera. [@anderson2008].
+
+Es posible que en la prueba de hipótesis se cometan errores , esto debido a que la prueba se basa en una información muestral.
+
+Se pueden cometer dos tipos de errores, la tabla siguente identifica ambos:
+
+|                  |                         |                         |
+|:----------------:|:-----------------------:|:-----------------------:|
+|                  |     $h_0$ verdadera     |     $h_a$ verdadera     |
+| Se acepta $h_0$  | **Conclusión correcta** |    **Error Tipo II**    |
+| Se rechaza $h_0$ |    **Error tipo I**     | **Conclusión Correcta** |
+
+: [@anderson2008]
+
+-   Cuando se acepta $ho$ y esta es verdades **entonces la conclusión es correcta**.
+
+-   Cuando se acepta $h_0$ y ésta es falsa entonces se comete el **error de tipo II**.
+
+-   Si se rechaza $h_0$ y esta es verdadera entonces se comete el **error de tipo I**.
+
+-   Si se rechaza $h_0$ y esta es falsa entonces **la conclusión es correcta.**
+
+## Nivel de significancia
+
+El nivel de significancia es el valor que denota la probabilidad de cometer un error tipo I cuado la hipótesis nula es verdadera como igualdad.
+
+Se usa la letra griega $\alpha$ (*alfa*) para identificar el valor del nivel de significancia. Los valores que pueden usarse son $0.10$, $0.05$ y tal vez $0.01$, es decir al $90\%$, $95\%$ y $99\%$.
+
+El elegir alfa depende el control que se desee de la probabilidad de cometer error de tipo. Si el costo de cometer error de tipo I es elevado, entonces se debe utilizar mayores valores de alfa, es decir depende del campo de estudio y de su importancia se debe decidir el valor de alfa adecuado. [@anderson2008].
+
+Si los datos muestrales son consistentes con la hipótesis nula $h_0$, se recomienda interpretar que "no se rechaza$h_0$; se prefiere esta conclusión a la conclusión"se acepta $h_0$" porque con la conclusión de aceptar $h_0$ se corre el riesgo de cometer un error tipo II. [@anderson2008].
+
+## ¿Cuál distribución utilizar?
+
+En cuanto a la formulación de hipótesis en relación a la media poblacional, se debe determinar un valor de prueba (*z.test o t.test*) dependiendo de la distribución si es normal estandarizada ***z*** o ***t student***.
+
+¿De qué depende utilizar z o t?
+
+Si **SI** **se conoce** la desviación estándar de la población $\sigma$ utilizar $z$.
+
+Si **NO se conoce** la desviación estándar de la población $\sigma$ entonces utilizar **t**.
+
+¿Cómo obtener el valor de prueba z o t?
+
+## Fórmula para z
+
+El valor de prueba de z
+
+$$
+z = \frac{\bar{x}-\mu} {\sigma / \sqrt{n}} \therefore \\
+z \text{: es el valor de z a contrastar} \\
+\bar{x} \text{: la media de la  muestra} \\
+\mu \text{: la media de la población} \\
+\sigma \text{: la desviación estandar de la población} \\
+n \text{: el tamaño de la muestra} \\
+\sigma/\sqrt{n} \text{: el el error estándar SE}
+$$
+
+## Fórmula para t
+
+Valor de prueba de t
+
+$$
+t = \frac{\bar{x}-\mu} {s / \sqrt{n}} \therefore \\
+t \text{: es el valor de t a contrastar} \\
+\bar{x} \text{: la media de la  muestra} \\
+\mu \text{: la media de la población} \\
+s \text{: la desviación estandar de la muestra} \\
+n \text{: el tamaño de la muestra} \\
+s/\sqrt{n} \text{: el el error estándar SE}
+$$
+
+## z y t critico
+
+Se necesitan los valores de *z.critico* y *t.critico* respectivamente y dependiendo de la distribución normal estandarizada o *t student .*
+
+Se utilizaría la función *qnorm()* para ***z*** y *qt()* para ***t student.***
+
+### z.critico
+
+Se requiere el nivel de confianza, es decir, el valor de alfa.
+
+$$
+\alpha = (1 - confianza) / 2 \text{;  dos colas} \\
+\alpha = (1 - confianza) \text{;  una cola}
+$$
+
+Aquí un ejemplo de código en R para encontrar valores de alfa, valores de z críticos de acuerdo a niveles de confianza usando distribución $z$.
+
+```{r}
+library(knitr)
+
+confianza = c(0.90, 0.95, 0.99)
+# Dos colas
+alfa <- (1 - confianza) / 2
+z.critico <- qnorm(p = alfa)
+z.critico <- abs(z.critico)
+z.critico
+# Una cola izquierda
+alfa <- (1 - confianza)
+z.critico.izq <- qnorm(p = alfa)
+z.critico.izq
+# Una cola derecha
+alfa <- (1 - confianza)
+z.critico.der <- qnorm(p = alfa, lower.tail= FALSE)
+z.critico.der
+tabla.z <- data.frame(confianza = confianza, alfa = alfa, "z dos colas" = z.critico, "z izquierda" = z.critico.izq, "z derecha" = z.critico.der)
+kable(tabla.z, caption = "Valores de z.critico a 90%, 95% y 99%")
+```
+
+### t.critico
+
+Se requiere el nivel de confianza, es decir el valor de alfa.
+
+$$
+\alpha = (1 - confianza) / 2 \text{;  dos colas} \\
+\alpha = (1 - confianza) \text{;  una cola}
+$$
+
+Aquí un ejemplo de código en R para encontrar valores de alfa, t críticos de acuerdo a niveles de confianza usando distribución $t$.
+
+```{r}
+
+confianza = c(0.90, 0.95, 0.99)
+n <- 30
+# Dos colas
+alfa <- (1 - confianza) / 2
+t.critico <- qt(p = alfa, df = n-1)
+t.critico <- abs(t.critico)
+t.critico
+# Una cola izquierda
+alfa <- (1 - confianza)
+t.critico.izq <- qt(p = alfa, df = n-1)
+t.critico.izq
+# Una cola derecha
+alfa <- (1 - confianza)
+t.critico.der <- qt(p = alfa, lower.tail= FALSE, df = n-1)
+t.critico.der
+tabla.t <- data.frame(confianza = confianza, alfa = alfa, "t dos colas" = t.critico, "t izquierda" = t.critico.izq, "t derecha" = t.critico.der, "grados libertad"= n-1)
+kable(tabla.t, caption = "Valores de t.critico a 90% 95% y 99%")
+```
+
+## Declarar hipótesis
+
+Se debe declarar hipótesis nula y alternativa
+
+Normalmente se tiene una pregunta de investigación que hay que comprobar o contrastar contra una hipótesis nula.
+
+La pregunta de investigación será la hipótesis alternativa $H_a$
+
+La negación de esta hipótesis alternativa será la hipótesis nula $H_0$. La hipótesis nula se asocia con la igualdad.
+
+|           Dos colas            |                     Una cola izquierda                      |                                                                 Una cola derecha                                                                 |
+|:--------------------:|:------------------------:|:-----------------------:|
+|      $$                        
+         H_0: \mu = \mu_0        
+                      $$         |  $$             H_0: \mu \ge \mu_0                     $$   |                                                            $$                                                                                    
+                                                                                                                                                                                                         H_0: \mu \le \mu_0                $$     |
+|      $$                        
+           H_a: \mu \neq \mu_0   
+                          $$     | $$                  H_a: \mu < \mu_0                     $$ |                                                            $$                                                                                    
+                                                                                                                                                                                             H_a: \mu > \mu_0                                 $$  |
+
+### Prueba de hipótesis dos colas
+
+Ejemplo: hipótesis de dos colas: la hipótesis es: ¡la media de población es 50!, la pregunta de investigación: ¿la media es diferente de 50?.
+
+|                                |
+|--------------------------------|
+| $$                             
+           H_0: \mu = 50         
+           $$                    |
+| $$                             
+           H_a: \mu \neq 50      
+           $$                    |
+
+### Prueba de hipótesis cola izquierda
+
+Ejemplo: cola izquierda: ¡la media de población es mayor o igual a 50!, la pregunta de investigación es: ¿la media es menor de 50?.
+
+| $$                       
+      H_0: \mu \ge 50      
+      $$                   |
+|--------------------------|
+| $$                       
+      H_a: < 50            
+      $$                   |
+
+### Prueba de hipótesis cola derecha
+
+Ejemplo: cola derecha: ¡la media de población es menor o igual a 50!, la pregunta de investigación es : ¿la media es mayor que 50?.
+
+| $$                       
+      H_0: \mu \le 50      
+      $$                   |
+|--------------------------|
+| $$                       
+      H_0: \mu > 50        
+      $$                   |
+
+# Desarrollo
+
+## Cargar librerías
+
+```{r message=FALSE, warning=FALSE}
+library(visualize)
+library(knitr)
+library(BSDA) # para z.test()
+```
+
+## Cargar funciones
+
+```{r message=FALSE, warning=FALSE}
+source("https://raw.githubusercontent.com/rpizarrog/probabilidad-y-estad-stica/master/Agosto-Diciembre%202022/funciones/funciones%20para%20distribuciones.R")
+```
+
+Ejemplo: Simular una población y una muestra
+
+## Datos de la población
+
+Sembrar una semilla
+
+```{r}
+set.seed(2022)
+```
+
+Los datos de la población están entre una media de 35 y desviación estándar de 3. Se utiliza la función *rnorm()* para generar y simular una distribución normal.
+
+```{r}
+N <- 500 # Población
+poblacion <- rnorm(n = N, mean = 35, sd = 3)
+poblacion
+```
+
+### Parámetros de población
+
+Se determina los parámetros de población
+
+```{r}
+media.p <- mean(poblacion)
+desv.p <- sd(poblacion)
+media.p; desv.p
+```
+
+## Datos de la muestra
+
+Se obtienen 30 elementos como muestra a partir de la población generada.
+
+```{r}
+n <- 30
+muestra <- sample(x = poblacion, size = 30, replace = FALSE)
+muestra
+```
+
+### Estadísticos de la muestra
+
+Se determina los estadísticos de la muestra
+
+```{r}
+media.m <- mean(muestra)
+desv.m <- sd(muestra)
+media.m; desv.m
+```
+
+Todo en un **data.frame**
+
+```{r}
+tabla <- data.frame(Nn = c(N, n), "medias" = c(media.p, media.m), "desv.std" = c(desv.p, desv.m))
+rownames(tabla) <- c("Población", "Muestra")
+tabla
+```
+
+## Prueba de hipótesis con distribución z
+
+El ejercicio se simula que la muestra provienen de una población normal y en cuyo caso **SI SE CONOCE LA** desviación estándar de la población por lo que se usará la distribución **z** o normal estandarizada.
+
+Las pruebas de hipótesis siguientes se trata de postular en relación a las medias de la población.
+
+### Prueba de hipótesis de dos colas
+
+La pregunta: ¿es la media aritmética diferente de 35?
+
+La hipótesis: ¡la media es igual a 35 a un 95% de confianza!
+
+| $$                       
+      H_0: \mu = 35        
+      $$                   |
+|--------------------------|
+| $$                       
+      H_a: \mu \ne 35      
+      $$                   |
+
+#### Determinar valores de z prueba y z critico
+
+##### z.prueba
+
+Se le llama *z de prueba* a los valores que hay que contrastar con el valor de *z critico*, es decir cuando es de dos colas los valores de z será el valor que se compara contra los puntos críticos de la curva de acuerdo al nivel de confianza.
+
+$$
+z = \frac{\bar{x}-\mu} {\sigma / \sqrt{n}}
+$$
+
+La variable *media.a.comparar* es el valor que sirve para que la función *f_devolver_z()* regrese e valor de z a contrastar.
+
+```{r}
+media.a.comparar <- 35
+z <- f.devolver.z.prueba(media.m = media.m, media.p = media.a.comparar, desv.p = desv.p, n = n)
+z
+```
+
+##### z.critico
+
+Se definen un nivel de confianza, para este ejemplo del 95%, *z critico* son los extremos de la curva de acuerdo al nivel de confianza.
+
+```{r}
+confianza = 0.95
+# Dos colas
+alfa <- (1 - confianza) / 2
+z.critico <- qnorm(p = alfa)
+z.critico <- abs(z.critico)
+z.critico
+```
+
+##### Visualizar z y z prueba
+
+```{r}
+visualize.norm(stat = c(-z.critico, z.critico), section = "tails") +
+  text(0, 0.2, paste(confianza * 100, "%", "\n", 
+                     "alfa=", (1 - confianza), "\n",  "alfa / 2 = ", 
+                     (1 - confianza) /  2, "\n", "Acepta Ho", sep = ""),  col = "black") + 
+  abline(v = z, col='red', lwd = 1, lty= 4)
+```
+
+#### Contrastar o Concluir con hipótesis de dos colas para z
+
+Se observa que la linea punteada en rojo está dentro de la zona de confianza, es decir el valor de prueba`r z` está entre los valores críticos de z `r -z.critico` y `r z.critico` por lo que se acepta la hipótesis nula $h_0$
+
+```{r}
+# Se contrasta por la izq y derecha. Dos colas
+conclusion <- "No se rechaza Ho"
+h0 <- "¡la media es igual a 35 a un 95% de confianza!"
+if (z < -z.critico & z < z.critico)
+    conclusion = "Se rechaza Ho"
+paste(conclusion, h0)
+```
+
+#### Usando la función z.test()
+
+```{r}
+prueba_hip <- z.test(x = muestra, alternative = "two.sided", mu = media.m, sigma.x = desv.m, sigma.y = desv.p, conf.level = 0.95)
+
+prueba_hip
+```
+
+El valor de la media debe estar en el intervalo `r as.numeric(prueba_hip$conf.int[1])` y `r as.numeric(prueba_hip$conf.int[2])` en un $95\%$ de nivel de confianza, habiendo hecho la prueba de dos colas (`r prueba_hip$alternative`).
+
+### Prueba de hipótesis z de una cola izquierda
+
+La pregunta de investigación es: ¿la media es menor que 35?
+
+Se declara una hipótesis de una cola por la izquierda. ¡la media es mayor o igual que 33.5!
+
+|                          |
+|--------------------------|
+| $$                       
+       H_0:\mu \ge 35      
+       $$                  |
+| $$                       
+       H_a: \mu < 35       
+       $$                  |
+
+#### Determinar valores de z prueba y z critico
+
+##### z.prueba
+
+```{r}
+media.a.comparar <- 35
+z <- f.devolver.z.prueba(media.m = media.m, media.p = media.a.comparar, desv.p = desv.p, n = n)
+z
+```
+
+##### z.critico
+
+Se definen un nivel de confianza del 95%
+
+```{r}
+confianza = 0.95
+# Una cola izquierda
+alfa <- (1 - confianza)
+z.critico.izq <- qnorm(p = alfa)
+z.critico.izq
+```
+
+##### Visualizar z.critico izquierda y z prueba
+
+Se hace notar que el argumento *lower()* de la función *visualize.norm()* solo presenta la cola izquierda de la curva.
+
+```{r}
+visualize.norm(stat = c(z.critico.izq), section = "lower") +
+  text(0, 0.2, paste(confianza * 100, "%", "\n", 
+                     "alfa=", (1 - confianza), "\n", "Acepta Ho", sep = ""),  col = "black") + 
+  abline(v = z, col='red', lwd = 1, lty= 4)
+```
+
+#### Contrastar o concluir con hipótesis z de una cola izquierda
+
+Si el valor de z a probar es mayor que el valor crítico entonces se acepta la hipótesis nula $h_0$. El valor de z a contrastar es `r z` muy por encima de *z_critico* `r z.critico.izq`.
+
+```{r}
+# Se contrasta por la izquierda
+h0 <- "¡la media es mayor o igual que 35!"
+conclusion <- "No se rechaza Ho"
+if (z < z.critico.izq)
+    conclusion = "Se rechaza Ho"
+paste(conclusion, h0)
+```
+
+### Prueba de hipótesis z de una cola derecha
+
+La pregunta de investigación es: ¿la media es mayor que 35?
+
+Se declara una hipótesis de una cola por la derecha: ¡la media es menor o igual que 35!
+
+$$
+H_0: \mu \le 35      
+$$
+
+$$
+H_a:\mu > 35
+$$
+
+#### Determinar valores de z prueba y z critico
+
+##### z.prueba
+
+```{r}
+media.a.comparar <- 35
+z <- f.devolver.z.prueba(media.m = media.m, media.p = media.a.comparar, desv.p = desv.p, n = n)
+z
+```
+
+##### z.critico
+
+Se define un nivel de confianza del 95%
+
+```{r}
+confianza = 0.95
+# Una cola derecha
+alfa <- (1 - confianza)
+z.critico.der <- qnorm(p = alfa, lower.tail = FALSE)
+z.critico.der
+```
+
+##### Visualizar z.critico derecha y z prueba
+
+El argumento *upper* establece e indica la cola por la derecha en la curva de la función *visualize.norm().*
+
+```{r}
+visualize.norm(stat = c(z.critico.der), section = "upper") +
+  text(0, 0.2, paste(confianza * 100, "%", "\n", 
+                     "alfa=", (1 - confianza), "\n", "Acepta Ho", sep = ""),  col = "black") + 
+  abline(v = z, col='red', lwd = 1, lty= 4)
+```
+
+#### Contrastar o concluir con hipótesis de z de una cola derecha
+
+Si el valor de z a constrastar es menor que z critico entones se acepta la hipótesis nula $h_0$, por el contrario si z es mayor entonces se rechaza $h_0$
+
+```{r}
+# Se contrasta por derecha
+h0 <- " ¡la media es menor o igual que 35!"
+conclusion <- "No se rechaza Ho"
+if (z > z.critico.der) {
+    conclusion = "Se rechaza Ho"
+}
+  
+paste(conclusion, h0)
+```
+
+## Prueba de hipótesis de dos colas t
+
+¿Qué sucede **SI SE DESCONOCE** la desviación estándar de la población?, entonces se debe utilizar la *distribución t*.
+
+... PENDIENTE ...
+
+## Prueba de hipótesis de t cola izqierda
+
+pendiente
+
+## Prueba de hipótesis de t cola derecha
+
+pendiente
+
+# Interpretación
+
+Son ideas personales de los participantes o alumnos sobre lo que se desarrolla, ¿a que conclusiones llegan?
+
+Dos o tras párrafos de 50 palabras cada uno aproximadamente.
+
+# Bibliografía
