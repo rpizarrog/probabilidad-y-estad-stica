@@ -1,4 +1,4 @@
-"Alumno","Semestre","Cr. Apr.","Carga","Promedio","Carrera","localidad","latitud","longitud"
+"alumno","semestre","cred_apr.","carga","promedio","carrera","localidad","latitud","longitud"
 1,11,198,19,80.21,"SISTEMAS","Victoria de Durango",24.023988,-104.670194
 2,11,235,10,84.33,"SISTEMAS","Los Arroyos (Las Colonias)",23.691424,-105.032756
 3,9,235,10,95.25,"SISTEMAS","Victoria de Durango",24.023988,-104.670194
